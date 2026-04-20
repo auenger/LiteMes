@@ -5,11 +5,70 @@ pending:
     size: M
 
   - id: feat-enterprise-org
-    name: "企业架构与组织管理"
+    name: "企业管理模块"
     priority: 90
     size: L
     dependencies:
       - feat-project-scaffold
+    children:
+      - feat-company
+      - feat-factory
+      - feat-department
+      - feat-department-user
+      - feat-shift-schedule
+      - feat-enterprise-common
+
+  - id: feat-company
+    name: "公司管理"
+    priority: 95
+    size: M
+    parent: feat-enterprise-org
+    dependencies:
+      - feat-project-scaffold
+
+  - id: feat-factory
+    name: "工厂管理"
+    priority: 94
+    size: M
+    parent: feat-enterprise-org
+    dependencies:
+      - feat-company
+
+  - id: feat-department
+    name: "部门管理"
+    priority: 93
+    size: M
+    parent: feat-enterprise-org
+    dependencies:
+      - feat-factory
+
+  - id: feat-department-user
+    name: "部门用户关系"
+    priority: 92
+    size: S
+    parent: feat-enterprise-org
+    dependencies:
+      - feat-department
+
+  - id: feat-shift-schedule
+    name: "班制班次管理"
+    priority: 91
+    size: M
+    parent: feat-enterprise-org
+    dependencies:
+      - feat-project-scaffold
+
+  - id: feat-enterprise-common
+    name: "企业管理通用功能"
+    priority: 90
+    size: S
+    parent: feat-enterprise-org
+    dependencies:
+      - feat-company
+      - feat-factory
+      - feat-department
+      - feat-department-user
+      - feat-shift-schedule
 
   - id: feat-material-master
     name: "物料主数据"

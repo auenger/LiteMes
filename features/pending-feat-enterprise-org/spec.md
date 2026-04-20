@@ -1,68 +1,58 @@
-# Feature: feat-enterprise-org 企业架构与组织管理
+# Feature: feat-enterprise-org 企业管理模块
 
 ## 基本信息
 - **ID**: feat-enterprise-org
-- **名称**: 企业架构与组织管理
+- **名称**: 企业管理模块
 - **优先级**: 90
-- **规模**: L
+- **规模**: L（模块级）
 - **依赖**: feat-project-scaffold
-- **父需求**: 无
-- **子需求**: 无
 - **创建时间**: 2026-04-20
 
-## 需求描述
-建立 PCB MES 系统的组织架构底座，包括公司→工厂→部门三级结构、生产班制管理（支持跨天班次）、工作中心与工序管理。
+## 需求来源
+- `docx/企业管理_功能设计_V1.0/企业管理_功能设计_V1.0.md`
 
-### 子功能
-| 子功能 | 核心实体 | 关键规则 |
-|--------|---------|---------|
-| 组织架构 | `Company` / `Factory` / `Department` | 三级结构：公司→工厂→部门，逐级关联 |
-| 生产班制 | `ShiftSchedule` / `Shift` | 班制含多个班次，班次支持跨天（如 22:00-06:00） |
-| 工作中心与工序 | `WorkCenter` / `ProcessStep` | 工厂→工作中心→工序的层级关系 |
+## 模块概述
+企业管理模块是 MES 系统的基础数据底座，统一维护公司、工厂、部门、用户关系及班制等基础组织与时间数据。
 
-## 用户价值点
-1. 建立组织架构，为产线、设备、人员管理提供归属关系
-2. 生产班制支持灵活排班，覆盖跨天班次场景
-3. 工作中心与工序定义 PCB 制造流程节点，为后续工单流转提供基础
+## 子 Feature 列表
 
-## 上下文分析
-### 需要参考的现有代码
-- 骨架项目中的实体基类与仓储接口
+| ID | 名称 | 优先级 | 规模 | 依赖 |
+|----|------|--------|------|------|
+| [feat-company](../pending-feat-company/spec.md) | 公司管理 | 95 | M | feat-project-scaffold |
+| [feat-factory](../pending-feat-factory/spec.md) | 工厂管理 | 94 | M | feat-company |
+| [feat-department](../pending-feat-department/spec.md) | 部门管理 | 93 | M | feat-factory |
+| [feat-department-user](../pending-feat-department-user/spec.md) | 部门用户关系 | 92 | S | feat-department |
+| [feat-shift-schedule](../pending-feat-shift-schedule/spec.md) | 班制班次管理 | 91 | M | feat-project-scaffold |
+| [feat-enterprise-common](../pending-feat-enterprise-common/spec.md) | 通用功能 | 90 | S | 以上全部 |
 
-### 相关文档
-- README.md — 核心领域模型
-- project-context.md — 命名规范与 API 设计模式
+## 依赖关系图
 
-## 技术方案
-<!-- 待开发时填写 -->
-
-## 验收标准 (Acceptance Criteria)
-
-### 用户故事
-作为系统管理员，我希望管理公司、工厂、部门的组织架构，以便为后续生产管理建立组织基础。
-
-### Gherkin 验收场景
-
-#### 场景 1: 组织架构 CRUD
-```gherkin
-Given 用户已登录并有管理员权限
-When 创建公司，并在公司下创建工厂，在工厂下创建部门
-Then 三级组织结构正确建立
-And 公司编码创建后不可修改
+```
+feat-enterprise-org (模块)
+├── feat-company ──→ feat-factory ──→ feat-department ──→ feat-department-user
+├── feat-shift-schedule (可并行)
+└── feat-enterprise-common (收尾)
 ```
 
-#### 场景 2: 跨天班次
-```gherkin
-Given 一个班制已创建
-When 添加班次（22:00-06:00）
-Then 班次正确识别为跨天
-And 计算工时为 8 小时
+## 整体数据模型关系
+
+```
+Company (公司)
+  └── Factory (工厂)
+        └── Department (部门)
+              └── DepartmentUser (部门用户关系)
+
+ShiftSchedule (班制)
+  └── Shift (班次)
 ```
 
-#### 场景 3: 工作中心与工序
-```gherkin
-Given 工厂已存在
-When 创建工作中心并关联工序
-Then 工厂→工作中心→工序层级关系正确
-And 工序编码唯一
-```
+## 模块进度
+
+| 子 Feature | 状态 | 备注 |
+|-----------|------|------|
+| feat-company | pending | |
+| feat-factory | pending | |
+| feat-department | pending | |
+| feat-department-user | pending | |
+| feat-shift-schedule | pending | |
+| feat-enterprise-common | pending | |

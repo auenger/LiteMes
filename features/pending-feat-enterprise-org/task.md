@@ -1,28 +1,20 @@
-# Tasks: feat-enterprise-org
+# Tasks: feat-enterprise-org 企业管理模块
 
-## 任务分解
+> 本 feature 为模块级 feature，不直接开发，通过子 feature 推进。
+> 此文件用于追踪模块整体进度。
 
-### 1. 组织架构 (Company / Factory / Department)
-- [ ] 领域实体与值对象定义
-- [ ] 仓储接口与实现
-- [ ] Application Service（CRUD + DTO 映射）
-- [ ] Controller 与 API 端点
-- [ ] 前端页面（树形结构管理）
+## 子 Feature 进度
 
-### 2. 生产班制 (ShiftSchedule / Shift)
-- [ ] 班制与班次实体定义
-- [ ] 跨天班次逻辑处理
-- [ ] CRUD API 与前端页面
+- [ ] [feat-company](../pending-feat-company/task.md) — 公司管理
+- [ ] [feat-factory](../pending-feat-factory/task.md) — 工厂管理
+- [ ] [feat-department](../pending-feat-department/task.md) — 部门管理
+- [ ] [feat-department-user](../pending-feat-department-user/task.md) — 部门用户关系
+- [ ] [feat-shift-schedule](../pending-feat-shift-schedule/task.md) — 班制班次管理
+- [ ] [feat-enterprise-common](../pending-feat-enterprise-common/task.md) — 通用功能
 
-### 3. 工作中心与工序 (WorkCenter / ProcessStep)
-- [ ] 工作中心实体与层级关系
-- [ ] 工序实体与编码唯一性约束
-- [ ] CRUD API 与前端页面
+## 完成条件
 
-### 4. 通用功能
-- [ ] Excel 导入导出
-- [ ] 审计日志记录
-- [ ] 引用完整性校验（被引用数据不可删除）
+所有子 feature 完成后，本模块 feature 标记为完成。
 
 ---
 
@@ -30,4 +22,4 @@
 
 | 日期 | 进度 | 备注 |
 |------|------|------|
-|      |      |      |
+| 2026-04-20 | 模块拆分完成 | 拆分为 6 个子 feature |
