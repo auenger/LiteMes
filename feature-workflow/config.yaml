@@ -1,0 +1,9 @@
+workflow:
+  auto_start: false
+  max_concurrent: 1
+
+prefix: "feat"
+
+meta:
+  last_updated: "2026-04-20"
+  total_features: 6

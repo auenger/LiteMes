@@ -1,0 +1,45 @@
+pending:
+  - id: feat-project-scaffold
+    name: "项目工程骨架"
+    priority: 100
+    size: M
+
+  - id: feat-enterprise-org
+    name: "企业架构与组织管理"
+    priority: 90
+    size: L
+    dependencies:
+      - feat-project-scaffold
+
+  - id: feat-material-master
+    name: "物料主数据"
+    priority: 80
+    size: L
+    dependencies:
+      - feat-enterprise-org
+
+  - id: feat-equipment-master
+    name: "设备主数据"
+    priority: 70
+    size: M
+    dependencies:
+      - feat-enterprise-org
+
+  - id: feat-supply-chain
+    name: "供应链主数据"
+    priority: 60
+    size: M
+    dependencies:
+      - feat-material-master
+
+  - id: feat-data-permission
+    name: "数据权限控制"
+    priority: 50
+    size: M
+    dependencies:
+      - feat-enterprise-org
+
+active: []
+
+meta:
+  last_updated: "2026-04-20"
