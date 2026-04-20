@@ -1,0 +1,6 @@
+{
+  "name": "LiteMes 核心平台",
+  "description": "LiteMes 工业制造执行系统核心平台，提供主数据管理、工厂建模及客户管理等功能，采用工业级 UI 设计语言。",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}
