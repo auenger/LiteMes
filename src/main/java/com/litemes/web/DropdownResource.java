@@ -87,4 +87,11 @@ public class DropdownResource {
     public R<List<DropdownItem>> materialDropdown() {
         return R.ok(dropdownService.getMaterialDropdown());
     }
+
+    @GET
+    @Path("/customers")
+    @Operation(summary = "获取客户下拉列表", description = "返回所有启用状态的客户列表")
+    public R<List<DropdownItem>> customerDropdown() {
+        return R.ok(dropdownService.getCustomerDropdown());
+    }
 }

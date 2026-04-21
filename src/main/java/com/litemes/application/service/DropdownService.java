@@ -1,6 +1,7 @@
 package com.litemes.application.service;
 
 import com.litemes.domain.entity.Company;
+import com.litemes.domain.entity.Customer;
 import com.litemes.domain.entity.Department;
 import com.litemes.domain.entity.Factory;
 import com.litemes.domain.entity.MaterialCategory;
@@ -10,6 +11,7 @@ import com.litemes.domain.entity.EquipmentModel;
 import com.litemes.domain.entity.MaterialMaster;
 import com.litemes.domain.entity.Uom;
 import com.litemes.domain.repository.CompanyRepository;
+import com.litemes.domain.repository.CustomerRepository;
 import com.litemes.domain.repository.DepartmentRepository;
 import com.litemes.domain.repository.EquipmentModelRepository;
 import com.litemes.domain.repository.EquipmentTypeRepository;
@@ -62,6 +64,9 @@ public class DropdownService {
 
     @Inject
     MaterialMasterRepository materialMasterRepository;
+
+    @Inject
+    CustomerRepository customerRepository;
 
     /**
      * Get all active companies as dropdown items.
@@ -170,6 +175,16 @@ public class DropdownService {
         LOG.debug("Fetching material dropdown");
         return materialMasterRepository.findAllActive().stream()
                 .map(m -> new DropdownItem(m.getId(), m.getMaterialCode(), m.getMaterialName()))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Get all active customers as dropdown items.
+     */
+    public List<DropdownItem> getCustomerDropdown() {
+        LOG.debug("Fetching customer dropdown");
+        return customerRepository.findAllActive().stream()
+                .map(c -> new DropdownItem(c.getId(), c.getCustomerCode(), c.getCustomerName()))
                 .collect(Collectors.toList());
     }
 }

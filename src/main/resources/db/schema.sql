@@ -373,3 +373,44 @@ CREATE TABLE IF NOT EXISTS inspection_exemption (
     INDEX idx_valid_date (validFrom, validTo),
     CONSTRAINT fk_exemption_material FOREIGN KEY (materialId) REFERENCES material_master(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='免检清单';
+
+-- Customer (客户) table
+CREATE TABLE IF NOT EXISTS customer (
+    id              BIGINT       NOT NULL AUTO_INCREMENT,
+    customerCode    VARCHAR(50)  NOT NULL COMMENT '客户编码，创建后不可修改',
+    customerName    VARCHAR(50)  NOT NULL COMMENT '客户名称',
+    status          TINYINT      NOT NULL DEFAULT 1 COMMENT '1=启用, 0=禁用',
+    type            VARCHAR(50)  DEFAULT NULL COMMENT '类型: 外贸客户/内贸客户',
+    shortName       VARCHAR(50)  DEFAULT NULL COMMENT '简称',
+    contactPerson   VARCHAR(50)  DEFAULT NULL COMMENT '联系人',
+    phone           VARCHAR(50)  DEFAULT NULL COMMENT '电话',
+    address         VARCHAR(50)  DEFAULT NULL COMMENT '地址',
+    email           VARCHAR(50)  DEFAULT NULL COMMENT '邮箱',
+    deleted         TINYINT      NOT NULL DEFAULT 0 COMMENT '0=未删除, 1=已删除',
+    createdBy       VARCHAR(64)  NULL,
+    createdAt       DATETIME     NULL,
+    updatedBy       VARCHAR(64)  NULL,
+    updatedAt       DATETIME     NULL,
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_customer_code (customerCode),
+    INDEX idx_status (status),
+    INDEX idx_type (type)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='客户';
+
+-- Customer Material Association (客户物料关联) table
+CREATE TABLE IF NOT EXISTS customer_material (
+    id            BIGINT       NOT NULL AUTO_INCREMENT,
+    customerId    BIGINT       NOT NULL COMMENT '客户ID',
+    materialId    BIGINT       NOT NULL COMMENT '物料ID',
+    deleted       TINYINT      NOT NULL DEFAULT 0 COMMENT '0=未删除, 1=已删除',
+    createdBy     VARCHAR(64)  NULL,
+    createdAt     DATETIME     NULL,
+    updatedBy     VARCHAR(64)  NULL,
+    updatedAt     DATETIME     NULL,
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_customer_material (customerId, materialId),
+    INDEX idx_customer (customerId),
+    INDEX idx_material (materialId),
+    CONSTRAINT fk_cm_customer FOREIGN KEY (customerId) REFERENCES customer(id),
+    CONSTRAINT fk_cm_material FOREIGN KEY (materialId) REFERENCES material_master(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='客户物料关联';
