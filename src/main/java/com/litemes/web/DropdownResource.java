@@ -52,4 +52,11 @@ public class DropdownResource {
     public R<List<DropdownItem>> shiftScheduleDropdown() {
         return R.ok(dropdownService.getShiftScheduleDropdown());
     }
+
+    @GET
+    @Path("/material-categories")
+    @Operation(summary = "获取物料分类下拉列表", description = "返回所有启用状态的物料分类列表，含parentId支持树形选择")
+    public R<List<DropdownItem>> materialCategoryDropdown() {
+        return R.ok(dropdownService.getMaterialCategoryDropdown());
+    }
 }
