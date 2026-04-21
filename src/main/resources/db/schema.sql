@@ -313,3 +313,18 @@ CREATE TABLE IF NOT EXISTS material_version (
     INDEX idx_version_material (materialId),
     CONSTRAINT fk_version_material FOREIGN KEY (materialId) REFERENCES material_master(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='物料版本';
+
+-- Equipment Type table
+CREATE TABLE IF NOT EXISTS equipment_type (
+    id              BIGINT       NOT NULL AUTO_INCREMENT,
+    typeCode        VARCHAR(50)  NOT NULL,
+    typeName        VARCHAR(50)  NOT NULL,
+    status          TINYINT      NOT NULL DEFAULT 1 COMMENT '1=启用,0=禁用',
+    deleted         TINYINT      NOT NULL DEFAULT 0,
+    createdBy       VARCHAR(64)  NULL,
+    createdAt       DATETIME     NULL,
+    updatedBy       VARCHAR(64)  NULL,
+    updatedAt       DATETIME     NULL,
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_type_code (typeCode, deleted)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='设备类型';

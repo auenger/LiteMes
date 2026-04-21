@@ -44,3 +44,7 @@ export function getMaterialCategoryDropdown() {
 export function getUomDropdown() {
   return apiGet<ApiResponse<DropdownItem[]>>('/api/dropdown/uoms');
 }
+
+export function getEquipmentTypeDropdown() {
+  return apiGet<ApiResponse<DropdownItem[]>>('/api/dropdown/equipment-types');
+}

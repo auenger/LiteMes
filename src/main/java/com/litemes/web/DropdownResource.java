@@ -66,4 +66,11 @@ public class DropdownResource {
     public R<List<DropdownItem>> uomDropdown() {
         return R.ok(dropdownService.getUomDropdown());
     }
+
+    @GET
+    @Path("/equipment-types")
+    @Operation(summary = "获取设备类型下拉列表", description = "返回所有启用状态的设备类型列表")
+    public R<List<DropdownItem>> equipmentTypeDropdown() {
+        return R.ok(dropdownService.getEquipmentTypeDropdown());
+    }
 }

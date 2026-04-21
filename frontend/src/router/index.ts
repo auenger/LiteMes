@@ -61,6 +61,11 @@ const routes = [
     name: 'MaterialList',
     component: () => import('../views/material/MaterialList.vue'),
   },
+  {
+    path: '/equipment-types',
+    name: 'EquipmentTypeList',
+    component: () => import('../views/equipment-type/EquipmentTypeList.vue'),
+  },
 ];
 
 const router = createRouter({

@@ -5,9 +5,11 @@ import com.litemes.domain.entity.Department;
 import com.litemes.domain.entity.Factory;
 import com.litemes.domain.entity.MaterialCategory;
 import com.litemes.domain.entity.ShiftSchedule;
+import com.litemes.domain.entity.EquipmentType;
 import com.litemes.domain.entity.Uom;
 import com.litemes.domain.repository.CompanyRepository;
 import com.litemes.domain.repository.DepartmentRepository;
+import com.litemes.domain.repository.EquipmentTypeRepository;
 import com.litemes.domain.repository.FactoryRepository;
 import com.litemes.domain.repository.MaterialCategoryRepository;
 import com.litemes.domain.repository.ShiftScheduleRepository;
@@ -47,6 +49,9 @@ public class DropdownService {
 
     @Inject
     UomRepository uomRepository;
+
+    @Inject
+    EquipmentTypeRepository equipmentTypeRepository;
 
     /**
      * Get all active companies as dropdown items.
@@ -119,6 +124,16 @@ public class DropdownService {
         LOG.debug("Fetching uom dropdown");
         return uomRepository.findAllActive().stream()
                 .map(u -> new DropdownItem(u.getId(), u.getUomCode(), u.getUomName()))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Get all active equipment types as dropdown items.
+     */
+    public List<DropdownItem> getEquipmentTypeDropdown() {
+        LOG.debug("Fetching equipment type dropdown");
+        return equipmentTypeRepository.findAllActive().stream()
+                .map(t -> new DropdownItem(t.getId(), t.getTypeCode(), t.getTypeName()))
                 .collect(Collectors.toList());
     }
 }

@@ -1,0 +1,19 @@
+# Test Profile - uses H2 in-memory database
+"%test":
+  quarkus:
+    datasource:
+      db-kind: h2
+      jdbc:
+        url: jdbc:h2:mem:litemes;DB_CLOSE_DELAY=-1;MODE=MYSQL;INIT=RUNSCRIPT FROM 'classpath:import.sql'
+    log:
+      level: WARN
+    smallrye-jwt:
+      enabled: true
+    mybatis-plus:
+      meta-object-handler: com.litemes.infrastructure.config.AuditMetaObjectHandler
+      global-config:
+        db-config:
+          logic-delete-field: deleted
+          logic-delete-value: 1
+          logic-not-delete-value: 0
+          id-type: auto

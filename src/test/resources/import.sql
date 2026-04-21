@@ -109,7 +109,7 @@ CREATE TABLE IF NOT EXISTS uom_conversion (
     updatedAt       TIMESTAMP     NULL
 );
 
-CREATE TABLE IF NOT EXISTS user (
+CREATE TABLE IF NOT EXISTS `user` (
     id            BIGINT       NOT NULL AUTO_INCREMENT PRIMARY KEY,
     username      VARCHAR(50)  NOT NULL,
     realName      VARCHAR(50)  NOT NULL,
@@ -187,6 +187,18 @@ CREATE TABLE IF NOT EXISTS material_category (
     createdAt           TIMESTAMP    NULL,
     updatedBy           VARCHAR(64)  NULL,
     updatedAt           TIMESTAMP    NULL
+);
+
+CREATE TABLE IF NOT EXISTS equipment_type (
+    id              BIGINT       NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    typeCode        VARCHAR(50)  NOT NULL,
+    typeName        VARCHAR(50)  NOT NULL,
+    status          TINYINT      NOT NULL DEFAULT 1,
+    deleted         TINYINT      NOT NULL DEFAULT 0,
+    createdBy       VARCHAR(64)  NULL,
+    createdAt       TIMESTAMP    NULL,
+    updatedBy       VARCHAR(64)  NULL,
+    updatedAt       TIMESTAMP    NULL
 );
 
 -- Seed data for testing
