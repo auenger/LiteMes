@@ -86,6 +86,14 @@ public class ShiftScheduleRepositoryImpl implements ShiftScheduleRepository {
         return shiftScheduleMapper.selectList(wrapper);
     }
 
+    @Override
+    public List<ShiftSchedule> findAllActive() {
+        LambdaQueryWrapper<ShiftSchedule> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(ShiftSchedule::getStatus, 1)
+               .orderByAsc(ShiftSchedule::getShiftCode);
+        return shiftScheduleMapper.selectList(wrapper);
+    }
+
     private LambdaQueryWrapper<ShiftSchedule> buildQueryWrapper(String shiftCode, String name, Integer status) {
         LambdaQueryWrapper<ShiftSchedule> wrapper = new LambdaQueryWrapper<>();
         if (shiftCode != null && !shiftCode.isEmpty()) {

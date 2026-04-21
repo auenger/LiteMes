@@ -171,3 +171,23 @@ CREATE TABLE IF NOT EXISTS process (
     INDEX idx_process_work_center (workCenterId),
     CONSTRAINT fk_process_wc FOREIGN KEY (workCenterId) REFERENCES work_center(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='工序';
+
+-- Audit Log table
+CREATE TABLE IF NOT EXISTS audit_log (
+    id              BIGINT       NOT NULL AUTO_INCREMENT,
+    tableName       VARCHAR(64)  NOT NULL,
+    recordId        BIGINT       NOT NULL,
+    action          VARCHAR(16)  NOT NULL COMMENT 'CREATE/UPDATE/DELETE',
+    oldValue        TEXT         NULL COMMENT '变更前值(JSON)',
+    newValue        TEXT         NULL COMMENT '变更后值(JSON)',
+    changedFields   VARCHAR(512) NULL COMMENT '变更字段列表',
+    operatorId      BIGINT       NULL,
+    operatorName    VARCHAR(64)  NULL,
+    createdAt       DATETIME     NULL,
+    createdBy       VARCHAR(64)  NULL,
+    updatedBy       VARCHAR(64)  NULL,
+    updatedAt       DATETIME     NULL,
+    PRIMARY KEY (id),
+    INDEX idx_audit_table_record (tableName, recordId),
+    INDEX idx_audit_created (createdAt)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='变更日志';

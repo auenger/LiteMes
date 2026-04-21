@@ -3,6 +3,7 @@ package com.litemes.domain.repository;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.litemes.domain.entity.Company;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -24,4 +25,6 @@ public interface CompanyRepository {
     void deleteById(Long id);
 
     boolean existsByCompanyCode(String companyCode);
+
+    List<Company> findAllActive();
 }

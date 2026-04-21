@@ -2,7 +2,17 @@
   <div class="department-page">
     <div class="page-header">
       <h2>部门管理</h2>
-      <button class="btn btn-primary" @click="openCreateDialog">新建部门</button>
+      <div class="header-actions">
+        <div class="table-settings-wrapper" style="position: relative;">
+          <button class="btn" @click="showTableSettings = !showTableSettings">表格设置</button>
+          <TableSettingsPanel
+            :visible="showTableSettings"
+            :columns="columns"
+            @close="showTableSettings = false"
+          />
+        </div>
+        <button class="btn btn-primary" @click="openCreateDialog">新建部门</button>
+      </div>
     </div>
 
     <!-- Search Bar -->
@@ -87,6 +97,7 @@
               启用
             </button>
             <button class="btn btn-sm btn-danger" @click="confirmDelete(dept)">删除</button>
+            <button class="btn btn-sm btn-audit" @click="openAuditLog(dept)">变更履历</button>
           </td>
         </tr>
       </tbody>
@@ -145,7 +156,7 @@
             <label>上级部门</label>
             <select v-model="form.parentId" class="input">
               <option :value="null">无（顶级部门）</option>
-              <option v-for="d in parentDepartmentOptions" :key="d.id" :value="d.id">{{ d.name }} ({{ d.departmentCode }})</option>
+              <option v-for="d in parentDepartmentOptions" :key="d.id" :value="d.id">{{ d.name }} ({{ d.code }})</option>
             </select>
           </div>
           <div class="form-group">
@@ -188,6 +199,15 @@
         </div>
       </div>
     </div>
+
+    <!-- Audit Log Dialog -->
+    <AuditLogDialog
+      :visible="auditLogVisible"
+      :tableName="auditLogTableName"
+      :recordId="auditLogRecordId"
+      @close="auditLogVisible = false"
+      @update:visible="auditLogVisible = $event"
+    />
   </div>
 </template>
 
@@ -203,7 +223,10 @@ import {
   type DepartmentDto,
   type DepartmentQueryParams,
 } from '../../api/department';
-import { listFactories, type FactoryDto } from '../../api/factory';
+import { getFactoryDropdown, getDepartmentDropdown, type DropdownItem } from '../../api/dropdown';
+import AuditLogDialog from '../../components/AuditLogDialog.vue';
+import TableSettingsPanel from '../../components/TableSettingsPanel.vue';
+import { useTableSettings, type ColumnDef } from '../../components/useTableSettings';
 
 const router = useRouter();
 
@@ -212,7 +235,7 @@ const total = ref(0);
 const loading = ref(false);
 const submitting = ref(false);
 const formError = ref('');
-const factoryOptions = ref<FactoryDto[]>([]);
+const factoryOptions = ref<DropdownItem[]>([]);
 
 const query = reactive<DepartmentQueryParams>({
   departmentCode: '',
@@ -224,6 +247,32 @@ const query = reactive<DepartmentQueryParams>({
 });
 
 const totalPages = computed(() => Math.ceil(total.value / (query.size || 10)));
+
+// Table settings
+const defaultColumns: ColumnDef[] = [
+  { key: 'departmentCode', label: '部门编码' },
+  { key: 'name', label: '部门名称' },
+  { key: 'factoryName', label: '所属工厂' },
+  { key: 'parentName', label: '上级部门' },
+  { key: 'sortOrder', label: '排序号' },
+  { key: 'status', label: '状态' },
+  { key: 'createdBy', label: '创建人' },
+  { key: 'createdAt', label: '创建时间' },
+];
+
+const { columns, toggleColumn, resetSettings } = useTableSettings('department-list', defaultColumns);
+const showTableSettings = ref(false);
+
+// Audit log dialog state
+const auditLogVisible = ref(false);
+const auditLogTableName = ref('department');
+const auditLogRecordId = ref(0);
+
+function openAuditLog(dept: DepartmentDto) {
+  auditLogTableName.value = 'department';
+  auditLogRecordId.value = dept.id;
+  auditLogVisible.value = true;
+}
 
 // Dialog state
 const dialogVisible = ref(false);
@@ -238,7 +287,7 @@ const form = reactive({
 });
 
 // Parent department options for selected factory
-const parentDepartmentOptions = ref<DepartmentDto[]>([]);
+const parentDepartmentOptions = ref<DropdownItem[]>([]);
 
 // Delete dialog state
 const deleteDialogVisible = ref(false);
@@ -246,9 +295,9 @@ const deleteTarget = ref<DepartmentDto | null>(null);
 
 async function fetchFactories() {
   try {
-    const res = await listFactories({ status: 1, size: 1000 });
+    const res = await getFactoryDropdown();
     if (res.code === 200 && res.data) {
-      factoryOptions.value = res.data.records;
+      factoryOptions.value = res.data;
     }
   } catch (e) {
     console.error('Failed to fetch factory options', e);
@@ -261,10 +310,9 @@ async function fetchParentDepartments(factoryId: number | undefined) {
     return;
   }
   try {
-    const res = await listDepartments({ factoryId, status: 1, size: 1000 });
+    const res = await getDepartmentDropdown(factoryId);
     if (res.code === 200 && res.data) {
-      // Filter out the current editing department from parent options
-      parentDepartmentOptions.value = res.data.records.filter(
+      parentDepartmentOptions.value = res.data.filter(
         (d) => !isEdit.value || d.id !== editingId.value
       );
     }
@@ -565,6 +613,22 @@ onMounted(() => {
 .btn-info:hover {
   background: #1890ff;
   color: #fff;
+}
+
+.btn-audit {
+  color: #722ed1;
+  border-color: #722ed1;
+}
+
+.btn-audit:hover {
+  background: #722ed1;
+  color: #fff;
+}
+
+.header-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
 }
 
 .table {

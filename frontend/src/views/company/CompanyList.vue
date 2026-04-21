@@ -2,7 +2,17 @@
   <div class="company-page">
     <div class="page-header">
       <h2>公司管理</h2>
-      <button class="btn btn-primary" @click="openCreateDialog">新建公司</button>
+      <div class="header-actions">
+        <div class="table-settings-wrapper" style="position: relative;">
+          <button class="btn" @click="showTableSettings = !showTableSettings">表格设置</button>
+          <TableSettingsPanel
+            :visible="showTableSettings"
+            :columns="columns"
+            @close="showTableSettings = false"
+          />
+        </div>
+        <button class="btn btn-primary" @click="openCreateDialog">新建公司</button>
+      </div>
     </div>
 
     <!-- Search Bar -->
@@ -34,33 +44,33 @@
     <table class="table">
       <thead>
         <tr>
-          <th>公司编码</th>
-          <th>公司名称</th>
-          <th>简码</th>
-          <th>状态</th>
-          <th>创建人</th>
-          <th>创建时间</th>
+          <th v-if="isColumnVisible('companyCode')">公司编码</th>
+          <th v-if="isColumnVisible('name')">公司名称</th>
+          <th v-if="isColumnVisible('shortCode')">简码</th>
+          <th v-if="isColumnVisible('status')">状态</th>
+          <th v-if="isColumnVisible('createdBy')">创建人</th>
+          <th v-if="isColumnVisible('createdAt')">创建时间</th>
           <th>操作</th>
         </tr>
       </thead>
       <tbody>
         <tr v-if="loading">
-          <td colspan="7" class="text-center">加载中...</td>
+          <td :colspan="visibleColCount + 1" class="text-center">加载中...</td>
         </tr>
         <tr v-else-if="companies.length === 0">
-          <td colspan="7" class="text-center">暂无数据</td>
+          <td :colspan="visibleColCount + 1" class="text-center">暂无数据</td>
         </tr>
         <tr v-for="company in companies" :key="company.id">
-          <td>{{ company.companyCode }}</td>
-          <td>{{ company.name }}</td>
-          <td>{{ company.shortCode || '-' }}</td>
-          <td>
+          <td v-if="isColumnVisible('companyCode')">{{ company.companyCode }}</td>
+          <td v-if="isColumnVisible('name')">{{ company.name }}</td>
+          <td v-if="isColumnVisible('shortCode')">{{ company.shortCode || '-' }}</td>
+          <td v-if="isColumnVisible('status')">
             <span :class="['status-badge', company.status === 1 ? 'status-enabled' : 'status-disabled']">
               {{ company.status === 1 ? '启用' : '禁用' }}
             </span>
           </td>
-          <td>{{ company.createdBy || '-' }}</td>
-          <td>{{ formatDate(company.createdAt) }}</td>
+          <td v-if="isColumnVisible('createdBy')">{{ company.createdBy || '-' }}</td>
+          <td v-if="isColumnVisible('createdAt')">{{ formatDate(company.createdAt) }}</td>
           <td class="actions">
             <button class="btn btn-sm" @click="openEditDialog(company)">编辑</button>
             <button
@@ -78,6 +88,7 @@
               启用
             </button>
             <button class="btn btn-sm btn-danger" @click="confirmDelete(company)">删除</button>
+            <button class="btn btn-sm btn-info" @click="openAuditLog(company)">变更履历</button>
           </td>
         </tr>
       </tbody>
@@ -161,6 +172,15 @@
         </div>
       </div>
     </div>
+
+    <!-- Audit Log Dialog -->
+    <AuditLogDialog
+      :visible="auditLogVisible"
+      :tableName="auditLogTableName"
+      :recordId="auditLogRecordId"
+      @close="auditLogVisible = false"
+      @update:visible="auditLogVisible = $event"
+    />
   </div>
 </template>
 
@@ -175,6 +195,9 @@ import {
   type CompanyDto,
   type CompanyQueryParams,
 } from '../../api/company';
+import AuditLogDialog from '../../components/AuditLogDialog.vue';
+import TableSettingsPanel from '../../components/TableSettingsPanel.vue';
+import { useTableSettings, type ColumnDef } from '../../components/useTableSettings';
 
 const companies = ref<CompanyDto[]>([]);
 const total = ref(0);
@@ -191,6 +214,36 @@ const query = reactive<CompanyQueryParams>({
 });
 
 const totalPages = computed(() => Math.ceil(total.value / (query.size || 10)));
+
+// Table settings
+const defaultColumns: ColumnDef[] = [
+  { key: 'companyCode', label: '公司编码' },
+  { key: 'name', label: '公司名称' },
+  { key: 'shortCode', label: '简码' },
+  { key: 'status', label: '状态' },
+  { key: 'createdBy', label: '创建人' },
+  { key: 'createdAt', label: '创建时间' },
+];
+
+const { columns, toggleColumn, resetSettings } = useTableSettings('company-list', defaultColumns);
+const showTableSettings = ref(false);
+
+function isColumnVisible(key: string): boolean {
+  return columns.value.find(c => c.key === key)?.visible !== false;
+}
+
+const visibleColCount = computed(() => columns.value.filter(c => c.visible).length);
+
+// Audit log dialog state
+const auditLogVisible = ref(false);
+const auditLogTableName = ref('company');
+const auditLogRecordId = ref(0);
+
+function openAuditLog(company: CompanyDto) {
+  auditLogTableName.value = 'company';
+  auditLogRecordId.value = company.id;
+  auditLogVisible.value = true;
+}
 
 // Dialog state
 const dialogVisible = ref(false);
@@ -460,6 +513,22 @@ onMounted(() => {
 .btn-success:hover {
   background: #52c41a;
   color: #fff;
+}
+
+.btn-info {
+  color: #1890ff;
+  border-color: #1890ff;
+}
+
+.btn-info:hover {
+  background: #1890ff;
+  color: #fff;
+}
+
+.header-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
 }
 
 .table {

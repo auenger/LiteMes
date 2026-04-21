@@ -33,4 +33,6 @@ public interface DepartmentRepository {
     long countActiveByFactoryId(Long factoryId);
 
     List<Department> findByFactoryId(Long factoryId);
+
+    List<Department> findAllActive();
 }

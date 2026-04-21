@@ -2,7 +2,17 @@
   <div class="factory-page">
     <div class="page-header">
       <h2>工厂管理</h2>
-      <button class="btn btn-primary" @click="openCreateDialog">新建工厂</button>
+      <div class="header-actions">
+        <div class="table-settings-wrapper" style="position: relative;">
+          <button class="btn" @click="showTableSettings = !showTableSettings">表格设置</button>
+          <TableSettingsPanel
+            :visible="showTableSettings"
+            :columns="columns"
+            @close="showTableSettings = false"
+          />
+        </div>
+        <button class="btn btn-primary" @click="openCreateDialog">新建工厂</button>
+      </div>
     </div>
 
     <!-- Search Bar -->
@@ -24,6 +34,7 @@
       <select v-model="query.companyId" class="input select">
         <option :value="undefined">全部公司</option>
         <option v-for="c in companyOptions" :key="c.id" :value="c.id">{{ c.name }}</option>
+
       </select>
       <select v-model="query.status" class="input select">
         <option :value="undefined">全部状态</option>
@@ -38,35 +49,35 @@
     <table class="table">
       <thead>
         <tr>
-          <th>工厂编码</th>
-          <th>工厂名称</th>
-          <th>简称</th>
-          <th>所属公司</th>
-          <th>状态</th>
-          <th>创建人</th>
-          <th>创建时间</th>
+          <th v-if="isColumnVisible('factoryCode')">工厂编码</th>
+          <th v-if="isColumnVisible('name')">工厂名称</th>
+          <th v-if="isColumnVisible('shortName')">简称</th>
+          <th v-if="isColumnVisible('companyName')">所属公司</th>
+          <th v-if="isColumnVisible('status')">状态</th>
+          <th v-if="isColumnVisible('createdBy')">创建人</th>
+          <th v-if="isColumnVisible('createdAt')">创建时间</th>
           <th>操作</th>
         </tr>
       </thead>
       <tbody>
         <tr v-if="loading">
-          <td colspan="8" class="text-center">加载中...</td>
+          <td :colspan="visibleColCount + 1" class="text-center">加载中...</td>
         </tr>
         <tr v-else-if="factories.length === 0">
-          <td colspan="8" class="text-center">暂无数据</td>
+          <td :colspan="visibleColCount + 1" class="text-center">暂无数据</td>
         </tr>
         <tr v-for="factory in factories" :key="factory.id">
-          <td>{{ factory.factoryCode }}</td>
-          <td>{{ factory.name }}</td>
-          <td>{{ factory.shortName || '-' }}</td>
-          <td>{{ factory.companyName || '-' }}</td>
-          <td>
+          <td v-if="isColumnVisible('factoryCode')">{{ factory.factoryCode }}</td>
+          <td v-if="isColumnVisible('name')">{{ factory.name }}</td>
+          <td v-if="isColumnVisible('shortName')">{{ factory.shortName || '-' }}</td>
+          <td v-if="isColumnVisible('companyName')">{{ factory.companyName || '-' }}</td>
+          <td v-if="isColumnVisible('status')">
             <span :class="['status-badge', factory.status === 1 ? 'status-enabled' : 'status-disabled']">
               {{ factory.status === 1 ? '启用' : '禁用' }}
             </span>
           </td>
-          <td>{{ factory.createdBy || '-' }}</td>
-          <td>{{ formatDate(factory.createdAt) }}</td>
+          <td v-if="isColumnVisible('createdBy')">{{ factory.createdBy || '-' }}</td>
+          <td v-if="isColumnVisible('createdAt')">{{ formatDate(factory.createdAt) }}</td>
           <td class="actions">
             <button class="btn btn-sm" @click="openEditDialog(factory)">编辑</button>
             <button
@@ -84,6 +95,7 @@
               启用
             </button>
             <button class="btn btn-sm btn-danger" @click="confirmDelete(factory)">删除</button>
+            <button class="btn btn-sm btn-info" @click="openAuditLog(factory)">变更履历</button>
           </td>
         </tr>
       </tbody>
@@ -147,6 +159,7 @@
             >
               <option :value="undefined" disabled>请选择所属公司</option>
               <option v-for="c in companyOptions" :key="c.id" :value="c.id">{{ c.name }}</option>
+
             </select>
           </div>
         </div>
@@ -179,6 +192,15 @@
         </div>
       </div>
     </div>
+
+    <!-- Audit Log Dialog -->
+    <AuditLogDialog
+      :visible="auditLogVisible"
+      :tableName="auditLogTableName"
+      :recordId="auditLogRecordId"
+      @close="auditLogVisible = false"
+      @update:visible="auditLogVisible = $event"
+    />
   </div>
 </template>
 
@@ -193,14 +215,17 @@ import {
   type FactoryDto,
   type FactoryQueryParams,
 } from '../../api/factory';
-import { listCompanies, type CompanyDto } from '../../api/company';
+import { getCompanyDropdown, type DropdownItem } from '../../api/dropdown';
+import AuditLogDialog from '../../components/AuditLogDialog.vue';
+import TableSettingsPanel from '../../components/TableSettingsPanel.vue';
+import { useTableSettings, type ColumnDef } from '../../components/useTableSettings';
 
 const factories = ref<FactoryDto[]>([]);
 const total = ref(0);
 const loading = ref(false);
 const submitting = ref(false);
 const formError = ref('');
-const companyOptions = ref<CompanyDto[]>([]);
+const companyOptions = ref<DropdownItem[]>([]);
 
 const query = reactive<FactoryQueryParams>({
   factoryCode: '',
@@ -212,6 +237,37 @@ const query = reactive<FactoryQueryParams>({
 });
 
 const totalPages = computed(() => Math.ceil(total.value / (query.size || 10)));
+
+// Table settings
+const defaultColumns: ColumnDef[] = [
+  { key: 'factoryCode', label: '工厂编码' },
+  { key: 'name', label: '工厂名称' },
+  { key: 'shortName', label: '简称' },
+  { key: 'companyName', label: '所属公司' },
+  { key: 'status', label: '状态' },
+  { key: 'createdBy', label: '创建人' },
+  { key: 'createdAt', label: '创建时间' },
+];
+
+const { columns, toggleColumn, resetSettings } = useTableSettings('factory-list', defaultColumns);
+const showTableSettings = ref(false);
+
+function isColumnVisible(key: string): boolean {
+  return columns.value.find(c => c.key === key)?.visible !== false;
+}
+
+const visibleColCount = computed(() => columns.value.filter(c => c.visible).length);
+
+// Audit log dialog state
+const auditLogVisible = ref(false);
+const auditLogTableName = ref('factory');
+const auditLogRecordId = ref(0);
+
+function openAuditLog(factory: FactoryDto) {
+  auditLogTableName.value = 'factory';
+  auditLogRecordId.value = factory.id;
+  auditLogVisible.value = true;
+}
 
 // Dialog state
 const dialogVisible = ref(false);
@@ -230,9 +286,9 @@ const deleteTarget = ref<FactoryDto | null>(null);
 
 async function fetchCompanies() {
   try {
-    const res = await listCompanies({ status: 1, size: 1000 });
+    const res = await getCompanyDropdown();
     if (res.code === 200 && res.data) {
-      companyOptions.value = res.data.records;
+      companyOptions.value = res.data;
     }
   } catch (e) {
     console.error('Failed to fetch company options', e);
@@ -502,6 +558,22 @@ onMounted(() => {
 .btn-success:hover {
   background: #52c41a;
   color: #fff;
+}
+
+.btn-info {
+  color: #1890ff;
+  border-color: #1890ff;
+}
+
+.btn-info:hover {
+  background: #1890ff;
+  color: #fff;
+}
+
+.header-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
 }
 
 .table {
