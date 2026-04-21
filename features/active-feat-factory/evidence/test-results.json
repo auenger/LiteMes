@@ -1,0 +1,53 @@
+{
+  "feature_id": "feat-factory",
+  "timestamp": "2026-04-22T00:17:00",
+  "compilation": {
+    "java": "PASS",
+    "typescript": "PASS"
+  },
+  "unit_tests": {
+    "framework": "junit5",
+    "total": 7,
+    "passed": 7,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "gherkin_scenarios": {
+    "total": 5,
+    "passed": 4,
+    "partial": 1,
+    "failed": 0,
+    "details": [
+      {
+        "scenario": "创建工厂",
+        "status": "PASS",
+        "notes": "Create DTO validates fields, Service checks uniqueness and company existence"
+      },
+      {
+        "scenario": "工厂必须选择公司",
+        "status": "PASS",
+        "notes": "@NotNull validation on companyId with message"
+      },
+      {
+        "scenario": "编辑工厂",
+        "status": "PASS",
+        "notes": "factoryCode excluded from UpdateDto, immutable"
+      },
+      {
+        "scenario": "删除被引用工厂",
+        "status": "PARTIAL",
+        "notes": "Department entity not yet available, TODO in place"
+      },
+      {
+        "scenario": "工厂查询显示公司信息",
+        "status": "PASS",
+        "notes": "FactoryDto.companyName enriched in toDto()"
+      }
+    ]
+  },
+  "tasks": {
+    "total": 12,
+    "completed": 12
+  }
+}

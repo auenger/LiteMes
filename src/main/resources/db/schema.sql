@@ -64,3 +64,22 @@ CREATE TABLE IF NOT EXISTS company (
     updatedAt     DATETIME     NULL,
     UNIQUE KEY uk_company_code (companyCode, deleted)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='公司';
+
+-- Factory table
+CREATE TABLE IF NOT EXISTS factory (
+    id            BIGINT       NOT NULL AUTO_INCREMENT,
+    factory_code  VARCHAR(50)  NOT NULL,
+    name          VARCHAR(50)  NOT NULL,
+    short_name    VARCHAR(50)  NULL,
+    company_id    BIGINT       NOT NULL,
+    status        TINYINT      NOT NULL DEFAULT 1 COMMENT '1=启用,0=禁用',
+    deleted       TINYINT      NOT NULL DEFAULT 0,
+    created_by    VARCHAR(64)  NULL,
+    created_at    DATETIME     NULL,
+    updated_by    VARCHAR(64)  NULL,
+    updated_at    DATETIME     NULL,
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_factory_code (factory_code, deleted),
+    INDEX idx_factory_company (company_id),
+    CONSTRAINT fk_factory_company FOREIGN KEY (company_id) REFERENCES company(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='工厂';

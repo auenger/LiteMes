@@ -21,6 +21,11 @@ const routes = [
     name: 'CompanyList',
     component: () => import('../views/company/CompanyList.vue'),
   },
+  {
+    path: '/factories',
+    name: 'FactoryList',
+    component: () => import('../views/factory/FactoryList.vue'),
+  },
 ];
 
 const router = createRouter({
