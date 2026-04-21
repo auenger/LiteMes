@@ -191,3 +191,23 @@ CREATE TABLE IF NOT EXISTS audit_log (
     INDEX idx_audit_table_record (tableName, recordId),
     INDEX idx_audit_created (createdAt)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='变更日志';
+
+-- Material Category table
+CREATE TABLE IF NOT EXISTS material_category (
+    id                  BIGINT       NOT NULL AUTO_INCREMENT,
+    categoryCode        VARCHAR(50)  NOT NULL,
+    categoryName        VARCHAR(50)  NOT NULL,
+    isQualityCategory   TINYINT      NOT NULL DEFAULT 0 COMMENT '是否质量分类 0-否, 1-是',
+    parentId            BIGINT       NULL COMMENT '父分类ID，NULL表示顶级分类',
+    status              TINYINT      NOT NULL DEFAULT 1 COMMENT '1=启用,0=禁用',
+    deleted             TINYINT      NOT NULL DEFAULT 0,
+    createdBy           VARCHAR(64)  NULL,
+    createdAt           DATETIME     NULL,
+    updatedBy           VARCHAR(64)  NULL,
+    updatedAt           DATETIME     NULL,
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_category_code (categoryCode, deleted),
+    UNIQUE KEY uk_category_name (categoryName, deleted),
+    INDEX idx_parent (parentId),
+    CONSTRAINT fk_category_parent FOREIGN KEY (parentId) REFERENCES material_category(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='物料分类';

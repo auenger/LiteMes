@@ -3,10 +3,12 @@ package com.litemes.application.service;
 import com.litemes.domain.entity.Company;
 import com.litemes.domain.entity.Department;
 import com.litemes.domain.entity.Factory;
+import com.litemes.domain.entity.MaterialCategory;
 import com.litemes.domain.entity.ShiftSchedule;
 import com.litemes.domain.repository.CompanyRepository;
 import com.litemes.domain.repository.DepartmentRepository;
 import com.litemes.domain.repository.FactoryRepository;
+import com.litemes.domain.repository.MaterialCategoryRepository;
 import com.litemes.domain.repository.ShiftScheduleRepository;
 import com.litemes.web.dto.DropdownItem;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -37,6 +39,9 @@ public class DropdownService {
 
     @Inject
     ShiftScheduleRepository shiftScheduleRepository;
+
+    @Inject
+    MaterialCategoryRepository materialCategoryRepository;
 
     /**
      * Get all active companies as dropdown items.
@@ -88,6 +93,17 @@ public class DropdownService {
         LOG.debug("Fetching shift schedule dropdown");
         return shiftScheduleRepository.findAllActive().stream()
                 .map(s -> new DropdownItem(s.getId(), s.getShiftCode(), s.getName()))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Get all active material categories as dropdown items.
+     * Supports tree structure with parentId for cascading display.
+     */
+    public List<DropdownItem> getMaterialCategoryDropdown() {
+        LOG.debug("Fetching material category dropdown");
+        return materialCategoryRepository.findAllActive().stream()
+                .map(c -> new DropdownItem(c.getId(), c.getCategoryCode(), c.getCategoryName(), c.getParentId()))
                 .collect(Collectors.toList());
     }
 }

@@ -41,6 +41,11 @@ const routes = [
     name: 'WorkCenterList',
     component: () => import('../views/work-center/WorkCenterList.vue'),
   },
+  {
+    path: '/material-categories',
+    name: 'MaterialCategoryList',
+    component: () => import('../views/material-category/MaterialCategoryList.vue'),
+  },
 ];
 
 const router = createRouter({

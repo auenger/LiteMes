@@ -36,3 +36,7 @@ export function getDepartmentDropdown(factoryId?: number) {
 export function getShiftScheduleDropdown() {
   return apiGet<ApiResponse<DropdownItem[]>>('/api/dropdown/shift-schedules');
 }
+
+export function getMaterialCategoryDropdown() {
+  return apiGet<ApiResponse<DropdownItem[]>>('/api/dropdown/material-categories');
+}
