@@ -70,6 +70,7 @@
           <td>{{ dept.createdBy || '-' }}</td>
           <td>{{ formatDate(dept.createdAt) }}</td>
           <td class="actions">
+            <button class="btn btn-sm btn-info" @click="manageUsers(dept)">用户</button>
             <button class="btn btn-sm" @click="openEditDialog(dept)">编辑</button>
             <button
               v-if="dept.status === 1"
@@ -192,6 +193,7 @@
 
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted, watch } from 'vue';
+import { useRouter } from 'vue-router';
 import {
   listDepartments,
   createDepartment,
@@ -202,6 +204,8 @@ import {
   type DepartmentQueryParams,
 } from '../../api/department';
 import { listFactories, type FactoryDto } from '../../api/factory';
+
+const router = useRouter();
 
 const departments = ref<DepartmentDto[]>([]);
 const total = ref(0);
@@ -420,6 +424,10 @@ async function toggleStatus(dept: DepartmentDto) {
   }
 }
 
+function manageUsers(dept: DepartmentDto) {
+  router.push(`/departments/${dept.id}/users`);
+}
+
 function formatDate(dateStr: string | undefined) {
   if (!dateStr) return '-';
   return new Date(dateStr).toLocaleString('zh-CN');
@@ -546,6 +554,16 @@ onMounted(() => {
 
 .btn-success:hover {
   background: #52c41a;
+  color: #fff;
+}
+
+.btn-info {
+  color: #1890ff;
+  border-color: #1890ff;
+}
+
+.btn-info:hover {
+  background: #1890ff;
   color: #fff;
 }
 
