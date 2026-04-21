@@ -115,4 +115,11 @@ public class DropdownResource {
     public R<List<DropdownItem>> processDropdown() {
         return R.ok(dropdownService.getProcessDropdown());
     }
+
+    @GET
+    @Path("/permission-groups")
+    @Operation(summary = "获取数据权限组下拉列表", description = "返回所有未删除的权限组列表")
+    public R<List<DropdownItem>> permissionGroupDropdown() {
+        return R.ok(dropdownService.getPermissionGroupDropdown());
+    }
 }

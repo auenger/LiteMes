@@ -61,3 +61,7 @@ export function getWorkCenterDropdown(factoryId?: number) {
 export function getProcessDropdown() {
   return apiGet<ApiResponse<DropdownItem[]>>('/api/dropdown/processes');
 }
+
+export function getPermissionGroupDropdown() {
+  return apiGet<ApiResponse<DropdownItem[]>>('/api/dropdown/permission-groups');
+}

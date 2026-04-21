@@ -2,6 +2,7 @@ package com.litemes.application.service;
 
 import com.litemes.domain.entity.Company;
 import com.litemes.domain.entity.Customer;
+import com.litemes.domain.entity.DataPermissionGroup;
 import com.litemes.domain.entity.Department;
 import com.litemes.domain.entity.Factory;
 import com.litemes.domain.entity.MaterialCategory;
@@ -15,6 +16,7 @@ import com.litemes.domain.entity.Uom;
 import com.litemes.domain.entity.WorkCenter;
 import com.litemes.domain.repository.CompanyRepository;
 import com.litemes.domain.repository.CustomerRepository;
+import com.litemes.domain.repository.DataPermissionGroupRepository;
 import com.litemes.domain.repository.DepartmentRepository;
 import com.litemes.domain.repository.EquipmentModelRepository;
 import com.litemes.domain.repository.EquipmentTypeRepository;
@@ -82,6 +84,9 @@ public class DropdownService {
 
     @Inject
     ProcessRepository processRepository;
+
+    @Inject
+    DataPermissionGroupRepository dataPermissionGroupRepository;
 
     /**
      * Get all active companies as dropdown items.
@@ -236,6 +241,18 @@ public class DropdownService {
         LOG.debug("Fetching process dropdown");
         return processRepository.findAllActive().stream()
                 .map(p -> new DropdownItem(p.getId(), p.getProcessCode(), p.getName()))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Get all active data permission groups as dropdown items.
+     */
+    public List<DropdownItem> getPermissionGroupDropdown() {
+        LOG.debug("Fetching permission group dropdown");
+        com.baomidou.mybatisplus.core.metadata.IPage<DataPermissionGroup> page =
+                new com.baomidou.mybatisplus.extension.plugins.pagination.Page<>(1, 1000);
+        return dataPermissionGroupRepository.findPage(page, null).getRecords().stream()
+                .map(g -> new DropdownItem(g.getId(), g.getGroupName(), g.getGroupName()))
                 .collect(Collectors.toList());
     }
 }

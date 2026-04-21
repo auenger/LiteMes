@@ -551,3 +551,72 @@ CREATE TABLE IF NOT EXISTS data_permission_group_process (
     CONSTRAINT fk_pgp_group FOREIGN KEY (groupId) REFERENCES data_permission_group(id),
     CONSTRAINT fk_pgp_process FOREIGN KEY (processId) REFERENCES process(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='数据权限组-工序关联';
+
+-- User Data Permission (用户数据权限) table
+CREATE TABLE IF NOT EXISTS user_data_permission (
+    id            BIGINT       NOT NULL AUTO_INCREMENT,
+    userId        BIGINT       NOT NULL,
+    groupId       BIGINT       NULL COMMENT '关联权限组，NULL表示仅直接授权',
+    createdBy     VARCHAR(64)  NULL,
+    createdAt     DATETIME     NULL,
+    updatedBy     VARCHAR(64)  NULL,
+    updatedAt     DATETIME     NULL,
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_user_perm_user (userId),
+    INDEX idx_user_perm_group (groupId),
+    CONSTRAINT fk_udp_group FOREIGN KEY (groupId) REFERENCES data_permission_group(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='用户数据权限';
+
+-- User Data Permission - Factory association table
+CREATE TABLE IF NOT EXISTS user_data_permission_factory (
+    id                   BIGINT       NOT NULL AUTO_INCREMENT,
+    userPermissionId     BIGINT       NOT NULL,
+    factoryId            BIGINT       NOT NULL,
+    source               VARCHAR(10)  NOT NULL COMMENT 'GROUP=权限组继承, DIRECT=直接授权',
+    createdBy            VARCHAR(64)  NULL,
+    createdAt            DATETIME     NULL,
+    updatedBy            VARCHAR(64)  NULL,
+    updatedAt            DATETIME     NULL,
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_up_factory (userPermissionId, factoryId),
+    INDEX idx_upf_factory (factoryId),
+    INDEX idx_upf_source (userPermissionId, source),
+    CONSTRAINT fk_upf_perm FOREIGN KEY (userPermissionId) REFERENCES user_data_permission(id),
+    CONSTRAINT fk_upf_factory FOREIGN KEY (factoryId) REFERENCES factory(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='用户数据权限-工厂';
+
+-- User Data Permission - Work Center association table
+CREATE TABLE IF NOT EXISTS user_data_permission_work_center (
+    id                   BIGINT       NOT NULL AUTO_INCREMENT,
+    userPermissionId     BIGINT       NOT NULL,
+    workCenterId         BIGINT       NOT NULL,
+    source               VARCHAR(10)  NOT NULL COMMENT 'GROUP/DIRECT',
+    createdBy            VARCHAR(64)  NULL,
+    createdAt            DATETIME     NULL,
+    updatedBy            VARCHAR(64)  NULL,
+    updatedAt            DATETIME     NULL,
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_up_work_center (userPermissionId, workCenterId),
+    INDEX idx_upw_wc (workCenterId),
+    INDEX idx_upw_source (userPermissionId, source),
+    CONSTRAINT fk_upw_perm FOREIGN KEY (userPermissionId) REFERENCES user_data_permission(id),
+    CONSTRAINT fk_upw_wc FOREIGN KEY (workCenterId) REFERENCES work_center(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='用户数据权限-工作中心';
+
+-- User Data Permission - Process association table
+CREATE TABLE IF NOT EXISTS user_data_permission_process (
+    id                   BIGINT       NOT NULL AUTO_INCREMENT,
+    userPermissionId     BIGINT       NOT NULL,
+    processId            BIGINT       NOT NULL,
+    source               VARCHAR(10)  NOT NULL COMMENT 'GROUP/DIRECT',
+    createdBy            VARCHAR(64)  NULL,
+    createdAt            DATETIME     NULL,
+    updatedBy            VARCHAR(64)  NULL,
+    updatedAt            DATETIME     NULL,
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_up_process (userPermissionId, processId),
+    INDEX idx_upp_process (processId),
+    INDEX idx_upp_source (userPermissionId, source),
+    CONSTRAINT fk_upp_perm FOREIGN KEY (userPermissionId) REFERENCES user_data_permission(id),
+    CONSTRAINT fk_upp_process FOREIGN KEY (processId) REFERENCES process(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='用户数据权限-工序';
