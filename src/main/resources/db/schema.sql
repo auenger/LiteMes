@@ -252,3 +252,64 @@ CREATE TABLE IF NOT EXISTS material_category (
     INDEX idx_parent (parentId),
     CONSTRAINT fk_category_parent FOREIGN KEY (parentId) REFERENCES material_category(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='物料分类';
+
+-- Material Master table
+CREATE TABLE IF NOT EXISTS material_master (
+    id                  BIGINT        NOT NULL AUTO_INCREMENT,
+    materialCode        VARCHAR(50)   NOT NULL,
+    materialName        VARCHAR(255)  NOT NULL,
+    status              TINYINT       NOT NULL DEFAULT 1 COMMENT '1=启用, 0=禁用',
+    basicCategory       VARCHAR(50)   NOT NULL COMMENT '基本分类: 成品/半成品/原材料/备件',
+    categoryId          BIGINT        NOT NULL COMMENT '物料分类ID',
+    attributeCategory   VARCHAR(50)   NOT NULL COMMENT '属性分类: 采购件/自制件/采购&自制件',
+    uomId               BIGINT        NOT NULL COMMENT '单位ID',
+    size                DECIMAL(18,4) DEFAULT NULL,
+    length              DECIMAL(18,4) DEFAULT NULL,
+    width               DECIMAL(18,4) DEFAULT NULL,
+    model               VARCHAR(50)   DEFAULT NULL,
+    specification       VARCHAR(50)   DEFAULT NULL,
+    thickness           DECIMAL(18,4) DEFAULT NULL,
+    color               VARCHAR(50)   DEFAULT NULL,
+    tgValue             VARCHAR(50)   DEFAULT NULL,
+    copperThickness     VARCHAR(50)   DEFAULT NULL,
+    isCopperContained   TINYINT       DEFAULT NULL COMMENT '是否含铜 0=否, 1=是',
+    diameter            DECIMAL(18,4) DEFAULT NULL,
+    bladeLength         DECIMAL(18,4) DEFAULT NULL,
+    totalLength         DECIMAL(18,4) DEFAULT NULL,
+    ext1                VARCHAR(50)   DEFAULT NULL COMMENT '扩展字段1',
+    ext2                VARCHAR(50)   DEFAULT NULL COMMENT '扩展字段2',
+    ext3                VARCHAR(50)   DEFAULT NULL COMMENT '扩展字段3',
+    ext4                VARCHAR(50)   DEFAULT NULL COMMENT '扩展字段4',
+    ext5                VARCHAR(50)   DEFAULT NULL COMMENT '扩展字段5',
+    deleted             TINYINT       NOT NULL DEFAULT 0 COMMENT '0=未删除, 1=已删除',
+    createdBy           VARCHAR(64)   NULL,
+    createdAt           DATETIME      NULL,
+    updatedBy           VARCHAR(64)   NULL,
+    updatedAt           DATETIME      NULL,
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_material_code (materialCode, deleted),
+    UNIQUE KEY uk_material_name (materialName, deleted),
+    INDEX idx_material_category (categoryId),
+    INDEX idx_material_uom (uomId),
+    INDEX idx_basic_category (basicCategory),
+    INDEX idx_material_status (status),
+    CONSTRAINT fk_material_category FOREIGN KEY (categoryId) REFERENCES material_category(id),
+    CONSTRAINT fk_material_uom FOREIGN KEY (uomId) REFERENCES uom(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='物料信息';
+
+-- Material Version table
+CREATE TABLE IF NOT EXISTS material_version (
+    id              BIGINT       NOT NULL AUTO_INCREMENT,
+    materialId      BIGINT       NOT NULL COMMENT '物料ID',
+    versionNo       VARCHAR(20)  NOT NULL COMMENT '版本号, 如 A.1, A.2',
+    status          TINYINT      NOT NULL DEFAULT 1 COMMENT '1=启用, 0=禁用',
+    deleted         TINYINT      NOT NULL DEFAULT 0 COMMENT '0=未删除, 1=已删除',
+    createdBy       VARCHAR(64)  NULL,
+    createdAt       DATETIME     NULL,
+    updatedBy       VARCHAR(64)  NULL,
+    updatedAt       DATETIME     NULL,
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_material_version (materialId, versionNo, deleted),
+    INDEX idx_version_material (materialId),
+    CONSTRAINT fk_version_material FOREIGN KEY (materialId) REFERENCES material_master(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='物料版本';
