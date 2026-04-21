@@ -11,6 +11,11 @@ const routes = [
     name: 'About',
     component: () => import('../views/About.vue'),
   },
+  {
+    path: '/shift-schedule',
+    name: 'ShiftSchedule',
+    component: () => import('../views/shift-schedule/ShiftScheduleList.vue'),
+  },
 ];
 
 const router = createRouter({
