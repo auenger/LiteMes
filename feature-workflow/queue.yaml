@@ -1,9 +1,4 @@
 pending:
-  - id: feat-project-scaffold
-    name: "项目工程骨架"
-    priority: 100
-    size: M
-
   - id: feat-enterprise-org
     name: "企业管理模块"
     priority: 90
@@ -19,14 +14,6 @@ pending:
       - feat-work-center
       - feat-process
       - feat-enterprise-common
-
-  - id: feat-company
-    name: "公司管理"
-    priority: 95
-    size: M
-    parent: feat-enterprise-org
-    dependencies:
-      - feat-project-scaffold
 
   - id: feat-factory
     name: "工厂管理"
@@ -228,10 +215,22 @@ pending:
       - feat-work-center
       - feat-process
 
-active: []
+active:
+  - id: feat-company
+    name: "公司管理"
+    priority: 95
+    size: M
+    parent: feat-enterprise-org
+    dependencies:
+      - feat-project-scaffold
+    branch: feature/feat-company
+    worktree: ../LiteMes-feat-company
+    started: "2026-04-21"
 
 meta:
   last_updated: "2026-04-21"
+  completion_history:
+    feat-project-scaffold: "2026-04-21 completed, tag: feat-project-scaffold-20260421"
   split_history:
     feat-supply-chain: "2026-04-21 split into feat-customer, feat-supplier"
     feat-data-permission: "2026-04-21 split into feat-permission-group, feat-user-permission"
