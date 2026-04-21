@@ -59,4 +59,11 @@ public class DropdownResource {
     public R<List<DropdownItem>> materialCategoryDropdown() {
         return R.ok(dropdownService.getMaterialCategoryDropdown());
     }
+
+    @GET
+    @Path("/uoms")
+    @Operation(summary = "获取计量单位下拉列表", description = "返回所有启用状态的计量单位列表")
+    public R<List<DropdownItem>> uomDropdown() {
+        return R.ok(dropdownService.getUomDropdown());
+    }
 }

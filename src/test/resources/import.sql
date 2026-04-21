@@ -79,6 +79,36 @@ CREATE TABLE IF NOT EXISTS department (
     updatedAt       TIMESTAMP    NULL
 );
 
+CREATE TABLE IF NOT EXISTS uom (
+    id              BIGINT       NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    uomCode         VARCHAR(50)  NOT NULL,
+    uomName         VARCHAR(50)  NOT NULL,
+    status          TINYINT      NOT NULL DEFAULT 1,
+    uomPrecision    DECIMAL(10,4) DEFAULT NULL,
+    deleted         TINYINT      NOT NULL DEFAULT 0,
+    createdBy       VARCHAR(64)  NULL,
+    createdAt       TIMESTAMP    NULL,
+    updatedBy       VARCHAR(64)  NULL,
+    updatedAt       TIMESTAMP    NULL
+);
+
+CREATE TABLE IF NOT EXISTS uom_conversion (
+    id              BIGINT        NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    fromUomId       BIGINT        NOT NULL,
+    fromUomCode     VARCHAR(50)   NOT NULL,
+    fromUomName     VARCHAR(50)   NOT NULL,
+    toUomId         BIGINT        NOT NULL,
+    toUomCode       VARCHAR(50)   NOT NULL,
+    toUomName       VARCHAR(50)   NOT NULL,
+    conversionRate  DECIMAL(18,6) NOT NULL,
+    status          TINYINT       NOT NULL DEFAULT 1,
+    deleted         TINYINT       NOT NULL DEFAULT 0,
+    createdBy       VARCHAR(64)   NULL,
+    createdAt       TIMESTAMP     NULL,
+    updatedBy       VARCHAR(64)   NULL,
+    updatedAt       TIMESTAMP     NULL
+);
+
 CREATE TABLE IF NOT EXISTS user (
     id            BIGINT       NOT NULL AUTO_INCREMENT PRIMARY KEY,
     username      VARCHAR(50)  NOT NULL,

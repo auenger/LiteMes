@@ -40,3 +40,7 @@ export function getShiftScheduleDropdown() {
 export function getMaterialCategoryDropdown() {
   return apiGet<ApiResponse<DropdownItem[]>>('/api/dropdown/material-categories');
 }
+
+export function getUomDropdown() {
+  return apiGet<ApiResponse<DropdownItem[]>>('/api/dropdown/uoms');
+}

@@ -172,6 +172,47 @@ CREATE TABLE IF NOT EXISTS process (
     CONSTRAINT fk_process_wc FOREIGN KEY (workCenterId) REFERENCES work_center(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='工序';
 
+-- Uom (计量单位) table
+CREATE TABLE IF NOT EXISTS uom (
+    id              BIGINT       NOT NULL AUTO_INCREMENT,
+    uomCode         VARCHAR(50)  NOT NULL,
+    uomName         VARCHAR(50)  NOT NULL,
+    status          TINYINT      NOT NULL DEFAULT 1 COMMENT '1=启用,0=禁用',
+    uomPrecision    DECIMAL(10,4) DEFAULT NULL COMMENT '计算精度',
+    deleted         TINYINT      NOT NULL DEFAULT 0,
+    createdBy       VARCHAR(64)  NULL,
+    createdAt       DATETIME     NULL,
+    updatedBy       VARCHAR(64)  NULL,
+    updatedAt       DATETIME     NULL,
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_uom_code (uomCode, deleted),
+    UNIQUE KEY uk_uom_name (uomName, deleted)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='计量单位';
+
+-- UomConversion (单位换算比例) table
+CREATE TABLE IF NOT EXISTS uom_conversion (
+    id              BIGINT        NOT NULL AUTO_INCREMENT,
+    fromUomId       BIGINT        NOT NULL COMMENT '原单位ID',
+    fromUomCode     VARCHAR(50)   NOT NULL COMMENT '原单位编码(冗余)',
+    fromUomName     VARCHAR(50)   NOT NULL COMMENT '原单位名称(冗余)',
+    toUomId         BIGINT        NOT NULL COMMENT '目标单位ID',
+    toUomCode       VARCHAR(50)   NOT NULL COMMENT '目标单位编码(冗余)',
+    toUomName       VARCHAR(50)   NOT NULL COMMENT '目标单位名称(冗余)',
+    conversionRate  DECIMAL(18,6) NOT NULL COMMENT '换算率',
+    status          TINYINT       NOT NULL DEFAULT 1 COMMENT '1=启用,0=禁用',
+    deleted         TINYINT       NOT NULL DEFAULT 0,
+    createdBy       VARCHAR(64)   NULL,
+    createdAt       DATETIME      NULL,
+    updatedBy       VARCHAR(64)   NULL,
+    updatedAt       DATETIME      NULL,
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_from_to (fromUomId, toUomId, deleted),
+    INDEX idx_uom_conv_from (fromUomId),
+    INDEX idx_uom_conv_to (toUomId),
+    CONSTRAINT fk_uom_conv_from FOREIGN KEY (fromUomId) REFERENCES uom(id),
+    CONSTRAINT fk_uom_conv_to FOREIGN KEY (toUomId) REFERENCES uom(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='单位换算比例';
+
 -- Audit Log table
 CREATE TABLE IF NOT EXISTS audit_log (
     id              BIGINT       NOT NULL AUTO_INCREMENT,

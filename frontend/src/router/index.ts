@@ -46,6 +46,16 @@ const routes = [
     name: 'MaterialCategoryList',
     component: () => import('../views/material-category/MaterialCategoryList.vue'),
   },
+  {
+    path: '/uoms',
+    name: 'UomList',
+    component: () => import('../views/uom/UomList.vue'),
+  },
+  {
+    path: '/uom-conversions',
+    name: 'UomConversionList',
+    component: () => import('../views/uom/UomConversionList.vue'),
+  },
 ];
 
 const router = createRouter({

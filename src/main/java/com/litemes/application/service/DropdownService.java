@@ -5,11 +5,13 @@ import com.litemes.domain.entity.Department;
 import com.litemes.domain.entity.Factory;
 import com.litemes.domain.entity.MaterialCategory;
 import com.litemes.domain.entity.ShiftSchedule;
+import com.litemes.domain.entity.Uom;
 import com.litemes.domain.repository.CompanyRepository;
 import com.litemes.domain.repository.DepartmentRepository;
 import com.litemes.domain.repository.FactoryRepository;
 import com.litemes.domain.repository.MaterialCategoryRepository;
 import com.litemes.domain.repository.ShiftScheduleRepository;
+import com.litemes.domain.repository.UomRepository;
 import com.litemes.web.dto.DropdownItem;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -42,6 +44,9 @@ public class DropdownService {
 
     @Inject
     MaterialCategoryRepository materialCategoryRepository;
+
+    @Inject
+    UomRepository uomRepository;
 
     /**
      * Get all active companies as dropdown items.
@@ -104,6 +109,16 @@ public class DropdownService {
         LOG.debug("Fetching material category dropdown");
         return materialCategoryRepository.findAllActive().stream()
                 .map(c -> new DropdownItem(c.getId(), c.getCategoryCode(), c.getCategoryName(), c.getParentId()))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Get all active units of measure as dropdown items.
+     */
+    public List<DropdownItem> getUomDropdown() {
+        LOG.debug("Fetching uom dropdown");
+        return uomRepository.findAllActive().stream()
+                .map(u -> new DropdownItem(u.getId(), u.getUomCode(), u.getUomName()))
                 .collect(Collectors.toList());
     }
 }
