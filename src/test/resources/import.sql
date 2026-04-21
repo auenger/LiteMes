@@ -280,3 +280,29 @@ CREATE TABLE IF NOT EXISTS inspection_exemption (
     updatedBy       VARCHAR(64)  NULL,
     updatedAt       TIMESTAMP    NULL
 );
+
+-- Equipment Ledger table (H2 test version)
+CREATE TABLE IF NOT EXISTS equipment_ledger (
+    id                    BIGINT        NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    equipmentCode         VARCHAR(50)   NOT NULL,
+    equipmentName         VARCHAR(50)   NOT NULL,
+    equipmentModelId      BIGINT        NOT NULL,
+    modelCode             VARCHAR(50)   NOT NULL,
+    modelName             VARCHAR(50)   NOT NULL,
+    equipmentTypeId       BIGINT        NOT NULL,
+    typeCode              VARCHAR(50)   NOT NULL,
+    typeName              VARCHAR(50)   NOT NULL,
+    runningStatus         VARCHAR(20)   NOT NULL DEFAULT 'SHUTDOWN',
+    manageStatus          VARCHAR(20)   NOT NULL DEFAULT 'IN_USE',
+    factoryId             BIGINT        NOT NULL,
+    factoryCode           VARCHAR(50)   NOT NULL,
+    factoryName           VARCHAR(50)   NOT NULL,
+    manufacturer          VARCHAR(100)  DEFAULT NULL,
+    commissioningDate     DATE          NOT NULL,
+    status                TINYINT       NOT NULL DEFAULT 1,
+    deleted               TINYINT       NOT NULL DEFAULT 0,
+    createdBy             VARCHAR(64)   DEFAULT NULL,
+    createdAt             TIMESTAMP     DEFAULT NULL,
+    updatedBy             VARCHAR(64)   DEFAULT NULL,
+    updatedAt             TIMESTAMP     DEFAULT NULL
+);
