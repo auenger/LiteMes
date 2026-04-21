@@ -373,3 +373,38 @@ CREATE TABLE IF NOT EXISTS inspection_exemption (
     INDEX idx_valid_date (validFrom, validTo),
     CONSTRAINT fk_exemption_material FOREIGN KEY (materialId) REFERENCES material_master(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='免检清单';
+
+-- Equipment Ledger table
+CREATE TABLE IF NOT EXISTS equipment_ledger (
+    id                    BIGINT        NOT NULL AUTO_INCREMENT,
+    equipmentCode         VARCHAR(50)   NOT NULL,
+    equipmentName         VARCHAR(50)   NOT NULL,
+    equipmentModelId      BIGINT        NOT NULL COMMENT '设备型号ID',
+    modelCode             VARCHAR(50)   NOT NULL COMMENT '设备型号编码(冗余)',
+    modelName             VARCHAR(50)   NOT NULL COMMENT '设备型号名称(冗余)',
+    equipmentTypeId       BIGINT        NOT NULL COMMENT '设备类型ID(冗余,随型号带出)',
+    typeCode              VARCHAR(50)   NOT NULL COMMENT '设备类型编码(冗余)',
+    typeName              VARCHAR(50)   NOT NULL COMMENT '设备类型名称(冗余)',
+    runningStatus         VARCHAR(20)   NOT NULL DEFAULT 'SHUTDOWN' COMMENT '运行状态: RUNNING/FAULT/SHUTDOWN/MAINTENANCE',
+    manageStatus          VARCHAR(20)   NOT NULL DEFAULT 'IN_USE' COMMENT '管理状态: IN_USE/IDLE/SCRAPPED',
+    factoryId             BIGINT        NOT NULL COMMENT '工厂ID',
+    factoryCode           VARCHAR(50)   NOT NULL COMMENT '工厂编码(冗余)',
+    factoryName           VARCHAR(50)   NOT NULL COMMENT '工厂名称(冗余)',
+    manufacturer          VARCHAR(100)  DEFAULT NULL COMMENT '生产厂家',
+    commissioningDate     DATE          NOT NULL COMMENT '入场时间',
+    status                TINYINT       NOT NULL DEFAULT 1 COMMENT '1-启用, 0-禁用',
+    deleted               TINYINT       NOT NULL DEFAULT 0 COMMENT '0-未删除, 1-已删除',
+    createdBy             VARCHAR(64)   DEFAULT NULL,
+    createdAt             DATETIME      DEFAULT NULL,
+    updatedBy             VARCHAR(64)   DEFAULT NULL,
+    updatedAt             DATETIME      DEFAULT NULL,
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_equipment_code (equipmentCode, deleted),
+    INDEX idx_equipment_model (equipmentModelId),
+    INDEX idx_equipment_type (equipmentTypeId),
+    INDEX idx_factory (factoryId),
+    INDEX idx_running_status (runningStatus),
+    INDEX idx_manage_status (manageStatus),
+    CONSTRAINT fk_ledger_model FOREIGN KEY (equipmentModelId) REFERENCES equipment_model(id),
+    CONSTRAINT fk_ledger_factory FOREIGN KEY (factoryId) REFERENCES factory(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='设备台账';

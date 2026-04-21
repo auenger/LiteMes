@@ -76,6 +76,11 @@ const routes = [
     name: 'InspectionExemptionList',
     component: () => import('../views/inspection-exemption/InspectionExemptionList.vue'),
   },
+  {
+    path: '/equipment-ledger',
+    name: 'EquipmentLedgerList',
+    component: () => import('../views/equipment-ledger/EquipmentLedgerList.vue'),
+  },
 ];
 
 const router = createRouter({

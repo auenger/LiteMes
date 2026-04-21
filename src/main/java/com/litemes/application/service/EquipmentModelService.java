@@ -35,6 +35,9 @@ public class EquipmentModelService {
     @Inject
     EquipmentTypeRepository equipmentTypeRepository;
 
+    @Inject
+    com.litemes.domain.repository.EquipmentLedgerRepository equipmentLedgerRepository;
+
     @Transactional
     public Long create(EquipmentModelCreateDto dto) {
         LOG.debugf("Creating equipment model: %s", dto.getModelCode());
@@ -111,11 +114,10 @@ public class EquipmentModelService {
         LOG.debugf("Deleting equipment model: %d", id);
         EquipmentModel entity = findOrThrow(id);
 
-        // Reference check: equipment_model may be referenced by equipment_ledger (future feature)
-        // When feat-equipment-ledger is implemented, add reference check here:
-        // if (equipmentLedgerRepository.existsByEquipmentModelId(id)) {
-        //     throw new BusinessException("EQUIPMENT_MODEL_REFERENCED", "该设备型号已被设备台账引用，不可删除");
-        // }
+        // Reference check: equipment_model may be referenced by equipment_ledger
+        if (equipmentLedgerRepository.existsByEquipmentModelId(id)) {
+            throw new BusinessException("EQUIPMENT_MODEL_REFERENCED", "该设备型号已被设备台账引用，不可删除");
+        }
 
         equipmentModelRepository.deleteById(id);
         LOG.infof("Deleted equipment model: %d", id);
