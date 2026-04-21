@@ -30,6 +30,9 @@ public class EquipmentTypeService {
     @Inject
     EquipmentTypeRepository equipmentTypeRepository;
 
+    @Inject
+    com.litemes.domain.repository.EquipmentModelRepository equipmentModelRepository;
+
     @Transactional
     public Long create(EquipmentTypeCreateDto dto) {
         LOG.debugf("Creating equipment type: %s", dto.getTypeCode());
@@ -88,12 +91,9 @@ public class EquipmentTypeService {
         EquipmentType entity = findOrThrow(id);
 
         // Reference check: equipment_model table references equipment_type_id
-        // Note: equipment_model table does not exist yet (feat-equipment-model not implemented),
-        // so for now we just perform the soft delete.
-        // When feat-equipment-model is implemented, add reference check here:
-        // if (equipmentModelRepository.existsByEquipmentTypeId(id)) {
-        //     throw new BusinessException("EQUIPMENT_TYPE_REFERENCED", "该设备类型已被设备型号引用，不可删除");
-        // }
+        if (equipmentModelRepository.existsByEquipmentTypeId(id)) {
+            throw new BusinessException("EQUIPMENT_TYPE_REFERENCED", "该设备类型已被设备型号引用，不可删除");
+        }
 
         equipmentTypeRepository.deleteById(id);
         LOG.infof("Deleted equipment type: %d", id);

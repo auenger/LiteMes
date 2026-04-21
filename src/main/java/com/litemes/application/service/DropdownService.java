@@ -6,9 +6,11 @@ import com.litemes.domain.entity.Factory;
 import com.litemes.domain.entity.MaterialCategory;
 import com.litemes.domain.entity.ShiftSchedule;
 import com.litemes.domain.entity.EquipmentType;
+import com.litemes.domain.entity.EquipmentModel;
 import com.litemes.domain.entity.Uom;
 import com.litemes.domain.repository.CompanyRepository;
 import com.litemes.domain.repository.DepartmentRepository;
+import com.litemes.domain.repository.EquipmentModelRepository;
 import com.litemes.domain.repository.EquipmentTypeRepository;
 import com.litemes.domain.repository.FactoryRepository;
 import com.litemes.domain.repository.MaterialCategoryRepository;
@@ -52,6 +54,9 @@ public class DropdownService {
 
     @Inject
     EquipmentTypeRepository equipmentTypeRepository;
+
+    @Inject
+    EquipmentModelRepository equipmentModelRepository;
 
     /**
      * Get all active companies as dropdown items.
@@ -134,6 +139,22 @@ public class DropdownService {
         LOG.debug("Fetching equipment type dropdown");
         return equipmentTypeRepository.findAllActive().stream()
                 .map(t -> new DropdownItem(t.getId(), t.getTypeCode(), t.getTypeName()))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Get active equipment models as dropdown items.
+     * If equipmentTypeId is provided, only return models belonging to that type.
+     */
+    public List<DropdownItem> getEquipmentModelDropdown(Long equipmentTypeId) {
+        LOG.debugf("Fetching equipment model dropdown, equipmentTypeId=%s", equipmentTypeId);
+        if (equipmentTypeId != null) {
+            return equipmentModelRepository.findByEquipmentTypeId(equipmentTypeId).stream()
+                    .map(m -> new DropdownItem(m.getId(), m.getModelCode(), m.getModelName()))
+                    .collect(Collectors.toList());
+        }
+        return equipmentModelRepository.findAllActive().stream()
+                .map(m -> new DropdownItem(m.getId(), m.getModelCode(), m.getModelName()))
                 .collect(Collectors.toList());
     }
 }
