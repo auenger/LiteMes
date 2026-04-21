@@ -449,3 +449,43 @@ CREATE TABLE IF NOT EXISTS equipment_ledger (
     CONSTRAINT fk_ledger_model FOREIGN KEY (equipmentModelId) REFERENCES equipment_model(id),
     CONSTRAINT fk_ledger_factory FOREIGN KEY (factoryId) REFERENCES factory(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='设备台账';
+
+-- Supplier (供应商) table
+CREATE TABLE IF NOT EXISTS supplier (
+    id              BIGINT       NOT NULL AUTO_INCREMENT,
+    supplierCode    VARCHAR(50)  NOT NULL COMMENT '供应商编码，创建后不可修改',
+    supplierName    VARCHAR(255) NOT NULL COMMENT '供应商名称',
+    status          TINYINT      NOT NULL DEFAULT 1 COMMENT '1=启用, 0=禁用',
+    shortName       VARCHAR(50)  DEFAULT NULL COMMENT '简称',
+    contactPerson   VARCHAR(50)  DEFAULT NULL COMMENT '联系人',
+    phone           VARCHAR(50)  DEFAULT NULL COMMENT '电话',
+    address         VARCHAR(50)  DEFAULT NULL COMMENT '地址',
+    email           VARCHAR(50)  DEFAULT NULL COMMENT '邮箱',
+    description     VARCHAR(50)  DEFAULT NULL COMMENT '描述',
+    deleted         TINYINT      NOT NULL DEFAULT 0 COMMENT '0=未删除, 1=已删除',
+    createdBy       VARCHAR(64)  NULL,
+    createdAt       DATETIME     NULL,
+    updatedBy       VARCHAR(64)  NULL,
+    updatedAt       DATETIME     NULL,
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_supplier_code (supplierCode),
+    INDEX idx_status (status)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='供应商';
+
+-- Supplier Material Association (供应商物料关联) table
+CREATE TABLE IF NOT EXISTS supplier_material (
+    id            BIGINT       NOT NULL AUTO_INCREMENT,
+    supplierId    BIGINT       NOT NULL COMMENT '供应商ID',
+    materialId    BIGINT       NOT NULL COMMENT '物料ID',
+    deleted       TINYINT      NOT NULL DEFAULT 0 COMMENT '0=未删除, 1=已删除',
+    createdBy     VARCHAR(64)  NULL,
+    createdAt     DATETIME     NULL,
+    updatedBy     VARCHAR(64)  NULL,
+    updatedAt     DATETIME     NULL,
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_supplier_material (supplierId, materialId),
+    INDEX idx_supplier (supplierId),
+    INDEX idx_material (materialId),
+    CONSTRAINT fk_sm_supplier FOREIGN KEY (supplierId) REFERENCES supplier(id),
+    CONSTRAINT fk_sm_material FOREIGN KEY (materialId) REFERENCES material_master(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='供应商物料关联';

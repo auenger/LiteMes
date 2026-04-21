@@ -9,6 +9,7 @@ import com.litemes.domain.entity.ShiftSchedule;
 import com.litemes.domain.entity.EquipmentType;
 import com.litemes.domain.entity.EquipmentModel;
 import com.litemes.domain.entity.MaterialMaster;
+import com.litemes.domain.entity.Supplier;
 import com.litemes.domain.entity.Uom;
 import com.litemes.domain.repository.CompanyRepository;
 import com.litemes.domain.repository.CustomerRepository;
@@ -19,6 +20,7 @@ import com.litemes.domain.repository.FactoryRepository;
 import com.litemes.domain.repository.MaterialCategoryRepository;
 import com.litemes.domain.repository.MaterialMasterRepository;
 import com.litemes.domain.repository.ShiftScheduleRepository;
+import com.litemes.domain.repository.SupplierRepository;
 import com.litemes.domain.repository.UomRepository;
 import com.litemes.web.dto.DropdownItem;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -67,6 +69,9 @@ public class DropdownService {
 
     @Inject
     CustomerRepository customerRepository;
+
+    @Inject
+    SupplierRepository supplierRepository;
 
     /**
      * Get all active companies as dropdown items.
@@ -185,6 +190,16 @@ public class DropdownService {
         LOG.debug("Fetching customer dropdown");
         return customerRepository.findAllActive().stream()
                 .map(c -> new DropdownItem(c.getId(), c.getCustomerCode(), c.getCustomerName()))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Get all active suppliers as dropdown items.
+     */
+    public List<DropdownItem> getSupplierDropdown() {
+        LOG.debug("Fetching supplier dropdown");
+        return supplierRepository.findAllActive().stream()
+                .map(s -> new DropdownItem(s.getId(), s.getSupplierCode(), s.getSupplierName()))
                 .collect(Collectors.toList());
     }
 }
