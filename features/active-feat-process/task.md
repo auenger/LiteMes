@@ -3,33 +3,33 @@
 ## 任务清单
 
 ### 1. 数据层 (domain + infrastructure)
-- [ ] 定义 Process 实体（继承 SoftDeleteEntity）— 场景 1
-- [ ] 创建 Flyway 迁移脚本（process 表 + 唯一索引 + 外键）— 场景 2
-- [ ] 定义 ProcessMapper（继承 BaseMapper<Process>）
-- [ ] 定义 ProcessRepository 接口（domain 层）
-- [ ] 实现 ProcessRepositoryImpl（infrastructure 层）
+- [x] 定义 Process 实体（继承 SoftDeleteEntity）— 场景 1
+- [x] 创建数据库迁移脚本（process 表 + 唯一索引 + 外键）— 场景 2
+- [x] 定义 ProcessMapper（继承 BaseMapper<Process>）
+- [x] 定义 ProcessRepository 接口（domain 层）
+- [x] 实现 ProcessRepositoryImpl（infrastructure 层，含工厂级联查询）
 
 ### 2. 应用服务层 (application)
-- [ ] 定义 DTO：
-  - [ ] ProcessCreateDto（编码、名称、工作中心ID）
-  - [ ] ProcessUpdateDto（名称）
-  - [ ] ProcessQueryDto（编码/名称模糊 + 工作中心ID + 工厂ID + 状态）
-  - [ ] ProcessVo（含工作中心名称、工厂名称关联展示）
-- [ ] 实现 ProcessService：
-  - [ ] 创建工序（编码唯一性校验 + 工作中心存在性校验）— 场景 1, 2, 10
-  - [ ] 编辑工序（名称更新，编码不可改）— 场景 3
-  - [ ] 删除工序（引用检查：数据权限关联）— 场景 4, 5
-  - [ ] 分页查询（编码/名称模糊 + 工作中心筛选 + 工厂级联筛选 + 状态筛选）— 场景 6, 7, 8, 9
-  - [ ] 状态切换（启用/禁用）
+- [x] 定义 DTO：
+  - [x] ProcessCreateDto（编码、名称、工作中心ID）
+  - [x] ProcessUpdateDto（名称）
+  - [x] ProcessQueryDto（编码/名称模糊 + 工作中心ID + 工厂ID + 状态）
+  - [x] ProcessDto（含工作中心名称、工厂名称关联展示）
+- [x] 实现 ProcessService：
+  - [x] 创建工序（编码唯一性校验 + 工作中心存在性校验）— 场景 1, 2, 10
+  - [x] 编辑工序（名称更新，编码不可改）— 场景 3
+  - [x] 删除工序（引用检查：数据权限关联）— 场景 4, 5
+  - [x] 分页查询（编码/名称模糊 + 工作中心筛选 + 工厂级联筛选 + 状态筛选）— 场景 6, 7, 8, 9
+  - [x] 状态切换（启用/禁用）
 
 ### 3. API 层 (web)
-- [ ] 实现 ProcessResource：
-  - [ ] POST /api/processes — 创建工序
-  - [ ] PUT /api/processes/{id} — 编辑工序
-  - [ ] DELETE /api/processes/{id} — 删除工序
-  - [ ] GET /api/processes — 分页查询工序列表
-  - [ ] GET /api/processes/{id} — 获取工序详情
-  - [ ] PATCH /api/processes/{id}/status — 状态切换
+- [x] 实现 ProcessResource：
+  - [x] POST /api/processes — 创建工序
+  - [x] PUT /api/processes/{id} — 编辑工序
+  - [x] DELETE /api/processes/{id} — 删除工序
+  - [x] GET /api/processes — 分页查询工序列表
+  - [x] GET /api/processes/{id} — 获取工序详情
+  - [x] PUT /api/processes/{id}/status — 状态切换
 
 ### 4. 前端 (frontend)
 - [ ] 工序列表页面（查询/重置/创建/编辑/删除/状态切换）
@@ -39,11 +39,11 @@
 
 ### 5. 测试
 - [ ] ProcessService 单元测试（CRUD + 唯一性 + 引用检查 + 状态管理 + 级联查询）
-- [ ] ProcessResource 集成测试
+- [x] ProcessResource 集成测试
 
 ### 6. 通用
-- [ ] 审计字段自动填充（MetaObjectHandler）
-- [ ] 软删除标记（@TableLogic）
+- [x] 审计字段自动填充（MetaObjectHandler）— 已有基础设施
+- [x] 软删除标记（@TableLogic）— 继承 SoftDeleteEntity
 
 ---
 
