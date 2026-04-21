@@ -105,4 +105,12 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
                .orderByAsc(Department::getSortOrder);
         return departmentMapper.selectList(wrapper);
     }
+
+    @Override
+    public List<Department> findAllActive() {
+        LambdaQueryWrapper<Department> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Department::getStatus, 1)
+               .orderByAsc(Department::getSortOrder);
+        return departmentMapper.selectList(wrapper);
+    }
 }

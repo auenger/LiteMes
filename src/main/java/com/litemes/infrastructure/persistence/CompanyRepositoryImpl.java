@@ -8,6 +8,7 @@ import com.litemes.infrastructure.persistence.mapper.CompanyMapper;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -69,5 +70,13 @@ public class CompanyRepositoryImpl implements CompanyRepository {
         LambdaQueryWrapper<Company> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Company::getCompanyCode, companyCode);
         return companyMapper.selectCount(wrapper) > 0;
+    }
+
+    @Override
+    public List<Company> findAllActive() {
+        LambdaQueryWrapper<Company> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Company::getStatus, 1)
+               .orderByAsc(Company::getCompanyCode);
+        return companyMapper.selectList(wrapper);
     }
 }

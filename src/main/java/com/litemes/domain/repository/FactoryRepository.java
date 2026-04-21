@@ -3,6 +3,7 @@ package com.litemes.domain.repository;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.litemes.domain.entity.Factory;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -28,4 +29,8 @@ public interface FactoryRepository {
     boolean existsByCompanyId(Long companyId);
 
     long countActiveByCompanyId(Long companyId);
+
+    List<Factory> findByCompanyId(Long companyId);
+
+    List<Factory> findAllActive();
 }

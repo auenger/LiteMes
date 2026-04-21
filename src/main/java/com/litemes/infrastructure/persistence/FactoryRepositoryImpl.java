@@ -8,6 +8,7 @@ import com.litemes.infrastructure.persistence.mapper.FactoryMapper;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -87,5 +88,22 @@ public class FactoryRepositoryImpl implements FactoryRepository {
         wrapper.eq(Factory::getCompanyId, companyId)
                .eq(Factory::getStatus, 1);
         return factoryMapper.selectCount(wrapper);
+    }
+
+    @Override
+    public List<Factory> findByCompanyId(Long companyId) {
+        LambdaQueryWrapper<Factory> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Factory::getCompanyId, companyId)
+               .eq(Factory::getStatus, 1)
+               .orderByAsc(Factory::getFactoryCode);
+        return factoryMapper.selectList(wrapper);
+    }
+
+    @Override
+    public List<Factory> findAllActive() {
+        LambdaQueryWrapper<Factory> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Factory::getStatus, 1)
+               .orderByAsc(Factory::getFactoryCode);
+        return factoryMapper.selectList(wrapper);
     }
 }

@@ -30,4 +30,6 @@ public interface ShiftScheduleRepository {
     void clearDefault();
 
     List<ShiftSchedule> findDefault();
+
+    List<ShiftSchedule> findAllActive();
 }
