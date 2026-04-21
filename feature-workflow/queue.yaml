@@ -27,22 +27,6 @@ pending:
       - feat-material-info
       - feat-inspection-exemption
 
-  - id: feat-material-info
-    name: "物料基本信息"
-    priority: 82
-    size: M
-    parent: feat-material-master
-    dependencies:
-      - feat-uom
-      - feat-material-category
-
-  - id: feat-inspection-exemption
-    name: "免检清单"
-    priority: 81
-    size: S
-    parent: feat-material-master
-    dependencies:
-      - feat-material-info
 
   - id: feat-equipment-master
     name: "设备主数据"
@@ -55,21 +39,6 @@ pending:
       - feat-equipment-model
       - feat-equipment-ledger
 
-  - id: feat-equipment-type
-    name: "设备类型"
-    priority: 73
-    size: S
-    parent: feat-equipment-master
-    dependencies:
-      - feat-enterprise-org
-
-  - id: feat-equipment-model
-    name: "设备型号"
-    priority: 72
-    size: S
-    parent: feat-equipment-master
-    dependencies:
-      - feat-equipment-type
 
   - id: feat-equipment-ledger
     name: "设备台账"
@@ -88,14 +57,6 @@ pending:
     children:
       - feat-customer
       - feat-supplier
-
-  - id: feat-customer
-    name: "客户管理"
-    priority: 62
-    size: S
-    parent: feat-supply-chain
-    dependencies:
-      - feat-material-master
 
   - id: feat-supplier
     name: "供应商管理"
@@ -137,20 +98,10 @@ pending:
       - feat-work-center
       - feat-process
 
-active:
-  - id: feat-uom
-    name: "计量单位与换算"
-    priority: 84
-    size: M
-    parent: feat-material-master
-    dependencies:
-      - feat-enterprise-org
-    branch: feature/feat-uom
-    worktree: ../LiteMes-feat-uom
-    started: "2026-04-22T09:00:00"
+active: []
 
 meta:
-  last_updated: "2026-04-22T10:00:00"
+  last_updated: "2026-04-22T15:30:00"
   completion_history:
     feat-project-scaffold: "2026-04-21 completed, tag: feat-project-scaffold-20260421"
     feat-shift-schedule: "2026-04-21 completed, tag: feat-shift-schedule-20260421"
@@ -162,6 +113,12 @@ meta:
     feat-process: "2026-04-22 completed, tag: feat-process-20260422"
     feat-enterprise-common: "2026-04-22 completed, tag: feat-enterprise-common-20260422"
     feat-material-category: "2026-04-22 completed, tag: feat-material-category-20260422"
+    feat-uom: "2026-04-22 completed, tag: feat-uom-20260422"
+    feat-material-info: "2026-04-22 completed, tag: feat-material-info-20260422"
+    feat-equipment-type: "2026-04-22 completed, tag: feat-equipment-type-20260422"
+    feat-equipment-model: "2026-04-22 completed, tag: feat-equipment-model-20260422"
+    feat-inspection-exemption: "2026-04-22 completed, tag: feat-inspection-exemption-20260422"
+    feat-customer: "2026-04-22 completed, tag: feat-customer-20260422"
   split_history:
     feat-supply-chain: "2026-04-21 split into feat-customer, feat-supplier"
     feat-data-permission: "2026-04-21 split into feat-permission-group, feat-user-permission"

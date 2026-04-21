@@ -300,3 +300,186 @@ archived:
       duration: "less than 1 day"
       commits: 1
       files_changed: 21
+
+  - id: feat-uom
+    name: "计量单位与换算"
+    completed: "2026-04-22"
+    tag: feat-uom-20260422
+    merge_commit: "10aac4c"
+    merged_to: main
+    branch_deleted: true
+    branch_name: feature/feat-uom
+    worktree_deleted: true
+    worktree_path: ../LiteMes-feat-uom
+    # --- Index metadata ---
+    keywords: [uom, 计量单位, unit-of-measure, conversion-rate, 换算比例, CRUD, soft-delete, paged-query, fuzzy-search, status-toggle, uniqueness-validation, reference-check, dropdown, mybatis-plus, quarkus, vue3]
+    category: backend-frontend
+    value_points: 4
+    related_features: [feat-material-master, feat-material-info, feat-material-category]
+    # --- Git & merge info ---
+    conflicts:
+      had_conflict: true
+      conflict_files: [frontend/src/api/dropdown.ts, frontend/src/router/index.ts, src/main/java/com/litemes/application/service/DropdownService.java, src/main/java/com/litemes/web/DropdownResource.java, src/test/resources/import.sql]
+      resolution: "kept both parallel additions from feat-material-category and feat-uom"
+    verification:
+      status: passed
+      scenarios_total: 4
+      scenarios_passed: 4
+    # --- Stats ---
+    stats:
+      started: "2026-04-22T09:00:00"
+      duration: "less than 1 day"
+      commits: 1
+      files_changed: 31
+
+  - id: feat-material-info
+    name: "物料基本信息"
+    completed: "2026-04-22"
+    tag: feat-material-info-20260422
+    merge_commit: "a247871"
+    merged_to: main
+    branch_deleted: true
+    branch_name: feature/material-info
+    worktree_deleted: true
+    worktree_path: ../LiteMes-material-info
+    # --- Index metadata ---
+    keywords: [material, 物料, material-master, material-version, PCB-attributes, basic-category, attribute-category, version-management, soft-delete, paged-query, fuzzy-search, status-toggle, uniqueness-validation, dropdown, ext-fields, mybatis-plus, quarkus, vue3]
+    category: backend-frontend
+    value_points: 5
+    related_features: [feat-material-master, feat-material-category, feat-uom, feat-inspection-exemption]
+    # --- Git & merge info ---
+    conflicts:
+      had_conflict: false
+      conflict_files: []
+    verification:
+      status: warning
+      scenarios_total: 3
+      scenarios_passed: 3
+    # --- Stats ---
+    stats:
+      started: "2026-04-22T11:00:00"
+      duration: "less than 1 day"
+      commits: 1
+      files_changed: 24
+
+  - id: feat-equipment-type
+    name: "设备类型"
+    completed: "2026-04-22"
+    tag: feat-equipment-type-20260422
+    merge_commit: "7a2c213"
+    merged_to: main
+    branch_deleted: true
+    branch_name: feature/feat-equipment-type
+    worktree_deleted: true
+    worktree_path: ../LiteMes-feat-equipment-type
+    # --- Index metadata ---
+    keywords: [equipment-type, 设备类型, CRUD, soft-delete, paged-query, fuzzy-search, status-toggle, uniqueness-validation, dropdown, mybatis-plus, quarkus, vue3]
+    category: backend-frontend
+    value_points: 3
+    related_features: [feat-equipment-master, feat-equipment-model, feat-equipment-ledger]
+    # --- Git & merge info ---
+    conflicts:
+      had_conflict: true
+      conflict_files: [frontend/src/router/index.ts, src/main/resources/db/schema.sql]
+      resolution: "kept both parallel additions from feat-material-info and feat-equipment-type"
+    verification:
+      status: passed
+      scenarios_total: 5
+      scenarios_passed: 3
+    # --- Stats ---
+    stats:
+      started: "2026-04-22T11:30:00"
+      duration: "less than 1 day"
+      commits: 1
+      files_changed: 21
+
+  - id: feat-equipment-model
+    name: "设备型号"
+    completed: "2026-04-22"
+    tag: feat-equipment-model-20260422
+    merge_commit: "ffc9384"
+    merged_to: main
+    branch_deleted: true
+    branch_name: feature/feat-equipment-model
+    worktree_deleted: true
+    worktree_path: ../LiteMes-feat-equipment-model
+    # --- Index metadata ---
+    keywords: [equipment-model, 设备型号, CRUD, soft-delete, paged-query, fuzzy-search, status-toggle, uniqueness-validation, redundant-fields, type-association, dropdown, mybatis-plus, quarkus, vue3]
+    category: backend-frontend
+    value_points: 3
+    related_features: [feat-equipment-master, feat-equipment-type, feat-equipment-ledger]
+    # --- Git & merge info ---
+    conflicts:
+      had_conflict: false
+      conflict_files: []
+    verification:
+      status: passed
+      scenarios_total: 6
+      scenarios_passed: 5
+    # --- Stats ---
+    stats:
+      started: "2026-04-22T13:00:00"
+      duration: "less than 1 day"
+      commits: 1
+      files_changed: 19
+
+  - id: feat-inspection-exemption
+    name: "免检清单"
+    completed: "2026-04-22"
+    tag: feat-inspection-exemption-20260422
+    merge_commit: "c6444f5"
+    merged_to: main
+    branch_deleted: true
+    branch_name: feature/inspection-exemption
+    worktree_deleted: true
+    worktree_path: ../LiteMes-inspection-exemption
+    # --- Index metadata ---
+    keywords: [inspection-exemption, 免检清单, CRUD, soft-delete, paged-query, status-toggle, expiry-check, business-matrix, material-dropdown, audit-log, mybatis-plus, quarkus, vue3]
+    category: backend-frontend
+    value_points: 3
+    related_features: [feat-material-master, feat-material-info, feat-supplier]
+    # --- Git & merge info ---
+    conflicts:
+      had_conflict: true
+      conflict_files: [frontend/src/router/index.ts, src/main/java/com/litemes/application/service/DropdownService.java, src/main/java/com/litemes/web/DropdownResource.java, src/main/resources/db/schema.sql]
+      resolution: "kept both parallel additions from feat-equipment-model and feat-inspection-exemption"
+    verification:
+      status: passed
+      scenarios_total: 3
+      scenarios_passed: 3
+    # --- Stats ---
+    stats:
+      started: "2026-04-22T13:00:00"
+      duration: "less than 1 day"
+      commits: 1
+      files_changed: 22
+
+  - id: feat-customer
+    name: "客户管理"
+    completed: "2026-04-22"
+    tag: feat-customer-20260422
+    merge_commit: "a72fdf2"
+    merged_to: main
+    branch_deleted: true
+    branch_name: feature/feat-customer
+    worktree_deleted: true
+    worktree_path: ../LiteMes-feat-customer
+    # --- Index metadata ---
+    keywords: [customer, 客户, CRUD, soft-delete, paged-query, fuzzy-search, status-toggle, material-association, customer-material, type-enum, uniqueness-validation, dropdown, mybatis-plus, quarkus, vue3]
+    category: backend-frontend
+    value_points: 3
+    related_features: [feat-supply-chain, feat-supplier, feat-material-master]
+    # --- Git & merge info ---
+    conflicts:
+      had_conflict: false
+      conflict_files: []
+    verification:
+      status: passed
+      scenarios_total: 9
+      scenarios_passed: 8
+    # --- Stats ---
+    stats:
+      started: "2026-04-22T15:00:00"
+      duration: "less than 1 day"
+      commits: 1
+      files_changed: 21
