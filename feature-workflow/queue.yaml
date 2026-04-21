@@ -15,22 +15,6 @@ pending:
       - feat-process
       - feat-enterprise-common
 
-  - id: feat-department-user
-    name: "部门用户关系"
-    priority: 92
-    size: S
-    parent: feat-enterprise-org
-    dependencies:
-      - feat-department
-
-  - id: feat-process
-    name: "工序管理"
-    priority: 88
-    size: M
-    parent: feat-enterprise-org
-    dependencies:
-      - feat-work-center
-
   - id: feat-enterprise-common
     name: "企业管理通用功能"
     priority: 90
@@ -186,7 +170,7 @@ pending:
 active: []
 
 meta:
-  last_updated: "2026-04-22T03:00:00"
+  last_updated: "2026-04-22T06:00:00"
   completion_history:
     feat-project-scaffold: "2026-04-21 completed, tag: feat-project-scaffold-20260421"
     feat-shift-schedule: "2026-04-21 completed, tag: feat-shift-schedule-20260421"
@@ -194,6 +178,8 @@ meta:
     feat-factory: "2026-04-22 completed, tag: feat-factory-20260422"
     feat-department: "2026-04-22 completed, tag: feat-department-20260422"
     feat-work-center: "2026-04-22 completed, tag: feat-work-center-20260422"
+    feat-department-user: "2026-04-22 completed, tag: feat-department-user-20260422"
+    feat-process: "2026-04-22 completed, tag: feat-process-20260422"
   split_history:
     feat-supply-chain: "2026-04-21 split into feat-customer, feat-supplier"
     feat-data-permission: "2026-04-21 split into feat-permission-group, feat-user-permission"

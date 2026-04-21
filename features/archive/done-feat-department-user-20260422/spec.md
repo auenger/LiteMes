@@ -103,3 +103,13 @@ Scenario: 用户归属多个部门
   When 将"张三"分配到部门"DEP002"
   Then "张三"同时归属"DEP001"和"DEP002"
 ```
+
+## Merge Record
+
+- **Completed**: 2026-04-22
+- **Branch**: feature/feat-department-user
+- **Merge Commit**: b9026cd
+- **Archive Tag**: feat-department-user-20260422
+- **Conflicts**: none
+- **Verification**: passed (6/6 scenarios, 15/15 tests)
+- **Files Changed**: 20 (16 new, 4 modified)

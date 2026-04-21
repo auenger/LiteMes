@@ -180,3 +180,63 @@ archived:
       duration: "less than 1 day"
       commits: 1
       files_changed: 23
+
+  - id: feat-department-user
+    name: "部门用户关系"
+    completed: "2026-04-22"
+    tag: feat-department-user-20260422
+    merge_commit: "b9026cd"
+    merged_to: main
+    branch_deleted: true
+    branch_name: feature/feat-department-user
+    worktree_deleted: true
+    worktree_path: ../LiteMes-feat-department-user
+    # --- Index metadata ---
+    keywords: [department-user, 部门用户, assign-user, remove-user, many-to-many, user-selection, cascade-delete, mybatis-plus, quarkus, vue3, enterprise-org]
+    category: backend-frontend
+    value_points: 3
+    related_features: [feat-enterprise-org, feat-department, feat-enterprise-common]
+    # --- Git & merge info ---
+    conflicts:
+      had_conflict: false
+      conflict_files: []
+    verification:
+      status: passed
+      scenarios_total: 6
+      scenarios_passed: 6
+    # --- Stats ---
+    stats:
+      started: "2026-04-22"
+      duration: "less than 1 day"
+      commits: 1
+      files_changed: 20
+
+  - id: feat-process
+    name: "工序管理"
+    completed: "2026-04-22"
+    tag: feat-process-20260422
+    merge_commit: "4f40d5e"
+    merged_to: main
+    branch_deleted: true
+    branch_name: feature/feat-process
+    worktree_deleted: true
+    worktree_path: ../LiteMes-feat-process
+    # --- Index metadata ---
+    keywords: [process, 工序, CRUD, soft-delete, paged-query, fuzzy-search, status-toggle, work-center-relationship, factory-cascading, mybatis-plus, quarkus, enterprise-org]
+    category: backend
+    value_points: 3
+    related_features: [feat-enterprise-org, feat-work-center, feat-data-permission, feat-enterprise-common]
+    # --- Git & merge info ---
+    conflicts:
+      had_conflict: false
+      conflict_files: []
+    verification:
+      status: warning
+      scenarios_total: 11
+      scenarios_passed: 10
+    # --- Stats ---
+    stats:
+      started: "2026-04-22T04:00:00"
+      duration: "less than 1 day"
+      commits: 2
+      files_changed: 16

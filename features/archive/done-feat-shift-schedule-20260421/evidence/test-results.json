@@ -1,0 +1,35 @@
+{
+  "feature_id": "feat-shift-schedule",
+  "verification_date": "2026-04-21",
+  "status": "PASSED",
+  "task_completion": {
+    "total": 16,
+    "completed": 11,
+    "deferred": 3,
+    "remaining": 2
+  },
+  "code_quality": {
+    "backend_compile": "PASS",
+    "frontend_typecheck": "PASS"
+  },
+  "test_results": {
+    "tests_run": 7,
+    "tests_passed": 7,
+    "tests_failed": 0,
+    "tests_skipped": 0
+  },
+  "gherkin_scenarios": [
+    {"name": "创建班制", "status": "PASS"},
+    {"name": "设置默认班制", "status": "PASS"},
+    {"name": "创建班次", "status": "PASS"},
+    {"name": "创建跨天班次", "status": "PASS"},
+    {"name": "跨天班次工时计算", "status": "PASS"},
+    {"name": "导入班制", "status": "DEFERRED"},
+    {"name": "导出班制", "status": "DEFERRED"}
+  ],
+  "files_created": 23,
+  "warnings": [
+    "Excel import/export deferred to feat-enterprise-common",
+    "Change log recording deferred to feat-enterprise-common"
+  ]
+}
