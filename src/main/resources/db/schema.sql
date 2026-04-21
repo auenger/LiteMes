@@ -105,6 +105,37 @@ CREATE TABLE IF NOT EXISTS department (
     CONSTRAINT fk_dept_parent FOREIGN KEY (parentId) REFERENCES department(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='部门';
 
+-- User table
+CREATE TABLE IF NOT EXISTS user (
+    id            BIGINT       NOT NULL AUTO_INCREMENT,
+    username      VARCHAR(50)  NOT NULL,
+    realName      VARCHAR(50)  NOT NULL,
+    status        TINYINT      NOT NULL DEFAULT 1 COMMENT '1=启用,0=禁用',
+    createdBy     VARCHAR(64)  NULL,
+    createdAt     DATETIME     NULL,
+    updatedBy     VARCHAR(64)  NULL,
+    updatedAt     DATETIME     NULL,
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_username (username)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='用户';
+
+-- Department User relationship table
+CREATE TABLE IF NOT EXISTS department_user (
+    id              BIGINT       NOT NULL AUTO_INCREMENT,
+    departmentId    BIGINT       NOT NULL,
+    userId          BIGINT       NOT NULL,
+    createdBy       VARCHAR(64)  NULL,
+    createdAt       DATETIME     NULL,
+    updatedBy       VARCHAR(64)  NULL,
+    updatedAt       DATETIME     NULL,
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_dept_user (departmentId, userId),
+    INDEX idx_dept_user_dept (departmentId),
+    INDEX idx_dept_user_user (userId),
+    CONSTRAINT fk_du_department FOREIGN KEY (departmentId) REFERENCES department(id),
+    CONSTRAINT fk_du_user FOREIGN KEY (userId) REFERENCES user(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='部门用户关系';
+
 -- Work Center table
 CREATE TABLE IF NOT EXISTS work_center (
     id                 BIGINT       NOT NULL AUTO_INCREMENT,

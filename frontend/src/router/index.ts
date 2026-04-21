@@ -32,6 +32,11 @@ const routes = [
     component: () => import('../views/department/DepartmentList.vue'),
   },
   {
+    path: '/departments/:id/users',
+    name: 'DepartmentUserList',
+    component: () => import('../views/department/DepartmentUserList.vue'),
+  },
+  {
     path: '/work-centers',
     name: 'WorkCenterList',
     component: () => import('../views/work-center/WorkCenterList.vue'),

@@ -35,6 +35,9 @@ public class DepartmentService {
     @Inject
     FactoryRepository factoryRepository;
 
+    @Inject
+    DepartmentUserService departmentUserService;
+
     @Transactional
     public Long create(DepartmentCreateDto dto) {
         LOG.debugf("Creating department: %s", dto.getDepartmentCode());
@@ -135,8 +138,9 @@ public class DepartmentService {
             throw new BusinessException("HAS_CHILDREN", "该部门下存在子部门，无法删除");
         }
 
-        // Note: DepartmentUser reference check will be added when feat-department-user is implemented
-        // TODO: Check if any DepartmentUser references this department before deleting
+        // Delete all DepartmentUser records for this department (physical delete)
+        // Per spec: department deleted -> all DepartmentUser records physically deleted
+        departmentUserService.deleteByDepartmentId(id);
 
         departmentRepository.deleteById(id);
         LOG.infof("Deleted department: %d", id);
