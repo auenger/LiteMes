@@ -26,6 +26,11 @@ const routes = [
     name: 'FactoryList',
     component: () => import('../views/factory/FactoryList.vue'),
   },
+  {
+    path: '/departments',
+    name: 'DepartmentList',
+    component: () => import('../views/department/DepartmentList.vue'),
+  },
 ];
 
 const router = createRouter({
