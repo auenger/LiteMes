@@ -50,14 +50,6 @@ pending:
       - feat-customer
       - feat-supplier
 
-  - id: feat-supplier
-    name: "供应商管理"
-    priority: 61
-    size: S
-    parent: feat-supply-chain
-    dependencies:
-      - feat-material-master
-
   - id: feat-data-permission
     name: "数据权限控制"
     priority: 50
@@ -70,16 +62,6 @@ pending:
       - feat-permission-group
       - feat-user-permission
 
-  - id: feat-permission-group
-    name: "数据权限组管理"
-    priority: 52
-    size: M
-    parent: feat-data-permission
-    dependencies:
-      - feat-enterprise-org
-      - feat-work-center
-      - feat-process
-
   - id: feat-user-permission
     name: "用户数据权限"
     priority: 51
@@ -90,10 +72,22 @@ pending:
       - feat-work-center
       - feat-process
 
-active: []
+active:
+  - id: feat-permission-group
+    name: "数据权限组管理"
+    priority: 52
+    size: M
+    parent: feat-data-permission
+    dependencies:
+      - feat-enterprise-org
+      - feat-work-center
+      - feat-process
+    branch: feature/feat-permission-group
+    worktree: ../LiteMes-feat-permission-group
+    started: "2026-04-22T16:30:00"
 
 meta:
-  last_updated: "2026-04-22T16:00:00"
+  last_updated: "2026-04-22T17:00:00"
   completion_history:
     feat-project-scaffold: "2026-04-21 completed, tag: feat-project-scaffold-20260421"
     feat-shift-schedule: "2026-04-21 completed, tag: feat-shift-schedule-20260421"
@@ -112,6 +106,7 @@ meta:
     feat-inspection-exemption: "2026-04-22 completed, tag: feat-inspection-exemption-20260422"
     feat-customer: "2026-04-22 completed, tag: feat-customer-20260422"
     feat-equipment-ledger: "2026-04-22 completed, tag: feat-equipment-ledger-20260422"
+    feat-supplier: "2026-04-22 completed, tag: feat-supplier-20260422"
   split_history:
     feat-supply-chain: "2026-04-21 split into feat-customer, feat-supplier"
     feat-data-permission: "2026-04-21 split into feat-permission-group, feat-user-permission"
