@@ -1,15 +1,11 @@
 #!/bin/bash
 # on-subagent-complete.sh — SubagentStop hook
-# When a background SubAgent completes, clean up marker and signal auto-loop continuation.
+# When a background SubAgent completes, check if auto-loop should continue.
 # Output becomes context that Claude reads.
 
 BASE="${CLAUDE_PROJECT_DIR:-.}"
 QUEUE_FILE="$BASE/feature-workflow/queue.yaml"
 CONFIG_FILE="$BASE/feature-workflow/config.yaml"
-SUBAGENT_MARKER="$BASE/feature-workflow/.subagent-running"
-
-# Remove subagent-running marker
-rm -f "$SUBAGENT_MARKER"
 
 [ -f "$QUEUE_FILE" ] || exit 0
 [ -f "$CONFIG_FILE" ] || exit 0

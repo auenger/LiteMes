@@ -7,7 +7,6 @@ BASE="${CLAUDE_PROJECT_DIR:-.}"
 QUEUE_FILE="$BASE/feature-workflow/queue.yaml"
 CONFIG_FILE="$BASE/feature-workflow/config.yaml"
 LOOP_MARKER="$BASE/feature-workflow/.loop-active"
-SUBAGENT_MARKER="$BASE/feature-workflow/.subagent-running"
 
 [ -f "$QUEUE_FILE" ] || exit 0
 [ -f "$CONFIG_FILE" ] || exit 0
@@ -19,11 +18,6 @@ if [ -f "$LOOP_MARKER" ]; then
 else
     # Manual mode (e.g. /new-feature) → check auto_start master switch
     grep -q "auto_start: *true" "$CONFIG_FILE" 2>/dev/null || exit 0
-fi
-
-# If a SubAgent is running, allow stop — wait for completion notification
-if [ -f "$SUBAGENT_MARKER" ]; then
-    exit 0
 fi
 
 # Check if pending section has entries

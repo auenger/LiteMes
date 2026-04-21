@@ -59,9 +59,10 @@ Present the proposal and wait for confirmation. User can:
 
 ### Step 4: Generate Sub-Feature IDs
 
-- Format: descriptive slug, not `{parent}-{suffix}` necessarily
-- Example: parent `feat-enterprise-org` → children `feat-company`, `feat-factory`, `feat-department`
+- Format: descriptive slug, not necessarily `{parent}-{suffix}`
+- Example: parent `feat-enterprise-org` -> children `feat-company`, `feat-factory`, `feat-department`
 - ID should be self-descriptive and meaningful on its own
+- Prefix from `feature-workflow/config.yaml` `naming.feature_prefix` (default "feat")
 
 ### Step 5: Create Sub-Feature Directories
 
@@ -71,49 +72,54 @@ For each sub-feature, create `features/pending-{id}/` with:
 ```markdown
 # Feature: {id} {name}
 
-## 基本信息
+## Basic Information
 - **ID**: {id}
-- **名称**: {name}
-- **优先级**: {priority}
-- **规模**: {S|M}
-- **依赖**: {dependencies}
-- **父模块**: {parent_id}
-- **创建时间**: {date}
+- **Name**: {name}
+- **Priority**: {priority}
+- **Size**: {S|M}
+- **Dependencies**: {dependencies}
+- **Parent**: {parent_id}
+- **Children**: (empty)
+- **Created**: {timestamp}
 
-## 需求来源
-- {reference to parent spec or external doc}
-
-## 需求描述
+## Description
 {business requirements from analysis}
 
-## 数据模型
-{entity definitions with field-level detail}
+## User Value Points
+{value points for this sub-feature}
 
-## 验收标准 (Gherkin)
-{acceptance scenarios}
+## Context Analysis
+### Reference Code
+### Related Documents
+### Related Features
+
+## Technical Solution
+<!-- To be filled during implementation -->
+
+## Acceptance Criteria (Gherkin)
+### User Story
+### Scenarios (Given/When/Then)
+### General Checklist
 ```
 
 **task.md:**
 ```markdown
-# Tasks: {id} {name}
+# Tasks: {id}
 
-## 任务清单
-
-### 后端
+## Task Breakdown
+### Backend
 - [ ] ...
 
-### 前端
+### Frontend
 - [ ] ...
 
-### 通用
+### General
 - [ ] ...
 
----
-
-## 进度记录
-| 日期 | 进度 | 备注 |
-|------|------|------|
-| {date} | 已拆分 | 从 {parent_id} 拆分 |
+## Progress Log
+| Date | Progress | Notes |
+|------|----------|-------|
+| {date} | Split created | Split from {parent_id} |
 ```
 
 ### Step 6: Convert Original Feature to Module Index
@@ -121,73 +127,65 @@ For each sub-feature, create `features/pending-{id}/` with:
 Rewrite the original feature's `spec.md` to be a module index:
 
 ```markdown
-# Feature: {id} {模块名称}
+# Feature: {id} {name}
 
-## 基本信息
+## Basic Information
 - **ID**: {id}
-- **名称**: {模块名称}
-- **优先级**: {priority}
-- **规模**: L（模块级）
-- **依赖**: {dependencies}
-- **创建时间**: {original_date}
+- **Name**: {name}
+- **Priority**: {priority}
+- **Size**: L (module-level)
+- **Dependencies**: {dependencies}
+- **Parent**: (empty)
+- **Children**: [{child1}, {child2}, ...]
+- **Created**: {original_date}
 
-## 需求来源
-- {reference docs}
-
-## 模块概述
+## Description
 {high-level module description}
 
-## 子 Feature 列表
+## Sub-Feature List
 
-| ID | 名称 | 优先级 | 规模 | 依赖 |
-|----|------|--------|------|------|
+| ID | Name | Priority | Size | Dependencies |
+|----|------|----------|------|--------------|
 | [{child1}](../pending-{child1}/spec.md) | {name} | {p} | {s} | {deps} |
 | [{child2}](../pending-{child2}/spec.md) | {name} | {p} | {s} | {deps} |
-...
 
-## 依赖关系图
+## Dependency Graph
 {visual dependency tree}
 
-## 整体数据模型关系
-{ER-style relationships across sub-features}
-
-## 模块进度
-| 子 Feature | 状态 | 备注 |
-|-----------|------|------|
+## Module Progress
+| Sub-Feature | Status | Notes |
+|-------------|--------|-------|
 | {child1} | pending | |
-...
+| ... | | |
 ```
 
 Rewrite the original feature's `task.md`:
 
 ```markdown
-# Tasks: {id} {模块名称}
+# Tasks: {id}
 
-> 本 feature 为模块级 feature，不直接开发，通过子 feature 推进。
+> This is a module-level feature. Development progresses through sub-features.
 
-## 子 Feature 进度
+## Sub-Feature Progress
 
 - [ ] [{child1}](../pending-{child1}/task.md) — {name}
 - [ ] [{child2}](../pending-{child2}/task.md) — {name}
-...
 
-## 完成条件
-所有子 feature 完成后，本模块 feature 标记为完成。
+## Completion Criteria
+Module feature is marked complete when all sub-features are completed.
 
----
-
-## 进度记录
-| 日期 | 进度 | 备注 |
-|------|------|------|
-| {date} | 模块拆分完成 | 拆分为 N 个子 feature |
+## Progress Log
+| Date | Progress | Notes |
+|------|----------|-------|
+| {date} | Module split completed | Split into N sub-features |
 ```
 
 ### Step 7: Update queue.yaml
 
 Read `feature-workflow/queue.yaml` and update:
 
-1. **Modify parent entry** — add `children: [child_ids]` field
-2. **Add sub-feature entries** — each with `parent: {parent_id}`, proper priority and dependencies
+1. **Move parent to `parents` section** — add `children: [child_ids]` field, set status
+2. **Add sub-feature entries** to `pending` list — each with `parent: {parent_id}`, proper priority and dependencies
 3. **Update downstream dependencies** — other features that depended on the parent should keep depending on the parent (not individual children)
 4. **Sort** pending list by priority descending
 5. **Update** `meta.last_updated`
@@ -195,36 +193,33 @@ Read `feature-workflow/queue.yaml` and update:
 **queue.yaml entry format:**
 
 ```yaml
-# Parent entry (module index)
+# Parent entry (in parents section)
 - id: feat-enterprise-org
-  name: "企业管理模块"
+  name: "Enterprise Management Module"
+  description: "..."
   priority: 90
   size: L
-  dependencies:
-    - feat-project-scaffold
+  status: pending
   children:
     - feat-company
     - feat-factory
     - feat-department
-    ...
 
-# Child entries
+# Child entries (in pending list)
 - id: feat-company
-  name: "公司管理"
+  name: "Company Management"
   priority: 95
   size: M
   parent: feat-enterprise-org
-  dependencies:
-    - feat-project-scaffold
+  dependencies: []
 
 - id: feat-factory
-  name: "工厂管理"
+  name: "Factory Management"
   priority: 94
   size: M
   parent: feat-enterprise-org
   dependencies:
     - feat-company
-...
 ```
 
 ### Step 8: Verify Consistency
@@ -243,11 +238,11 @@ Report summary to user.
 ```
 Feature split completed!
 
-Parent: {id} (模块索引，不直接开发)
-├── {child1} [{size}] ← {name}
-├── {child2} [{size}] ← {name}
-├── {child3} [{size}] ← {name}
-└── {child4} [{size}] ← {name}
+Parent: {id} (module index, not directly developed)
+├── {child1} [{size}] — {name}
+├── {child2} [{size}] — {name}
+├── {child3} [{size}] — {name}
+└── {child4} [{size}] — {name}
 
 Files created:
   features/pending-{child1}/spec.md, task.md
@@ -255,8 +250,8 @@ Files created:
   ...
 
 Files updated:
-  features/pending-{parent}/spec.md  (→ module index)
-  features/pending-{parent}/task.md  (→ progress tracker)
+  features/pending-{parent}/spec.md  (-> module index)
+  features/pending-{parent}/task.md  (-> progress tracker)
   feature-workflow/queue.yaml        (parent/children linked)
 
 Queue: N sub-features added, downstream dependencies updated.
@@ -268,7 +263,7 @@ Queue: N sub-features added, downstream dependencies updated.
 |-------|-------------|----------|
 | FEATURE_NOT_FOUND | Feature ID not in queue | Check ID spelling, use /list-features |
 | FEATURE_ACTIVE | Feature is currently active | Complete or block before splitting |
-| ALREADY_SPLIT | Feature already has children | Use /list-features --verbose to check |
+| ALREADY_SPLIT | Feature already has children | Use /list-features to check status |
 | QUEUE_PARSE_ERROR | queue.yaml malformed | Fix YAML syntax manually |
 | ID_CONFLICT | Generated child ID already exists | Use different slug |
 | PERMISSION_ERROR | Cannot write to features/ | Check filesystem permissions |
