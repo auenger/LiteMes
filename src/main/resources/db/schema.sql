@@ -1,5 +1,4 @@
 -- LiteMes Schema Initialization
--- Example entity table for skeleton validation
 -- Column names use Java camelCase convention to match MyBatis-Plus default mapping
 
 CREATE TABLE IF NOT EXISTS example_entity (
@@ -16,38 +15,38 @@ CREATE TABLE IF NOT EXISTS example_entity (
 -- 班制表
 CREATE TABLE IF NOT EXISTS shift_schedule (
     id            BIGINT       NOT NULL AUTO_INCREMENT,
-    shift_code    VARCHAR(50)  NOT NULL,
+    shiftCode     VARCHAR(50)  NOT NULL,
     name          VARCHAR(50)  NOT NULL,
-    is_default    TINYINT      NOT NULL DEFAULT 0 COMMENT '1=默认,0=非默认',
+    isDefault     TINYINT      NOT NULL DEFAULT 0 COMMENT '1=默认,0=非默认',
     status        TINYINT      NOT NULL DEFAULT 1 COMMENT '1=启用,0=禁用',
     deleted       TINYINT      NOT NULL DEFAULT 0,
-    created_by    VARCHAR(64)  NULL,
-    created_at    DATETIME     NULL,
-    updated_by    VARCHAR(64)  NULL,
-    updated_at    DATETIME     NULL,
+    createdBy     VARCHAR(64)  NULL,
+    createdAt     DATETIME     NULL,
+    updatedBy     VARCHAR(64)  NULL,
+    updatedAt     DATETIME     NULL,
     PRIMARY KEY (id),
-    UNIQUE KEY uk_shift_schedule_code (shift_code, deleted)
+    UNIQUE KEY uk_shift_schedule_code (shiftCode, deleted)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='班制';
 
 -- 班次表
 CREATE TABLE IF NOT EXISTS shift (
     id                 BIGINT       NOT NULL AUTO_INCREMENT,
-    shift_schedule_id  BIGINT       NOT NULL,
-    shift_code         VARCHAR(50)  NOT NULL,
+    shiftScheduleId    BIGINT       NOT NULL,
+    shiftCode          VARCHAR(50)  NOT NULL,
     name               VARCHAR(50)  NOT NULL,
-    start_time         TIME         NOT NULL,
-    end_time           TIME         NOT NULL,
-    cross_day          TINYINT      NOT NULL DEFAULT 0 COMMENT '1=跨天,0=不跨天',
+    startTime          TIME         NOT NULL,
+    endTime            TIME         NOT NULL,
+    crossDay           TINYINT      NOT NULL DEFAULT 0 COMMENT '1=跨天,0=不跨天',
     status             TINYINT      NOT NULL DEFAULT 1 COMMENT '1=启用,0=禁用',
     deleted            TINYINT      NOT NULL DEFAULT 0,
-    created_by         VARCHAR(64)  NULL,
-    created_at         DATETIME     NULL,
-    updated_by         VARCHAR(64)  NULL,
-    updated_at         DATETIME     NULL,
+    createdBy          VARCHAR(64)  NULL,
+    createdAt          DATETIME     NULL,
+    updatedBy          VARCHAR(64)  NULL,
+    updatedAt          DATETIME     NULL,
     PRIMARY KEY (id),
-    UNIQUE KEY uk_shift_code (shift_code, deleted),
-    INDEX idx_shift_schedule (shift_schedule_id),
-    CONSTRAINT fk_shift_schedule FOREIGN KEY (shift_schedule_id) REFERENCES shift_schedule(id)
+    UNIQUE KEY uk_shift_code (shiftCode, deleted),
+    INDEX idx_shift_schedule (shiftScheduleId),
+    CONSTRAINT fk_shift_schedule FOREIGN KEY (shiftScheduleId) REFERENCES shift_schedule(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='班次';
 
 -- Company table
@@ -68,40 +67,58 @@ CREATE TABLE IF NOT EXISTS company (
 -- Factory table
 CREATE TABLE IF NOT EXISTS factory (
     id            BIGINT       NOT NULL AUTO_INCREMENT,
-    factory_code  VARCHAR(50)  NOT NULL,
+    factoryCode   VARCHAR(50)  NOT NULL,
     name          VARCHAR(50)  NOT NULL,
-    short_name    VARCHAR(50)  NULL,
-    company_id    BIGINT       NOT NULL,
+    shortName     VARCHAR(50)  NULL,
+    companyId     BIGINT       NOT NULL,
     status        TINYINT      NOT NULL DEFAULT 1 COMMENT '1=启用,0=禁用',
     deleted       TINYINT      NOT NULL DEFAULT 0,
-    created_by    VARCHAR(64)  NULL,
-    created_at    DATETIME     NULL,
-    updated_by    VARCHAR(64)  NULL,
-    updated_at    DATETIME     NULL,
+    createdBy     VARCHAR(64)  NULL,
+    createdAt     DATETIME     NULL,
+    updatedBy     VARCHAR(64)  NULL,
+    updatedAt     DATETIME     NULL,
     PRIMARY KEY (id),
-    UNIQUE KEY uk_factory_code (factory_code, deleted),
-    INDEX idx_factory_company (company_id),
-    CONSTRAINT fk_factory_company FOREIGN KEY (company_id) REFERENCES company(id)
+    UNIQUE KEY uk_factory_code (factoryCode, deleted),
+    INDEX idx_factory_company (companyId),
+    CONSTRAINT fk_factory_company FOREIGN KEY (companyId) REFERENCES company(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='工厂';
 
 -- Department table
 CREATE TABLE IF NOT EXISTS department (
     id              BIGINT       NOT NULL AUTO_INCREMENT,
-    department_code VARCHAR(50)  NOT NULL,
+    departmentCode  VARCHAR(50)  NOT NULL,
     name            VARCHAR(50)  NOT NULL,
-    factory_id      BIGINT       NOT NULL,
-    parent_id       BIGINT       NULL COMMENT '上级部门ID，NULL表示顶级部门',
-    sort_order      INT          NOT NULL DEFAULT 0,
+    factoryId       BIGINT       NOT NULL,
+    parentId        BIGINT       NULL COMMENT '上级部门ID，NULL表示顶级部门',
+    sortOrder       INT          NOT NULL DEFAULT 0,
     status          TINYINT      NOT NULL DEFAULT 1 COMMENT '1=启用,0=禁用',
     deleted         TINYINT      NOT NULL DEFAULT 0,
-    created_by      VARCHAR(64)  NULL,
-    created_at      DATETIME     NULL,
-    updated_by      VARCHAR(64)  NULL,
-    updated_at      DATETIME     NULL,
+    createdBy       VARCHAR(64)  NULL,
+    createdAt       DATETIME     NULL,
+    updatedBy       VARCHAR(64)  NULL,
+    updatedAt       DATETIME     NULL,
     PRIMARY KEY (id),
-    UNIQUE KEY uk_department_code (department_code, deleted),
-    INDEX idx_dept_factory (factory_id),
-    INDEX idx_dept_parent (parent_id),
-    CONSTRAINT fk_dept_factory FOREIGN KEY (factory_id) REFERENCES factory(id),
-    CONSTRAINT fk_dept_parent FOREIGN KEY (parent_id) REFERENCES department(id)
+    UNIQUE KEY uk_department_code (departmentCode, deleted),
+    INDEX idx_dept_factory (factoryId),
+    INDEX idx_dept_parent (parentId),
+    CONSTRAINT fk_dept_factory FOREIGN KEY (factoryId) REFERENCES factory(id),
+    CONSTRAINT fk_dept_parent FOREIGN KEY (parentId) REFERENCES department(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='部门';
+
+-- Work Center table
+CREATE TABLE IF NOT EXISTS work_center (
+    id                 BIGINT       NOT NULL AUTO_INCREMENT,
+    workCenterCode     VARCHAR(50)  NOT NULL,
+    name               VARCHAR(50)  NOT NULL,
+    factoryId          BIGINT       NOT NULL,
+    status             TINYINT      NOT NULL DEFAULT 1 COMMENT '1=启用,0=禁用',
+    deleted            TINYINT      NOT NULL DEFAULT 0,
+    createdBy          VARCHAR(64)  NULL,
+    createdAt          DATETIME     NULL,
+    updatedBy          VARCHAR(64)  NULL,
+    updatedAt          DATETIME     NULL,
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_work_center_code (workCenterCode, deleted),
+    INDEX idx_wc_factory (factoryId),
+    CONSTRAINT fk_wc_factory FOREIGN KEY (factoryId) REFERENCES factory(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='工作中心';

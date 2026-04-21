@@ -15,22 +15,6 @@ pending:
       - feat-process
       - feat-enterprise-common
 
-  - id: feat-factory
-    name: "工厂管理"
-    priority: 94
-    size: M
-    parent: feat-enterprise-org
-    dependencies:
-      - feat-company
-
-  - id: feat-department
-    name: "部门管理"
-    priority: 93
-    size: M
-    parent: feat-enterprise-org
-    dependencies:
-      - feat-factory
-
   - id: feat-department-user
     name: "部门用户关系"
     priority: 92
@@ -38,14 +22,6 @@ pending:
     parent: feat-enterprise-org
     dependencies:
       - feat-department
-
-  - id: feat-work-center
-    name: "工作中心管理"
-    priority: 89
-    size: M
-    parent: feat-enterprise-org
-    dependencies:
-      - feat-factory
 
   - id: feat-process
     name: "工序管理"
@@ -207,14 +183,36 @@ pending:
       - feat-work-center
       - feat-process
 
-active: []
+active:
+  - id: feat-department
+    name: "部门管理"
+    priority: 93
+    size: M
+    parent: feat-enterprise-org
+    dependencies:
+      - feat-factory
+    branch: feature/feat-department
+    worktree: ../LiteMes-feat-department
+    started: "2026-04-22"
+
+  - id: feat-work-center
+    name: "工作中心管理"
+    priority: 89
+    size: M
+    parent: feat-enterprise-org
+    dependencies:
+      - feat-factory
+    branch: feature/feat-work-center
+    worktree: ../LiteMes-feat-work-center
+    started: "2026-04-22"
 
 meta:
-  last_updated: "2026-04-22T00:05:00"
+  last_updated: "2026-04-22T02:00:00"
   completion_history:
     feat-project-scaffold: "2026-04-21 completed, tag: feat-project-scaffold-20260421"
     feat-shift-schedule: "2026-04-21 completed, tag: feat-shift-schedule-20260421"
     feat-company: "2026-04-22 completed, tag: feat-company-20260422"
+    feat-factory: "2026-04-22 completed, tag: feat-factory-20260422"
   split_history:
     feat-supply-chain: "2026-04-21 split into feat-customer, feat-supplier"
     feat-data-permission: "2026-04-21 split into feat-permission-group, feat-user-permission"

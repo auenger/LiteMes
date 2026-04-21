@@ -31,6 +31,11 @@ const routes = [
     name: 'DepartmentList',
     component: () => import('../views/department/DepartmentList.vue'),
   },
+  {
+    path: '/work-centers',
+    name: 'WorkCenterList',
+    component: () => import('../views/work-center/WorkCenterList.vue'),
+  },
 ];
 
 const router = createRouter({
