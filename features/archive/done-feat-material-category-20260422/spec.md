@@ -140,3 +140,12 @@ Given 物料分类 "CAT-PCB" 已被物料信息引用
 When 尝试删除该分类
 Then 删除按钮置灰，不可点击
 ```
+
+## Merge Record
+- **Completed**: 2026-04-22
+- **Branch**: feature/feat-material-category
+- **Merge Commit**: ffdd980
+- **Archive Tag**: feat-material-category-20260422
+- **Conflicts**: none
+- **Verification**: warning (core implementation complete, integration tests require MySQL)
+- **Stats**: 21 files changed, 2401 insertions, 1 commit

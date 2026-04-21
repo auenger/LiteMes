@@ -270,3 +270,33 @@ archived:
       duration: "less than 1 day"
       commits: 1
       files_changed: 32
+
+  - id: feat-material-category
+    name: "物料分类"
+    completed: "2026-04-22"
+    tag: feat-material-category-20260422
+    merge_commit: "ffdd980"
+    merged_to: main
+    branch_deleted: true
+    branch_name: feature/feat-material-category
+    worktree_deleted: true
+    worktree_path: ../LiteMes-feat-material-category
+    # --- Index metadata ---
+    keywords: [material-category, 物料分类, tree-structure, hierarchy, quality-category, soft-delete, mybatis-plus, quarkus, vue3]
+    category: backend-frontend
+    value_points: 3
+    related_features: [feat-material-master, feat-material-info, feat-inspection-exemption]
+    # --- Git & merge info ---
+    conflicts:
+      had_conflict: false
+      conflict_files: []
+    verification:
+      status: warning
+      scenarios_total: 3
+      scenarios_passed: 2
+    # --- Stats ---
+    stats:
+      started: "2026-04-22T09:30:00"
+      duration: "less than 1 day"
+      commits: 1
+      files_changed: 21

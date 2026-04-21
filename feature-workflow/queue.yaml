@@ -27,22 +27,6 @@ pending:
       - feat-material-info
       - feat-inspection-exemption
 
-  - id: feat-uom
-    name: "计量单位与换算"
-    priority: 84
-    size: M
-    parent: feat-material-master
-    dependencies:
-      - feat-enterprise-org
-
-  - id: feat-material-category
-    name: "物料分类"
-    priority: 83
-    size: S
-    parent: feat-material-master
-    dependencies:
-      - feat-enterprise-org
-
   - id: feat-material-info
     name: "物料基本信息"
     priority: 82
@@ -153,10 +137,20 @@ pending:
       - feat-work-center
       - feat-process
 
-active: []
+active:
+  - id: feat-uom
+    name: "计量单位与换算"
+    priority: 84
+    size: M
+    parent: feat-material-master
+    dependencies:
+      - feat-enterprise-org
+    branch: feature/feat-uom
+    worktree: ../LiteMes-feat-uom
+    started: "2026-04-22T09:00:00"
 
 meta:
-  last_updated: "2026-04-22T08:00:00"
+  last_updated: "2026-04-22T10:00:00"
   completion_history:
     feat-project-scaffold: "2026-04-21 completed, tag: feat-project-scaffold-20260421"
     feat-shift-schedule: "2026-04-21 completed, tag: feat-shift-schedule-20260421"
@@ -167,6 +161,7 @@ meta:
     feat-department-user: "2026-04-22 completed, tag: feat-department-user-20260422"
     feat-process: "2026-04-22 completed, tag: feat-process-20260422"
     feat-enterprise-common: "2026-04-22 completed, tag: feat-enterprise-common-20260422"
+    feat-material-category: "2026-04-22 completed, tag: feat-material-category-20260422"
   split_history:
     feat-supply-chain: "2026-04-21 split into feat-customer, feat-supplier"
     feat-data-permission: "2026-04-21 split into feat-permission-group, feat-user-permission"
