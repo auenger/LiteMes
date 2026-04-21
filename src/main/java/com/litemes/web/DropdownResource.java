@@ -101,4 +101,18 @@ public class DropdownResource {
     public R<List<DropdownItem>> supplierDropdown() {
         return R.ok(dropdownService.getSupplierDropdown());
     }
+
+    @GET
+    @Path("/work-centers")
+    @Operation(summary = "获取工作中心下拉列表", description = "返回启用状态的工作中心列表，支持按工厂ID筛选")
+    public R<List<DropdownItem>> workCenterDropdown(@QueryParam("factoryId") Long factoryId) {
+        return R.ok(dropdownService.getWorkCenterDropdown(factoryId));
+    }
+
+    @GET
+    @Path("/processes")
+    @Operation(summary = "获取工序下拉列表", description = "返回所有启用状态的工序列表")
+    public R<List<DropdownItem>> processDropdown() {
+        return R.ok(dropdownService.getProcessDropdown());
+    }
 }

@@ -9,8 +9,10 @@ import com.litemes.domain.entity.ShiftSchedule;
 import com.litemes.domain.entity.EquipmentType;
 import com.litemes.domain.entity.EquipmentModel;
 import com.litemes.domain.entity.MaterialMaster;
+import com.litemes.domain.entity.Process;
 import com.litemes.domain.entity.Supplier;
 import com.litemes.domain.entity.Uom;
+import com.litemes.domain.entity.WorkCenter;
 import com.litemes.domain.repository.CompanyRepository;
 import com.litemes.domain.repository.CustomerRepository;
 import com.litemes.domain.repository.DepartmentRepository;
@@ -19,9 +21,11 @@ import com.litemes.domain.repository.EquipmentTypeRepository;
 import com.litemes.domain.repository.FactoryRepository;
 import com.litemes.domain.repository.MaterialCategoryRepository;
 import com.litemes.domain.repository.MaterialMasterRepository;
+import com.litemes.domain.repository.ProcessRepository;
 import com.litemes.domain.repository.ShiftScheduleRepository;
 import com.litemes.domain.repository.SupplierRepository;
 import com.litemes.domain.repository.UomRepository;
+import com.litemes.domain.repository.WorkCenterRepository;
 import com.litemes.web.dto.DropdownItem;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -72,6 +76,12 @@ public class DropdownService {
 
     @Inject
     SupplierRepository supplierRepository;
+
+    @Inject
+    WorkCenterRepository workCenterRepository;
+
+    @Inject
+    ProcessRepository processRepository;
 
     /**
      * Get all active companies as dropdown items.
@@ -200,6 +210,32 @@ public class DropdownService {
         LOG.debug("Fetching supplier dropdown");
         return supplierRepository.findAllActive().stream()
                 .map(s -> new DropdownItem(s.getId(), s.getSupplierCode(), s.getSupplierName()))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Get active work centers as dropdown items.
+     * If factoryId is provided, only return work centers belonging to that factory.
+     */
+    public List<DropdownItem> getWorkCenterDropdown(Long factoryId) {
+        LOG.debugf("Fetching work center dropdown, factoryId=%s", factoryId);
+        if (factoryId != null) {
+            return workCenterRepository.findByFactoryIdAndStatus(factoryId, 1).stream()
+                    .map(wc -> new DropdownItem(wc.getId(), wc.getWorkCenterCode(), wc.getName(), wc.getFactoryId()))
+                    .collect(Collectors.toList());
+        }
+        return workCenterRepository.findAllActive().stream()
+                .map(wc -> new DropdownItem(wc.getId(), wc.getWorkCenterCode(), wc.getName(), wc.getFactoryId()))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Get all active processes as dropdown items.
+     */
+    public List<DropdownItem> getProcessDropdown() {
+        LOG.debug("Fetching process dropdown");
+        return processRepository.findAllActive().stream()
+                .map(p -> new DropdownItem(p.getId(), p.getProcessCode(), p.getName()))
                 .collect(Collectors.toList());
     }
 }

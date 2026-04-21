@@ -489,3 +489,65 @@ CREATE TABLE IF NOT EXISTS supplier_material (
     CONSTRAINT fk_sm_supplier FOREIGN KEY (supplierId) REFERENCES supplier(id),
     CONSTRAINT fk_sm_material FOREIGN KEY (materialId) REFERENCES material_master(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='供应商物料关联';
+
+-- Data Permission Group table
+CREATE TABLE IF NOT EXISTS data_permission_group (
+    id            BIGINT       NOT NULL AUTO_INCREMENT,
+    groupName     VARCHAR(50)  NOT NULL,
+    remark        VARCHAR(200) NULL,
+    deleted       TINYINT      NOT NULL DEFAULT 0,
+    createdBy     VARCHAR(64)  NULL,
+    createdAt     DATETIME     NULL,
+    updatedBy     VARCHAR(64)  NULL,
+    updatedAt     DATETIME     NULL,
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_group_name (groupName, deleted)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='数据权限组';
+
+-- Data Permission Group - Factory association table
+CREATE TABLE IF NOT EXISTS data_permission_group_factory (
+    id            BIGINT       NOT NULL AUTO_INCREMENT,
+    groupId       BIGINT       NOT NULL,
+    factoryId     BIGINT       NOT NULL,
+    createdBy     VARCHAR(64)  NULL,
+    createdAt     DATETIME     NULL,
+    updatedBy     VARCHAR(64)  NULL,
+    updatedAt     DATETIME     NULL,
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_group_factory (groupId, factoryId),
+    INDEX idx_pg_factory_factory (factoryId),
+    CONSTRAINT fk_pgf_group FOREIGN KEY (groupId) REFERENCES data_permission_group(id),
+    CONSTRAINT fk_pgf_factory FOREIGN KEY (factoryId) REFERENCES factory(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='数据权限组-工厂关联';
+
+-- Data Permission Group - Work Center association table
+CREATE TABLE IF NOT EXISTS data_permission_group_work_center (
+    id               BIGINT       NOT NULL AUTO_INCREMENT,
+    groupId          BIGINT       NOT NULL,
+    workCenterId     BIGINT       NOT NULL,
+    createdBy        VARCHAR(64)  NULL,
+    createdAt        DATETIME     NULL,
+    updatedBy        VARCHAR(64)  NULL,
+    updatedAt        DATETIME     NULL,
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_group_work_center (groupId, workCenterId),
+    INDEX idx_pg_wc_wc (workCenterId),
+    CONSTRAINT fk_pgw_group FOREIGN KEY (groupId) REFERENCES data_permission_group(id),
+    CONSTRAINT fk_pgw_wc FOREIGN KEY (workCenterId) REFERENCES work_center(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='数据权限组-工作中心关联';
+
+-- Data Permission Group - Process association table
+CREATE TABLE IF NOT EXISTS data_permission_group_process (
+    id            BIGINT       NOT NULL AUTO_INCREMENT,
+    groupId       BIGINT       NOT NULL,
+    processId     BIGINT       NOT NULL,
+    createdBy     VARCHAR(64)  NULL,
+    createdAt     DATETIME     NULL,
+    updatedBy     VARCHAR(64)  NULL,
+    updatedAt     DATETIME     NULL,
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_group_process (groupId, processId),
+    INDEX idx_pg_process_process (processId),
+    CONSTRAINT fk_pgp_group FOREIGN KEY (groupId) REFERENCES data_permission_group(id),
+    CONSTRAINT fk_pgp_process FOREIGN KEY (processId) REFERENCES process(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='数据权限组-工序关联';

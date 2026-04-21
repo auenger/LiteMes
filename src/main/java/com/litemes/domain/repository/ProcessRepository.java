@@ -29,4 +29,6 @@ public interface ProcessRepository {
     boolean existsByWorkCenterId(Long workCenterId);
 
     List<Process> findByWorkCenterIdAndStatus(Long workCenterId, Integer status);
+
+    List<Process> findAllActive();
 }
