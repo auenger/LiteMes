@@ -76,13 +76,79 @@ pending:
     size: L
     dependencies:
       - feat-enterprise-org
+    children:
+      - feat-uom
+      - feat-material-category
+      - feat-material-info
+      - feat-inspection-exemption
+
+  - id: feat-uom
+    name: "计量单位与换算"
+    priority: 84
+    size: M
+    parent: feat-material-master
+    dependencies:
+      - feat-enterprise-org
+
+  - id: feat-material-category
+    name: "物料分类"
+    priority: 83
+    size: S
+    parent: feat-material-master
+    dependencies:
+      - feat-enterprise-org
+
+  - id: feat-material-info
+    name: "物料基本信息"
+    priority: 82
+    size: M
+    parent: feat-material-master
+    dependencies:
+      - feat-uom
+      - feat-material-category
+
+  - id: feat-inspection-exemption
+    name: "免检清单"
+    priority: 81
+    size: S
+    parent: feat-material-master
+    dependencies:
+      - feat-material-info
 
   - id: feat-equipment-master
     name: "设备主数据"
     priority: 70
-    size: M
+    size: L
     dependencies:
       - feat-enterprise-org
+    children:
+      - feat-equipment-type
+      - feat-equipment-model
+      - feat-equipment-ledger
+
+  - id: feat-equipment-type
+    name: "设备类型"
+    priority: 73
+    size: S
+    parent: feat-equipment-master
+    dependencies:
+      - feat-enterprise-org
+
+  - id: feat-equipment-model
+    name: "设备型号"
+    priority: 72
+    size: S
+    parent: feat-equipment-master
+    dependencies:
+      - feat-equipment-type
+
+  - id: feat-equipment-ledger
+    name: "设备台账"
+    priority: 71
+    size: M
+    parent: feat-equipment-master
+    dependencies:
+      - feat-equipment-model
 
   - id: feat-supply-chain
     name: "供应链主数据"
@@ -90,15 +156,56 @@ pending:
     size: M
     dependencies:
       - feat-material-master
+    children:
+      - feat-customer
+      - feat-supplier
+
+  - id: feat-customer
+    name: "客户管理"
+    priority: 62
+    size: S
+    parent: feat-supply-chain
+    dependencies:
+      - feat-material-master
+
+  - id: feat-supplier
+    name: "供应商管理"
+    priority: 61
+    size: S
+    parent: feat-supply-chain
+    dependencies:
+      - feat-material-master
 
   - id: feat-data-permission
     name: "数据权限控制"
     priority: 50
-    size: M
+    size: L
     dependencies:
       - feat-enterprise-org
+    children:
+      - feat-permission-group
+      - feat-user-permission
+
+  - id: feat-permission-group
+    name: "数据权限组管理"
+    priority: 52
+    size: M
+    parent: feat-data-permission
+    dependencies:
+      - feat-enterprise-org
+
+  - id: feat-user-permission
+    name: "用户数据权限"
+    priority: 51
+    size: M
+    parent: feat-data-permission
+    dependencies:
+      - feat-permission-group
 
 active: []
 
 meta:
-  last_updated: "2026-04-20"
+  last_updated: "2026-04-21"
+  split_history:
+    feat-supply-chain: "2026-04-21 split into feat-customer, feat-supplier"
+    feat-data-permission: "2026-04-21 split into feat-permission-group, feat-user-permission"

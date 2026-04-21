@@ -4,55 +4,41 @@
 - **ID**: feat-equipment-master
 - **名称**: 设备主数据
 - **优先级**: 70
-- **规模**: M
+- **规模**: L（模块级）
 - **依赖**: feat-enterprise-org
-- **父需求**: 无
-- **子需求**: 无
 - **创建时间**: 2026-04-20
 
-## 需求描述
-管理 PCB 制造设备的基础数据，包括设备分类（钻孔/测试/压合等）→设备型号的层级关系，以及设备台账（唯一编码、运行状态、管理状态）。
+## 需求来源
+- docx/设备主数据_功能设计_V1.0.md
 
-### 子功能
-| 子功能 | 核心实体 | 关键规则 |
-|--------|---------|---------|
-| 设备分类与型号 | `EquipmentCategory` / `EquipmentModel` | 类型（钻孔/测试/压合等）→型号，规范技术参数 |
-| 设备台账 | `EquipmentLedger` | 唯一编码，运行状态（运行/故障/停机/维修），管理状态（使用中/闲置/报废） |
+## 模块概述
+设备主数据用于统一维护设备类型、设备型号及设备台账等基础设备信息，规范企业设备管理体系。通过标准化设备属性与分类配置，为设备运行管理、生产调度、维护保养及质量追溯提供统一的数据基础。
 
-## 用户价值点
-1. 设备分类体系规范管理，快速定位设备类型与型号
-2. 设备台账统一管理，追踪设备运行与管理状态
-3. 为后续设备维护、工单派工提供设备基础数据
+## 子 Feature 列表
 
-## 上下文分析
-### 需要参考的现有代码
-- feat-enterprise-org 中的工厂、工作中心实体
+| ID | 名称 | 优先级 | 规模 | 依赖 |
+|----|------|--------|------|------|
+| [feat-equipment-type](../pending-feat-equipment-type/spec.md) | 设备类型 | 73 | S | feat-enterprise-org |
+| [feat-equipment-model](../pending-feat-equipment-model/spec.md) | 设备型号 | 72 | S | feat-equipment-type |
+| [feat-equipment-ledger](../pending-feat-equipment-ledger/spec.md) | 设备台账 | 71 | M | feat-equipment-model |
 
-### 相关文档
-- project-context.md — 设备主数据定义
-
-## 技术方案
-<!-- 待开发时填写 -->
-
-## 验收标准 (Acceptance Criteria)
-
-### 用户故事
-作为设备管理员，我希望管理设备分类和台账，以便追踪工厂内所有设备的状态与归属。
-
-### Gherkin 验收场景
-
-#### 场景 1: 设备分类与型号
-```gherkin
-Given 设备分类 "钻孔设备" 已创建
-When 在该分类下创建型号 "CNC-500"
-Then 型号正确关联分类
-And 型号技术参数可配置
+## 依赖关系图
+```
+feat-enterprise-org
+  └── feat-equipment-type  (设备类型)
+        └── feat-equipment-model  (设备型号)
+              └── feat-equipment-ledger  (设备台账)
 ```
 
-#### 场景 2: 设备台账
-```gherkin
-Given 设备型号已存在
-When 创建设备台账（编码 "EQ-001"，归属工厂 F001）
-Then 设备编码唯一
-And 运行状态与管理状态正确初始化
+## 整体数据模型关系
 ```
+EquipmentType (1) ──→ (N) EquipmentModel (1) ──→ (N) EquipmentLedger
+                                                EquipmentLedger ──→ Factory (feat-enterprise-org)
+```
+
+## 模块进度
+| 子 Feature | 状态 | 备注 |
+|-----------|------|------|
+| feat-equipment-type | pending | |
+| feat-equipment-model | pending | |
+| feat-equipment-ledger | pending | |

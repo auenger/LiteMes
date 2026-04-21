@@ -4,56 +4,45 @@
 - **ID**: feat-data-permission
 - **名称**: 数据权限控制
 - **优先级**: 50
-- **规模**: M
+- **规模**: L（模块级）
 - **依赖**: feat-enterprise-org
-- **父需求**: 无
-- **子需求**: 无
 - **创建时间**: 2026-04-20
 
-## 需求描述
-基于产线/工序的数据权限隔离机制，将工厂+工作中心+工序打包为权限集合（数据权限组），并授予用户/角色，通过仓储层全局查询过滤器自动过滤数据。
+## 需求来源
+- 数据权限_功能设计_V1.0.docx
 
-### 子功能
-| 子功能 | 核心实体 | 关键规则 |
-|--------|---------|---------|
-| 数据权限组 | `DataPermissionGroup` | 将工厂+工作中心+工序打包为权限集合 |
-| 权限绑定 | `UserPermissionGroup` | 权限组授予用户/角色，实现工序级数据隔离 |
+## 模块概述
+数据权限用于统一维护数据权限组及数据权限配置，规范系统内数据访问与使用范围。通过标准化数据权限控制规则，为不同角色和用户提供安全、可控的数据访问机制，保障系统数据的安全性和业务运行的合规性。
 
-## 用户价值点
-1. 灵活的数据权限组配置，按工厂/工作中心/工序打包授权
-2. 用户/角色级别的权限绑定，实现精细化的数据隔离
-3. 仓储层全局过滤器自动生效，业务代码无需手动过滤
+## 子 Feature 列表
 
-## 上下文分析
-### 需要参考的现有代码
-- feat-enterprise-org 中的工厂、工作中心、工序实体
-- 骨架项目中的 SqlSugar 全局查询过滤器
+| ID | 名称 | 优先级 | 规模 | 依赖 |
+|----|------|--------|------|------|
+| [feat-permission-group](../pending-feat-permission-group/spec.md) | 数据权限组管理 | 52 | M | feat-enterprise-org |
+| [feat-user-permission](../pending-feat-user-permission/spec.md) | 用户数据权限 | 51 | M | feat-permission-group |
 
-### 相关文档
-- README.md — 数据权限设计
-- project-context.md — 全局查询过滤器模式
-
-## 技术方案
-<!-- 待开发时填写 -->
-
-## 验收标准 (Acceptance Criteria)
-
-### 用户故事
-作为系统管理员，我希望配置数据权限组并绑定给用户，以便不同工序的人员只能看到自己负责范围内的数据。
-
-### Gherkin 验收场景
-
-#### 场景 1: 数据权限组
-```gherkin
-Given 工厂 F001 下的工作中心 WC001 含工序 PS001、PS002
-When 创建数据权限组，打包 F001 + WC001 + [PS001, PS002]
-Then 权限组正确关联所有工序
+## 依赖关系图
+```
+feat-enterprise-org
+  └── feat-permission-group（权限组 CRUD + 工厂/工作中心/工序关联）
+        └── feat-user-permission（用户权限绑定 + 批量操作 + 全局过滤器）
 ```
 
-#### 场景 2: 权限绑定与过滤
-```gherkin
-Given 用户 U001 绑定了权限组（仅含工序 PS001）
-When 用户查询工单列表
-Then 仓储层自动过滤，仅返回工序 PS001 的数据
-And 用户无法看到其他工序的数据
+## 整体数据模型关系
 ```
+DataPermissionGroup 1──N DataPermissionGroupFactory
+                    1──N DataPermissionGroupWorkCenter
+                    1──N DataPermissionGroupProcess
+
+UserDataPermission  1──N UserDataPermissionFactory
+                    1──N UserDataPermissionWorkCenter
+                    1──N UserDataPermissionProcess
+
+DataPermissionGroup 1──N UserDataPermission（权限组被用户权限引用）
+```
+
+## 模块进度
+| 子 Feature | 状态 | 备注 |
+|-----------|------|------|
+| feat-permission-group | pending | |
+| feat-user-permission | pending | |

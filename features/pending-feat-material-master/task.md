@@ -1,42 +1,20 @@
-# Tasks: feat-material-master
+# Tasks: feat-material-master 物料主数据
 
-## 任务分解
+> 本 feature 为模块级 feature，不直接开发，通过子 feature 推进。
 
-### 1. 计量单位 (Uom)
-- [ ] 实体定义（编码、名称、精度）
-- [ ] CRUD API 与前端页面
-- [ ] 编码与名称唯一性校验
+## 子 Feature 进度
 
-### 2. 单位换算 (UomConversion)
-- [ ] 换算关系实体
-- [ ] 多级换算逻辑
-- [ ] CRUD API 与前端页面
+- [ ] [feat-uom](../pending-feat-uom/task.md) — 计量单位与换算
+- [ ] [feat-material-category](../pending-feat-material-category/task.md) — 物料分类
+- [ ] [feat-material-info](../pending-feat-material-info/task.md) — 物料基本信息
+- [ ] [feat-inspection-exemption](../pending-feat-inspection-exemption/task.md) — 免检清单
 
-### 3. 物料分类 (MaterialCategory)
-- [ ] 多级树形结构实体
-- [ ] 树形管理前端组件
-- [ ] CRUD API
-
-### 4. 物料基本信息 (MaterialMaster)
-- [ ] 物料实体（编码/名称/规格/分类/版本）
-- [ ] 版本管理逻辑（A.1→A.2）
-- [ ] 编码不可编辑约束
-- [ ] CRUD API 与前端页面
-
-### 5. 免检清单 (InspectionExemption)
-- [ ] 免检规则实体
-- [ ] 有效期校验逻辑
-- [ ] CRUD API 与前端页面
-
-### 6. 通用功能
-- [ ] Excel 导入导出（所有子实体）
-- [ ] 审计日志记录
-- [ ] 引用完整性校验
+## 完成条件
+所有子 feature 完成后，本模块 feature 标记为完成。
 
 ---
 
 ## 进度记录
-
 | 日期 | 进度 | 备注 |
 |------|------|------|
-|      |      |      |
+| 2026-04-21 | 模块拆分完成 | 拆分为 4 个子 feature |

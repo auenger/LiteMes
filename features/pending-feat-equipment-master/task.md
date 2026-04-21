@@ -1,27 +1,19 @@
-# Tasks: feat-equipment-master
+# Tasks: feat-equipment-master 设备主数据
 
-## 任务分解
+> 本 feature 为模块级 feature，不直接开发，通过子 feature 推进。
 
-### 1. 设备分类与型号 (EquipmentCategory / EquipmentModel)
-- [ ] 设备分类实体（钻孔/测试/压合等类型）
-- [ ] 设备型号实体（技术参数配置）
-- [ ] CRUD API 与前端页面
+## 子 Feature 进度
 
-### 2. 设备台账 (EquipmentLedger)
-- [ ] 设备台账实体（唯一编码、运行状态、管理状态）
-- [ ] 编码唯一性约束
-- [ ] 状态流转逻辑
-- [ ] CRUD API 与前端页面
+- [ ] [feat-equipment-type](../pending-feat-equipment-type/task.md) — 设备类型
+- [ ] [feat-equipment-model](../pending-feat-equipment-model/task.md) — 设备型号
+- [ ] [feat-equipment-ledger](../pending-feat-equipment-ledger/task.md) — 设备台账
 
-### 3. 通用功能
-- [ ] Excel 导入导出
-- [ ] 审计日志记录
-- [ ] 引用完整性校验
+## 完成条件
+所有子 feature 完成后，本模块 feature 标记为完成。
 
 ---
 
 ## 进度记录
-
 | 日期 | 进度 | 备注 |
 |------|------|------|
-|      |      |      |
+| 2026-04-21 | 模块拆分完成 | 拆分为 3 个子 feature |
