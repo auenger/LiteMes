@@ -219,7 +219,11 @@ CREATE TABLE IF NOT EXISTS equipment_model (
 -- Seed data for testing
 INSERT INTO company (id, companyCode, name, shortCode, status, deleted) VALUES (1, 'CO001', '测试公司', 'TC', 1, 0);
 INSERT INTO factory (id, factoryCode, name, shortName, companyId, status, deleted) VALUES (1, 'F001', '测试工厂', 'TF', 1, 1, 0);
+INSERT INTO factory (id, factoryCode, name, shortName, companyId, status, deleted) VALUES (2, 'F002', '测试工厂2', 'TF2', 1, 1, 0);
 INSERT INTO work_center (id, workCenterCode, name, factoryId, status, deleted) VALUES (1, 'WC001', '测试工作中心', 1, 1, 0);
+
+-- Seed process data
+INSERT INTO process (id, processCode, name, workCenterId, status, deleted) VALUES (1, 'PS001', '测试工序', 1, 1, 0);
 
 -- Material tables for inspection exemption tests
 CREATE TABLE IF NOT EXISTS material_master (
@@ -305,4 +309,46 @@ CREATE TABLE IF NOT EXISTS equipment_ledger (
     createdAt             TIMESTAMP     DEFAULT NULL,
     updatedBy             VARCHAR(64)   DEFAULT NULL,
     updatedAt             TIMESTAMP     DEFAULT NULL
+);
+
+-- Data Permission Group tables (H2 test version)
+CREATE TABLE IF NOT EXISTS data_permission_group (
+    id            BIGINT       NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    groupName     VARCHAR(50)  NOT NULL,
+    remark        VARCHAR(200) NULL,
+    deleted       TINYINT      NOT NULL DEFAULT 0,
+    createdBy     VARCHAR(64)  NULL,
+    createdAt     TIMESTAMP    NULL,
+    updatedBy     VARCHAR(64)  NULL,
+    updatedAt     TIMESTAMP    NULL
+);
+
+CREATE TABLE IF NOT EXISTS data_permission_group_factory (
+    id            BIGINT       NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    groupId       BIGINT       NOT NULL,
+    factoryId     BIGINT       NOT NULL,
+    createdBy     VARCHAR(64)  NULL,
+    createdAt     TIMESTAMP    NULL,
+    updatedBy     VARCHAR(64)  NULL,
+    updatedAt     TIMESTAMP    NULL
+);
+
+CREATE TABLE IF NOT EXISTS data_permission_group_work_center (
+    id               BIGINT       NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    groupId          BIGINT       NOT NULL,
+    workCenterId     BIGINT       NOT NULL,
+    createdBy        VARCHAR(64)  NULL,
+    createdAt        TIMESTAMP    NULL,
+    updatedBy        VARCHAR(64)  NULL,
+    updatedAt        TIMESTAMP    NULL
+);
+
+CREATE TABLE IF NOT EXISTS data_permission_group_process (
+    id            BIGINT       NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    groupId       BIGINT       NOT NULL,
+    processId     BIGINT       NOT NULL,
+    createdBy     VARCHAR(64)  NULL,
+    createdAt     TIMESTAMP    NULL,
+    updatedBy     VARCHAR(64)  NULL,
+    updatedAt     TIMESTAMP    NULL
 );

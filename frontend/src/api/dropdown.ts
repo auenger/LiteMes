@@ -52,3 +52,12 @@ export function getEquipmentTypeDropdown() {
 export function getMaterialDropdown() {
   return apiGet<ApiResponse<DropdownItem[]>>('/api/dropdown/materials');
 }
+
+export function getWorkCenterDropdown(factoryId?: number) {
+  const params = factoryId ? { factoryId } : undefined;
+  return apiGet<ApiResponse<DropdownItem[]>>('/api/dropdown/work-centers', { params });
+}
+
+export function getProcessDropdown() {
+  return apiGet<ApiResponse<DropdownItem[]>>('/api/dropdown/processes');
+}

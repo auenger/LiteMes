@@ -111,6 +111,14 @@ public class ProcessRepositoryImpl implements ProcessRepository {
         return processMapper.selectList(wrapper);
     }
 
+    @Override
+    public List<Process> findAllActive() {
+        LambdaQueryWrapper<Process> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Process::getStatus, 1)
+               .orderByAsc(Process::getProcessCode);
+        return processMapper.selectList(wrapper);
+    }
+
     /**
      * Find all work center IDs that belong to a given factory.
      */

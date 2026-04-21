@@ -91,6 +91,11 @@ const routes = [
     name: 'SupplierList',
     component: () => import('../views/supplier/SupplierList.vue'),
   },
+  {
+    path: '/data-permission-groups',
+    name: 'DataPermissionGroupList',
+    component: () => import('../views/data-permission-group/DataPermissionGroupList.vue'),
+  },
 ];
 
 const router = createRouter({

@@ -29,4 +29,6 @@ public interface WorkCenterRepository {
     boolean existsByFactoryId(Long factoryId);
 
     List<WorkCenter> findByFactoryIdAndStatus(Long factoryId, Integer status);
+
+    List<WorkCenter> findAllActive();
 }

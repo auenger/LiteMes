@@ -91,4 +91,12 @@ public class WorkCenterRepositoryImpl implements WorkCenterRepository {
         }
         return workCenterMapper.selectList(wrapper);
     }
+
+    @Override
+    public List<WorkCenter> findAllActive() {
+        LambdaQueryWrapper<WorkCenter> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(WorkCenter::getStatus, 1)
+               .orderByAsc(WorkCenter::getWorkCenterCode);
+        return workCenterMapper.selectList(wrapper);
+    }
 }
