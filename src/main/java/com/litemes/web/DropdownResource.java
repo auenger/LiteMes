@@ -73,4 +73,11 @@ public class DropdownResource {
     public R<List<DropdownItem>> equipmentTypeDropdown() {
         return R.ok(dropdownService.getEquipmentTypeDropdown());
     }
+
+    @GET
+    @Path("/equipment-models")
+    @Operation(summary = "获取设备型号下拉列表", description = "返回所有启用状态的设备型号列表，支持按设备类型ID筛选")
+    public R<List<DropdownItem>> equipmentModelDropdown(@QueryParam("equipmentTypeId") Long equipmentTypeId) {
+        return R.ok(dropdownService.getEquipmentModelDropdown(equipmentTypeId));
+    }
 }

@@ -328,3 +328,23 @@ CREATE TABLE IF NOT EXISTS equipment_type (
     PRIMARY KEY (id),
     UNIQUE KEY uk_type_code (typeCode, deleted)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='设备类型';
+
+-- Equipment Model table
+CREATE TABLE IF NOT EXISTS equipment_model (
+    id                  BIGINT       NOT NULL AUTO_INCREMENT,
+    modelCode           VARCHAR(50)  NOT NULL,
+    modelName           VARCHAR(50)  NOT NULL,
+    equipmentTypeId     BIGINT       NOT NULL COMMENT '设备类型ID',
+    typeCode            VARCHAR(50)  NOT NULL COMMENT '设备类型编码(冗余)',
+    typeName            VARCHAR(50)  NOT NULL COMMENT '设备类型名称(冗余)',
+    status              TINYINT      NOT NULL DEFAULT 1 COMMENT '1=启用,0=禁用',
+    deleted             TINYINT      NOT NULL DEFAULT 0,
+    createdBy           VARCHAR(64)  NULL,
+    createdAt           DATETIME     NULL,
+    updatedBy           VARCHAR(64)  NULL,
+    updatedAt           DATETIME     NULL,
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_model_code (modelCode, deleted),
+    INDEX idx_equipment_type (equipmentTypeId),
+    CONSTRAINT fk_model_type FOREIGN KEY (equipmentTypeId) REFERENCES equipment_type(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='设备型号';

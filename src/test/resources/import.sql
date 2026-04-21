@@ -201,6 +201,21 @@ CREATE TABLE IF NOT EXISTS equipment_type (
     updatedAt       TIMESTAMP    NULL
 );
 
+CREATE TABLE IF NOT EXISTS equipment_model (
+    id                  BIGINT       NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    modelCode           VARCHAR(50)  NOT NULL,
+    modelName           VARCHAR(50)  NOT NULL,
+    equipmentTypeId     BIGINT       NOT NULL,
+    typeCode            VARCHAR(50)  NOT NULL,
+    typeName            VARCHAR(50)  NOT NULL,
+    status              TINYINT      NOT NULL DEFAULT 1,
+    deleted             TINYINT      NOT NULL DEFAULT 0,
+    createdBy           VARCHAR(64)  NULL,
+    createdAt           TIMESTAMP    NULL,
+    updatedBy           VARCHAR(64)  NULL,
+    updatedAt           TIMESTAMP    NULL
+);
+
 -- Seed data for testing
 INSERT INTO company (id, companyCode, name, shortCode, status, deleted) VALUES (1, 'CO001', '测试公司', 'TC', 1, 0);
 INSERT INTO factory (id, factoryCode, name, shortName, companyId, status, deleted) VALUES (1, 'F001', '测试工厂', 'TF', 1, 1, 0);

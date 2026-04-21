@@ -66,6 +66,11 @@ const routes = [
     name: 'EquipmentTypeList',
     component: () => import('../views/equipment-type/EquipmentTypeList.vue'),
   },
+  {
+    path: '/equipment-models',
+    name: 'EquipmentModelList',
+    component: () => import('../views/equipment-model/EquipmentModelList.vue'),
+  },
 ];
 
 const router = createRouter({
