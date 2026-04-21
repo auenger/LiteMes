@@ -1,0 +1,119 @@
+# LiteMes Quarkus Configuration
+
+quarkus:
+  application:
+    name: litemes
+    version: 1.0.0-SNAPSHOT
+
+  # HTTP Server
+  http:
+    port: 8080
+    cors:
+      ~: true
+      origins: http://localhost:3000,http://localhost:5173
+      methods: GET,POST,PUT,DELETE,PATCH,OPTIONS
+      headers: Authorization,Content-Type,Accept
+      access-control-max-age: 3600
+      expose-headers: Content-Disposition
+
+  # DataSource (MySQL)
+  datasource:
+    db-kind: mysql
+    jdbc:
+      url: jdbc:mysql://localhost:3306/litemes?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
+      min-size: 5
+      max-size: 20
+    username: root
+    password: password
+
+  # Hibernate Validator
+  hibernate-validator:
+    fail-fast: true
+
+  # SmallRye JWT
+  smallrye-jwt:
+    enabled: true
+  jwt:
+    enabled: true
+    new-cookie:
+      name: litemes-jwt
+    http:
+      only-cookie:
+        names: ""
+    secret:
+      key: "litemes-jwt-secret-key-must-be-at-least-256-bits-long-for-hmac-sha-256"
+    issuer: "https://litemes.com"
+    audiences:
+      - "litemes-api"
+    token:
+      lifespan: 86400  # 24 hours in seconds
+
+  # SmallRye OpenAPI / Swagger UI
+  smallrye-openapi:
+    path: /q/openapi
+    info-title: LiteMes API
+    info-version: 1.0.0
+    info-description: PCB Lightweight MES System REST API
+    servers: "http://localhost:8080"
+    security-scheme: jwt
+    security-scheme-name: bearerAuth
+
+  swagger-ui:
+    always-include: true
+    path: /q/swagger-ui
+
+  # Redis
+  redis:
+    hosts: redis://localhost:6379
+
+  # Health
+  smallrye-health:
+    root-path: /q/health
+    liveness-path: /q/health/live
+    readiness-path: /q/health/ready
+
+  # Logging
+  log:
+    level: INFO
+    category:
+      "com.litemes":
+        level: DEBUG
+    handler:
+      json:
+        enable: true
+        pretty-print: false
+
+  # Native Image
+  native:
+    additional-build-args: "--initialize-at-run-time=com.litemes"
+
+  # MyBatis-Plus Extension
+  mybatis-plus:
+    meta-object-handler: com.litemes.infrastructure.config.AuditMetaObjectHandler
+    global-config:
+      db-config:
+        logic-delete-field: deleted
+        logic-delete-value: 1
+        logic-not-delete-value: 0
+        id-type: auto
+
+# Development Profile
+"%dev":
+  quarkus:
+    log:
+      level: DEBUG
+      category:
+        "com.litemes":
+          level: TRACE
+    http:
+      port: 8080
+    swagger-ui:
+      always-include: true
+
+# Test Profile - uses MySQL (same as dev)
+"%test":
+  quarkus:
+    log:
+      level: WARN
+    smallrye-jwt:
+      enabled: true
