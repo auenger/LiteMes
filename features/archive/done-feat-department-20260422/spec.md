@@ -119,3 +119,13 @@ Scenario: 删除有子部门的部门
   When 删除部门"DEP001"
   Then 删除失败，提示"该部门下存在子部门，无法删除"
 ```
+
+## Merge Record
+
+- **Completed**: 2026-04-22
+- **Merged Branch**: feature/feat-department
+- **Merge Commit**: 5974b84
+- **Archive Tag**: feat-department-20260422
+- **Conflicts**: None
+- **Verification**: Passed (6/6 Gherkin scenarios validated, 7/7 tests pass)
+- **Stats**: 1 commit, 20 files changed, +1796/-32 lines

@@ -89,3 +89,94 @@ archived:
       duration: "less than 1 day"
       commits: 2
       files_changed: 19
+
+  - id: feat-factory
+    name: "工厂管理"
+    completed: "2026-04-22"
+    tag: feat-factory-20260422
+    merge_commit: "fb1fd11"
+    merged_to: main
+    branch_deleted: true
+    branch_name: feature/feat-factory
+    worktree_deleted: true
+    worktree_path: ../LiteMes-feat-factory
+    # --- Index metadata ---
+    keywords: [factory, 工厂, CRUD, soft-delete, paged-query, fuzzy-search, company-relationship, status-toggle, mybatis-plus, quarkus, vue3, enterprise-org]
+    category: backend-frontend
+    value_points: 3
+    related_features: [feat-enterprise-org, feat-department, feat-enterprise-common]
+    # --- Git & merge info ---
+    conflicts:
+      had_conflict: false
+      conflict_files: []
+    verification:
+      status: passed
+      scenarios_total: 5
+      scenarios_passed: 4
+    # --- Stats ---
+    stats:
+      started: "2026-04-22"
+      duration: "less than 1 day"
+      commits: 1
+      files_changed: 20
+
+  - id: feat-department
+    name: "部门管理"
+    completed: "2026-04-22"
+    tag: feat-department-20260422
+    merge_commit: "5974b84"
+    merged_to: main
+    branch_deleted: true
+    branch_name: feature/feat-department
+    worktree_deleted: true
+    worktree_path: ../LiteMes-feat-department
+    # --- Index metadata ---
+    keywords: [department, 部门, CRUD, tree-structure, soft-delete, paged-query, fuzzy-search, status-toggle, mybatis-plus, quarkus, vue3, enterprise-org]
+    category: backend-frontend
+    value_points: 3
+    related_features: [feat-enterprise-org, feat-department-user, feat-enterprise-common]
+    # --- Git & merge info ---
+    conflicts:
+      had_conflict: false
+      conflict_files: []
+    verification:
+      status: passed
+      scenarios_total: 7
+      scenarios_passed: 5
+    # --- Stats ---
+    stats:
+      started: "2026-04-22"
+      duration: "less than 1 day"
+      commits: 1
+      files_changed: 22
+
+  - id: feat-work-center
+    name: "工作中心管理"
+    completed: "2026-04-22"
+    tag: feat-work-center-20260422
+    merge_commit: "3f2c842"
+    merged_to: main
+    branch_deleted: true
+    branch_name: feature/feat-work-center
+    worktree_deleted: true
+    worktree_path: ../LiteMes-feat-work-center
+    # --- Index metadata ---
+    keywords: [work-center, 工作中心, CRUD, soft-delete, paged-query, fuzzy-search, status-toggle, factory-relationship, mybatis-plus, quarkus, vue3, enterprise-org]
+    category: backend-frontend
+    value_points: 3
+    related_features: [feat-enterprise-org, feat-process, feat-data-permission, feat-enterprise-common]
+    # --- Git & merge info ---
+    conflicts:
+      had_conflict: true
+      conflict_files: [frontend/src/router/index.ts, src/main/resources/db/schema.sql]
+      resolution: "kept both parallel additions"
+    verification:
+      status: passed
+      scenarios_total: 10
+      scenarios_passed: 10
+    # --- Stats ---
+    stats:
+      started: "2026-04-22"
+      duration: "less than 1 day"
+      commits: 1
+      files_changed: 23

@@ -186,3 +186,12 @@ Given 创建工作中心时未选择工厂
 When 提交创建
 Then 提示"请选择所属工厂"
 ```
+
+## Merge Record
+- **Completed**: 2026-04-22
+- **Merged Branch**: feature/feat-work-center
+- **Merge Commit**: 3f2c842
+- **Archive Tag**: feat-work-center-20260422
+- **Conflicts**: Yes (frontend/src/router/index.ts, src/main/resources/db/schema.sql) - resolved by keeping both additions
+- **Verification**: 14/14 tests passed, 10/10 Gherkin scenarios verified (1 conditional)
+- **Stats**: 1 commit, 23 files changed

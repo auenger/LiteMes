@@ -106,3 +106,14 @@ Scenario: 工厂查询显示公司信息
   When 查询工厂列表
   Then 每条记录显示所属公司名称
 ```
+
+## Merge Record
+
+- **Completed**: 2026-04-22
+- **Branch**: feature/feat-factory
+- **Merge Commit**: fb1fd11
+- **Archive Tag**: feat-factory-20260422
+- **Conflicts**: none
+- **Verification**: passed (4/5 scenarios passed, 1 partial - department reference deferred)
+- **Files Changed**: 20
+- **Duration**: less than 1 day
