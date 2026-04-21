@@ -16,6 +16,8 @@ pending:
       - feat-department
       - feat-department-user
       - feat-shift-schedule
+      - feat-work-center
+      - feat-process
       - feat-enterprise-common
 
   - id: feat-company
@@ -58,6 +60,22 @@ pending:
     dependencies:
       - feat-project-scaffold
 
+  - id: feat-work-center
+    name: "工作中心管理"
+    priority: 89
+    size: M
+    parent: feat-enterprise-org
+    dependencies:
+      - feat-factory
+
+  - id: feat-process
+    name: "工序管理"
+    priority: 88
+    size: M
+    parent: feat-enterprise-org
+    dependencies:
+      - feat-work-center
+
   - id: feat-enterprise-common
     name: "企业管理通用功能"
     priority: 90
@@ -69,6 +87,8 @@ pending:
       - feat-department
       - feat-department-user
       - feat-shift-schedule
+      - feat-work-center
+      - feat-process
 
   - id: feat-material-master
     name: "物料主数据"
@@ -182,6 +202,8 @@ pending:
     size: L
     dependencies:
       - feat-enterprise-org
+      - feat-work-center
+      - feat-process
     children:
       - feat-permission-group
       - feat-user-permission
@@ -193,6 +215,8 @@ pending:
     parent: feat-data-permission
     dependencies:
       - feat-enterprise-org
+      - feat-work-center
+      - feat-process
 
   - id: feat-user-permission
     name: "用户数据权限"
@@ -201,6 +225,8 @@ pending:
     parent: feat-data-permission
     dependencies:
       - feat-permission-group
+      - feat-work-center
+      - feat-process
 
 active: []
 
@@ -209,3 +235,4 @@ meta:
   split_history:
     feat-supply-chain: "2026-04-21 split into feat-customer, feat-supplier"
     feat-data-permission: "2026-04-21 split into feat-permission-group, feat-user-permission"
+    feat-enterprise-org: "2026-04-21 added feat-work-center, feat-process as children"

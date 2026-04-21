@@ -10,7 +10,7 @@
 - **创建时间**: 2026-04-21
 
 ## 需求来源
-- docx/设备主数据_功能设计_V1.0.md — 第3章 设备类型
+- docx/设备主数据_功能设计_V1.0.docx — 第3章 设备类型
 
 ## 需求描述
 定义设备类型的基础数据，包括设备类型编码、名称和状态管理。设备类型是设备型号的上游分类，为设备型号选择提供下拉数据源。
@@ -50,6 +50,72 @@
 | 导出 | 导出查询结果到 Excel |
 | 日志 | 查看变更履历 |
 
+## 用户价值点
+
+1. **标准化设备分类体系** — 统一定义 PCB 制造中的设备类型（钻孔、测试、压合、电镀等），建立清晰的设备分类标准
+2. **设备型号数据源** — 为设备型号管理提供类型下拉数据源，确保型号归属类型的一致性
+3. **数据引用安全** — 已被设备型号引用的类型不可删除，保障设备分类体系完整性
+4. **批量数据维护** — 支持 Excel 导入导出，快速初始化设备类型基础数据
+
+## 上下文分析
+
+### 关联 Feature
+- **feat-enterprise-org**（前置）— 提供审计基类 BaseEntity/SoftDeleteEntity 模式、全局异常处理、通用分页模式
+- **feat-equipment-model**（下游）— EquipmentModel 通过 equipment_type_id 引用 EquipmentType，是本 feature 的主要消费者
+- **feat-factory**（feat-enterprise-org 子模块）— EquipmentLedger 通过 factory_id 引用 Factory，间接依赖本 feature 的分类体系
+
+### 参考代码模式
+- `com.litemes.domain.entity.BaseEntity` — 审计字段基类（created_by, created_at, updated_by, updated_at）
+- `com.litemes.domain.entity.SoftDeleteEntity` — 软删除基类（继承 BaseEntity + deleted 字段）
+- `com.litemes.web.*Resource` — JAX-RS Resource 模板（分页查询、CRUD、导入导出）
+- `com.litemes.application.*Service` — 应用服务层（DTO 转换、事务编排、唯一性校验）
+- `com.litemes.infrastructure.persistence.*Mapper` — MyBatis-Plus Mapper 模式
+
+## 数据库模型设计
+
+### 基类继承
+
+| 实体 | 基类 | 审计字段 | 软删除 |
+|------|------|---------|--------|
+| EquipmentType | SoftDeleteEntity | ✓ | ✓ |
+
+### EquipmentType（设备类型）
+
+| 列名 | 数据类型 | 必录 | 可编辑 | 默认值 | 约束 | 备注 |
+|------|---------|------|--------|--------|------|------|
+| id | BIGINT | - | - | AUTO_INCREMENT | PK | |
+| type_code | VARCHAR(50) | Y | N | - | UNIQUE, NOT NULL | 设备类型编码，创建后不可修改 |
+| type_name | VARCHAR(50) | Y | Y | - | NOT NULL | 设备类型名称 |
+| status | TINYINT | N | N | 1 | NOT NULL | 1=启用, 0=禁用 |
+| created_by | VARCHAR(50) | - | - | 系统登录人 | - | |
+| created_at | DATETIME | - | - | 系统时间 | - | yyyy/MM/dd HH:mm:ss |
+| updated_by | VARCHAR(50) | - | - | 系统登录人 | - | |
+| updated_at | DATETIME | - | - | 系统时间 | - | yyyy/MM/dd HH:mm:ss |
+| deleted | TINYINT | - | - | 0 | NOT NULL | 0=未删除, 1=已删除 |
+
+```sql
+CREATE TABLE equipment_type (
+    id           BIGINT       AUTO_INCREMENT PRIMARY KEY,
+    type_code    VARCHAR(50)  NOT NULL,
+    type_name    VARCHAR(50)  NOT NULL,
+    status       TINYINT      NOT NULL DEFAULT 1 COMMENT '1-启用, 0-禁用',
+    created_by   VARCHAR(50)  DEFAULT NULL,
+    created_at   DATETIME     DEFAULT NULL,
+    updated_by   VARCHAR(50)  DEFAULT NULL,
+    updated_at   DATETIME     DEFAULT NULL,
+    deleted      TINYINT      NOT NULL DEFAULT 0 COMMENT '0-未删除, 1-已删除',
+    UNIQUE KEY uk_type_code (type_code)
+) COMMENT '设备类型';
+```
+
+### 设计决策
+
+| 决策 | 原因 |
+|------|------|
+| 软删除而非物理删除 | 设备类型可能被设备型号引用，需保留历史完整性 |
+| type_code UNIQUE | 编码全局唯一，作为业务主键标识 |
+| 编码创建后不可修改 | 业务主键稳定性要求，被下游型号表引用 |
+
 ## 验收标准 (Gherkin)
 
 ### 场景 1: 创建设备类型
@@ -73,4 +139,19 @@ And 编码 "DRILL" 不可修改
 Given 设备类型 "DRILL" 已被设备型号引用
 When 用户尝试删除该类型
 Then 删除按钮置灰，不可点击
+```
+
+### 场景 4: 编码唯一性校验
+```gherkin
+Given 设备类型编码 "DRILL" 已存在
+When 再次创建编码为 "DRILL" 的设备类型
+Then 返回错误 "设备类型编码已存在"
+```
+
+### 场景 5: Excel 批量导入
+```gherkin
+Given 用户上传包含设备类型数据的 Excel 文件
+When 文件中有 5 条有效数据，其中 1 条编码已存在
+Then 4 条导入成功，1 条返回编码重复错误
+And 返回导入结果报告
 ```

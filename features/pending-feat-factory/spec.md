@@ -25,19 +25,52 @@
 
 ## 数据模型
 
-### Factory
-| 字段 | 类型 | 约束 |
-|------|------|------|
-| id | UUID | PK |
-| factory_code | VARCHAR(50) | UNIQUE, NOT NULL |
-| name | VARCHAR(50) | NOT NULL |
-| short_name | VARCHAR(50) | |
-| company_id | UUID | FK -> Company, NOT NULL |
-| status | BOOLEAN | DEFAULT true |
-| created_by | VARCHAR(50) | |
-| created_at | DATETIME | |
-| updated_by | VARCHAR(50) | |
-| updated_at | DATETIME | |
+### Factory（继承 SoftDeleteEntity）
+| 字段 | 类型 | 约束 | 说明 |
+|------|------|------|------|
+| id | BIGINT | PK, AUTO_INCREMENT | 主键 |
+| factory_code | VARCHAR(50) | UNIQUE, NOT NULL | 工厂编码，创建后不可修改 |
+| name | VARCHAR(50) | NOT NULL | 工厂名称 |
+| short_name | VARCHAR(50) | | 简称 |
+| company_id | BIGINT | FK -> Company, NOT NULL | 所属公司 |
+| status | TINYINT | NOT NULL, DEFAULT 1 | 状态：1=启用，0=禁用 |
+| deleted | TINYINT | NOT NULL, DEFAULT 0 | 软删除标记（@TableLogic） |
+| created_by | VARCHAR(64) | AUTO FILL | 创建人 |
+| created_at | DATETIME | AUTO FILL | 创建时间 |
+| updated_by | VARCHAR(64) | AUTO FILL | 修改人 |
+| updated_at | DATETIME | AUTO FILL | 修改时间 |
+
+### 数据库索引
+| 索引名 | 类型 | 字段 | 说明 |
+|--------|------|------|------|
+| uk_factory_code | UNIQUE | factory_code | 编码唯一性（WHERE deleted = 0） |
+| idx_factory_company | INDEX | company_id | 按公司查询工厂 |
+
+### 数据库表 DDL（参考）
+
+```sql
+CREATE TABLE factory (
+    id            BIGINT       NOT NULL AUTO_INCREMENT,
+    factory_code  VARCHAR(50)  NOT NULL,
+    name          VARCHAR(50)  NOT NULL,
+    short_name    VARCHAR(50)  NULL,
+    company_id    BIGINT       NOT NULL,
+    status        TINYINT      NOT NULL DEFAULT 1 COMMENT '1=启用,0=禁用',
+    deleted       TINYINT      NOT NULL DEFAULT 0,
+    created_by    VARCHAR(64)  NULL,
+    created_at    DATETIME     NULL,
+    updated_by    VARCHAR(64)  NULL,
+    updated_at    DATETIME     NULL,
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_factory_code (factory_code, deleted),
+    INDEX idx_factory_company (company_id),
+    CONSTRAINT fk_factory_company FOREIGN KEY (company_id) REFERENCES company(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='工厂';
+```
+
+### 引用检查规则
+- 被删除前需检查 `Department.factory_id` 是否有引用
+- 被禁用前需检查关联部门是否仍有启用状态
 
 ## 验收标准
 

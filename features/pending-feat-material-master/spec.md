@@ -34,18 +34,76 @@ feat-enterprise-org
 ```
 
 ## 整体数据模型关系
+
+### ER 关系图
+
 ```
-Uom ──────────────────┐
-  ↑                    │
-  │ (单位换算)          │ (单位引用)
-UomConversion    MaterialMaster
-                    ↑  │
-       (分类引用)  │  │ (物料引用)
-                    │  ↓
-            MaterialCategory  InspectionExemption
-                                    ↑
-                              (供应商引用)
-                            [供应商表 - 外部模块]
+┌──────────────┐    ┌──────────────────────┐
+│     Uom      │    │    UomConversion     │
+│──────────────│    │──────────────────────│
+│ id (PK)      │◄───│ from_uom_id (FK)     │
+│ uom_code (UK)│◄───│ to_uom_id (FK)       │
+│ uom_name (UK)│    │ conversion_rate      │
+│ status       │    │ status               │
+│ precision    │    │ UK(from_uom_id, to_uom_id) │
+└──────┬───────┘    └──────────────────────┘
+       │
+       │ (uom_id FK)
+       ▼
+┌──────────────────────┐    ┌──────────────────────┐
+│   MaterialMaster     │    │   MaterialCategory   │
+│──────────────────────│    │──────────────────────│
+│ id (PK)              │    │ id (PK)              │
+│ material_code (UK)   │    │ category_code (UK)   │
+│ material_name (UK)   │    │ category_name (UK)   │
+│ basic_category       │    │ is_quality_category  │
+│ category_id (FK) ────│───►│ parent_id (FK→self)  │
+│ attribute_category   │    │ status               │
+│ uom_id (FK)          │    └──────────────────────┘
+│ PCB 属性字段(14个)    │
+│ ext1~ext5            │    ┌──────────────────────┐
+│ status               │    │   MaterialVersion    │
+└──────┬───────┬───────┘    │──────────────────────│
+       │       │            │ id (PK)              │
+       │       └───────────►│ material_id (FK)     │
+       │                    │ version_no           │
+       │                    │ UK(material_id, version_no) │
+       │                    └──────────────────────┘
+       │
+       │ (material_id FK)
+       ▼
+┌──────────────────────┐
+│ InspectionExemption  │
+│──────────────────────│
+│ id (PK)              │
+│ material_id (FK)     │
+│ material_code (冗余) │
+│ material_name (冗余) │
+│ supplier_id (可空)*  │───► [supplier 表 - feat-supplier 模块]
+│ supplier_code (冗余) │     * 无DB级FK，逻辑引用
+│ supplier_name (冗余) │
+│ valid_from / valid_to│
+│ status               │
+└──────────────────────┘
+```
+
+### 跨模块引用说明
+
+| 本模块表 | 外部表 | 引用方式 | 外部模块 | 状态 |
+|---------|--------|---------|---------|------|
+| InspectionExemption.supplier_id | supplier | 逻辑引用，无DB级FK | feat-supplier | 未开发 |
+
+**所有实体均继承 SoftDeleteEntity（审计字段 + 软删除），主键为 BIGINT AUTO_INCREMENT。**
+
+### 建表顺序（按依赖关系）
+
+```
+1. uom                    — 无外部依赖
+2. uom_conversion         — 依赖 uom
+3. material_category      — 无外部依赖（parent_id 自引用）
+4. material_master        — 依赖 uom, material_category
+5. material_version       — 依赖 material_master
+6. inspection_exemption   — 依赖 material_master
 ```
 
 ## 模块进度

@@ -31,32 +31,86 @@
 
 ## 数据模型
 
-### ShiftSchedule (班制)
-| 字段 | 类型 | 约束 |
-|------|------|------|
-| id | UUID | PK |
-| shift_code | VARCHAR(50) | UNIQUE, NOT NULL |
-| name | VARCHAR(50) | NOT NULL |
-| is_default | BOOLEAN | DEFAULT false |
-| status | BOOLEAN | DEFAULT true |
-| created_by | VARCHAR(50) | |
-| created_at | DATETIME | |
-| updated_by | VARCHAR(50) | |
-| updated_at | DATETIME | |
+### ShiftSchedule（班制，继承 SoftDeleteEntity）
+| 字段 | 类型 | 约束 | 说明 |
+|------|------|------|------|
+| id | BIGINT | PK, AUTO_INCREMENT | 主键 |
+| shift_code | VARCHAR(50) | UNIQUE, NOT NULL | 班制编码，创建后不可修改 |
+| name | VARCHAR(50) | NOT NULL | 班制名称 |
+| is_default | TINYINT | NOT NULL, DEFAULT 0 | 是否默认：1=是，0=否 |
+| status | TINYINT | NOT NULL, DEFAULT 1 | 状态：1=启用，0=禁用 |
+| deleted | TINYINT | NOT NULL, DEFAULT 0 | 软删除标记（@TableLogic） |
+| created_by | VARCHAR(64) | AUTO FILL | 创建人 |
+| created_at | DATETIME | AUTO FILL | 创建时间 |
+| updated_by | VARCHAR(64) | AUTO FILL | 修改人 |
+| updated_at | DATETIME | AUTO FILL | 修改时间 |
 
-### Shift (班次)
-| 字段 | 类型 | 约束 |
-|------|------|------|
-| id | UUID | PK |
-| shift_schedule_id | UUID | FK -> ShiftSchedule, NOT NULL |
-| shift_code | VARCHAR(50) | UNIQUE, NOT NULL |
-| name | VARCHAR(50) | NOT NULL |
-| start_time | TIME | NOT NULL |
-| end_time | TIME | NOT NULL |
-| cross_day | BOOLEAN | DEFAULT false |
-| status | BOOLEAN | DEFAULT true |
-| created_by | VARCHAR(50) | |
-| created_at | DATETIME | |
+### Shift（班次，继承 SoftDeleteEntity）
+| 字段 | 类型 | 约束 | 说明 |
+|------|------|------|------|
+| id | BIGINT | PK, AUTO_INCREMENT | 主键 |
+| shift_schedule_id | BIGINT | FK -> ShiftSchedule, NOT NULL | 所属班制 |
+| shift_code | VARCHAR(50) | UNIQUE, NOT NULL | 班次编码，创建后不可修改 |
+| name | VARCHAR(50) | NOT NULL | 班次名称 |
+| start_time | TIME | NOT NULL | 开始时间 |
+| end_time | TIME | NOT NULL | 结束时间 |
+| cross_day | TINYINT | NOT NULL, DEFAULT 0 | 是否跨天：1=是，0=否 |
+| status | TINYINT | NOT NULL, DEFAULT 1 | 状态：1=启用，0=禁用 |
+| deleted | TINYINT | NOT NULL, DEFAULT 0 | 软删除标记（@TableLogic） |
+| created_by | VARCHAR(64) | AUTO FILL | 创建人 |
+| created_at | DATETIME | AUTO FILL | 创建时间 |
+| updated_by | VARCHAR(64) | AUTO FILL | 修改人 |
+| updated_at | DATETIME | AUTO FILL | 修改时间 |
+
+### 数据库索引
+| 索引名 | 类型 | 字段 | 说明 |
+|--------|------|------|------|
+| uk_shift_schedule_code | UNIQUE | shift_code | 班制编码唯一性（WHERE deleted = 0） |
+| uk_shift_code | UNIQUE | shift_code | 班次编码唯一性（WHERE deleted = 0） |
+| idx_shift_schedule | INDEX | shift_schedule_id | 按班制查班次 |
+
+### 数据库表 DDL（参考）
+
+```sql
+CREATE TABLE shift_schedule (
+    id            BIGINT       NOT NULL AUTO_INCREMENT,
+    shift_code    VARCHAR(50)  NOT NULL,
+    name          VARCHAR(50)  NOT NULL,
+    is_default    TINYINT      NOT NULL DEFAULT 0 COMMENT '1=默认,0=非默认',
+    status        TINYINT      NOT NULL DEFAULT 1 COMMENT '1=启用,0=禁用',
+    deleted       TINYINT      NOT NULL DEFAULT 0,
+    created_by    VARCHAR(64)  NULL,
+    created_at    DATETIME     NULL,
+    updated_by    VARCHAR(64)  NULL,
+    updated_at    DATETIME     NULL,
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_shift_schedule_code (shift_code, deleted)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='班制';
+
+CREATE TABLE shift (
+    id                 BIGINT       NOT NULL AUTO_INCREMENT,
+    shift_schedule_id  BIGINT       NOT NULL,
+    shift_code         VARCHAR(50)  NOT NULL,
+    name               VARCHAR(50)  NOT NULL,
+    start_time         TIME         NOT NULL,
+    end_time           TIME         NOT NULL,
+    cross_day          TINYINT      NOT NULL DEFAULT 0 COMMENT '1=跨天,0=不跨天',
+    status             TINYINT      NOT NULL DEFAULT 1 COMMENT '1=启用,0=禁用',
+    deleted            TINYINT      NOT NULL DEFAULT 0,
+    created_by         VARCHAR(64)  NULL,
+    created_at         DATETIME     NULL,
+    updated_by         VARCHAR(64)  NULL,
+    updated_at         DATETIME     NULL,
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_shift_code (shift_code, deleted),
+    INDEX idx_shift_schedule (shift_schedule_id),
+    CONSTRAINT fk_shift_schedule FOREIGN KEY (shift_schedule_id) REFERENCES shift_schedule(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='班次';
+```
+
+### 引用检查规则
+- 班制被删除前需检查 `Shift.shift_schedule_id` 是否有班次
+- 班制禁用不影响已有班次状态
 
 ## 验收标准
 

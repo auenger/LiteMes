@@ -24,14 +24,44 @@
 
 ## 数据模型
 
-### DepartmentUser
-| 字段 | 类型 | 约束 |
-|------|------|------|
-| id | UUID | PK |
-| department_id | UUID | FK -> Department, NOT NULL |
-| user_id | UUID | FK -> User, NOT NULL |
-| created_by | VARCHAR(50) | |
-| created_at | DATETIME | |
+### DepartmentUser（继承 BaseEntity，无软删除）
+| 字段 | 类型 | 约束 | 说明 |
+|------|------|------|------|
+| id | BIGINT | PK, AUTO_INCREMENT | 主键 |
+| department_id | BIGINT | FK -> Department, NOT NULL | 部门 |
+| user_id | BIGINT | FK -> User, NOT NULL | 用户 |
+| created_by | VARCHAR(64) | AUTO FILL | 创建人 |
+| created_at | DATETIME | AUTO FILL | 创建时间 |
+
+### 数据库索引
+| 索引名 | 类型 | 字段 | 说明 |
+|--------|------|------|------|
+| uk_dept_user | UNIQUE | (department_id, user_id) | 同一部门不可重复分配用户 |
+| idx_dept_user_dept | INDEX | department_id | 按部门查用户 |
+| idx_dept_user_user | INDEX | user_id | 按用户查部门 |
+
+### 数据库表 DDL（参考）
+
+```sql
+CREATE TABLE department_user (
+    id            BIGINT      NOT NULL AUTO_INCREMENT,
+    department_id BIGINT      NOT NULL,
+    user_id       BIGINT      NOT NULL,
+    created_by    VARCHAR(64) NULL,
+    created_at    DATETIME    NULL,
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_dept_user (department_id, user_id),
+    INDEX idx_dept_user_dept (department_id),
+    INDEX idx_dept_user_user (user_id),
+    CONSTRAINT fk_du_department FOREIGN KEY (department_id) REFERENCES department(id),
+    CONSTRAINT fk_du_user FOREIGN KEY (user_id) REFERENCES user(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='部门用户关系';
+```
+
+### 业务规则
+- 同一用户可归属多个部门（多对多关系）
+- 移除用户为物理删除（非软删除），直接删除关联记录
+- 部门被删除（软删除）时，其下所有 DepartmentUser 记录一并物理删除
 
 ## 验收标准
 
@@ -61,4 +91,15 @@ Scenario: 移除部门用户
   Given 用户"张三"已分配到部门"DEP001"
   When 在部门用户列表中移除"张三"
   Then "张三"已从部门"DEP001"移除
+
+Scenario: 重复分配同一用户
+  Given 用户"张三"已分配到部门"DEP001"
+  When 再次将"张三"分配到部门"DEP001"
+  Then 分配失败，提示"该用户已在此部门中"
+
+Scenario: 用户归属多个部门
+  Given 部门"DEP001"和"DEP002"已存在
+  And 用户"张三"已分配到部门"DEP001"
+  When 将"张三"分配到部门"DEP002"
+  Then "张三"同时归属"DEP001"和"DEP002"
 ```
