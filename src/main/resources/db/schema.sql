@@ -83,3 +83,25 @@ CREATE TABLE IF NOT EXISTS factory (
     INDEX idx_factory_company (company_id),
     CONSTRAINT fk_factory_company FOREIGN KEY (company_id) REFERENCES company(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='工厂';
+
+-- Department table
+CREATE TABLE IF NOT EXISTS department (
+    id              BIGINT       NOT NULL AUTO_INCREMENT,
+    department_code VARCHAR(50)  NOT NULL,
+    name            VARCHAR(50)  NOT NULL,
+    factory_id      BIGINT       NOT NULL,
+    parent_id       BIGINT       NULL COMMENT '上级部门ID，NULL表示顶级部门',
+    sort_order      INT          NOT NULL DEFAULT 0,
+    status          TINYINT      NOT NULL DEFAULT 1 COMMENT '1=启用,0=禁用',
+    deleted         TINYINT      NOT NULL DEFAULT 0,
+    created_by      VARCHAR(64)  NULL,
+    created_at      DATETIME     NULL,
+    updated_by      VARCHAR(64)  NULL,
+    updated_at      DATETIME     NULL,
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_department_code (department_code, deleted),
+    INDEX idx_dept_factory (factory_id),
+    INDEX idx_dept_parent (parent_id),
+    CONSTRAINT fk_dept_factory FOREIGN KEY (factory_id) REFERENCES factory(id),
+    CONSTRAINT fk_dept_parent FOREIGN KEY (parent_id) REFERENCES department(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='部门';

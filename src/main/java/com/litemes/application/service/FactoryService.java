@@ -35,6 +35,9 @@ public class FactoryService {
     @Inject
     CompanyRepository companyRepository;
 
+    @Inject
+    com.litemes.domain.repository.DepartmentRepository departmentRepository;
+
     @Transactional
     public Long create(FactoryCreateDto dto) {
         LOG.debugf("Creating factory: %s", dto.getFactoryCode());
@@ -105,9 +108,9 @@ public class FactoryService {
         Factory entity = findOrThrow(id);
 
         // Reference check: Department.factory_id
-        // Note: Department entity does not exist yet, so we skip the actual check
-        // This will be implemented when feat-department is developed
-        // TODO: Check if any Department references this factory before deleting
+        if (departmentRepository.existsByFactoryId(id)) {
+            throw new BusinessException("FACTORY_REFERENCED", "该工厂下存在部门，无法删除");
+        }
 
         factoryRepository.deleteById(id);
         LOG.infof("Deleted factory: %d", id);
