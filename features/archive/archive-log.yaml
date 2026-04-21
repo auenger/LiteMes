@@ -240,3 +240,33 @@ archived:
       duration: "less than 1 day"
       commits: 2
       files_changed: 16
+
+  - id: feat-enterprise-common
+    name: "企业管理通用功能"
+    completed: "2026-04-22"
+    tag: feat-enterprise-common-20260422
+    merge_commit: "eba97f4"
+    merged_to: main
+    branch_deleted: true
+    branch_name: feature/feat-enterprise-common
+    worktree_deleted: true
+    worktree_path: ../LiteMes-feat-enterprise-common
+    # --- Index metadata ---
+    keywords: [audit-log, dropdown, cascade, table-settings, localStorage, AuditLogService, DropdownResource, AuditLogDialog, useTableSettings, mybatis-plus, quarkus, vue3]
+    category: backend-frontend
+    value_points: 4
+    related_features: [feat-enterprise-org, feat-company, feat-factory, feat-department, feat-work-center]
+    # --- Git & merge info ---
+    conflicts:
+      had_conflict: false
+      conflict_files: []
+    verification:
+      status: passed
+      scenarios_total: 10
+      scenarios_passed: 10
+    # --- Stats ---
+    stats:
+      started: "2026-04-22T07:00:00"
+      duration: "less than 1 day"
+      commits: 1
+      files_changed: 32
