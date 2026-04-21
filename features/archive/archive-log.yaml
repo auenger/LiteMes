@@ -483,3 +483,34 @@ archived:
       duration: "less than 1 day"
       commits: 1
       files_changed: 21
+
+  - id: feat-equipment-ledger
+    name: "设备台账"
+    completed: "2026-04-22"
+    tag: feat-equipment-ledger-20260422
+    merge_commit: "a7b3296"
+    merged_to: main
+    branch_deleted: true
+    branch_name: feature/feat-equipment-ledger
+    worktree_deleted: true
+    worktree_path: ../LiteMes-feat-equipment-ledger
+    # --- Index metadata ---
+    keywords: [equipment-ledger, 设备台账, CRUD, soft-delete, paged-query, fuzzy-search, status-toggle, running-status, manage-status, equipment-model, equipment-type, factory, redundant-fields, cascade, reference-check, uniqueness-validation, dropdown, mybatis-plus, quarkus, vue3]
+    category: backend-frontend
+    value_points: 4
+    related_features: [feat-equipment-master, feat-equipment-type, feat-equipment-model, feat-enterprise-org]
+    # --- Git & merge info ---
+    conflicts:
+      had_conflict: true
+      conflict_files: [frontend/src/router/index.ts, src/main/resources/db/schema.sql]
+      resolution: "kept both parallel additions from feat-customer and feat-equipment-ledger"
+    verification:
+      status: passed
+      scenarios_total: 7
+      scenarios_passed: 6
+    # --- Stats ---
+    stats:
+      started: "2026-04-22T15:00:00"
+      duration: "less than 1 day"
+      commits: 1
+      files_changed: 23

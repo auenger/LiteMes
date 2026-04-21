@@ -40,14 +40,6 @@ pending:
       - feat-equipment-ledger
 
 
-  - id: feat-equipment-ledger
-    name: "设备台账"
-    priority: 71
-    size: M
-    parent: feat-equipment-master
-    dependencies:
-      - feat-equipment-model
-
   - id: feat-supply-chain
     name: "供应链主数据"
     priority: 60
@@ -101,7 +93,7 @@ pending:
 active: []
 
 meta:
-  last_updated: "2026-04-22T15:30:00"
+  last_updated: "2026-04-22T16:00:00"
   completion_history:
     feat-project-scaffold: "2026-04-21 completed, tag: feat-project-scaffold-20260421"
     feat-shift-schedule: "2026-04-21 completed, tag: feat-shift-schedule-20260421"
@@ -119,6 +111,7 @@ meta:
     feat-equipment-model: "2026-04-22 completed, tag: feat-equipment-model-20260422"
     feat-inspection-exemption: "2026-04-22 completed, tag: feat-inspection-exemption-20260422"
     feat-customer: "2026-04-22 completed, tag: feat-customer-20260422"
+    feat-equipment-ledger: "2026-04-22 completed, tag: feat-equipment-ledger-20260422"
   split_history:
     feat-supply-chain: "2026-04-21 split into feat-customer, feat-supplier"
     feat-data-permission: "2026-04-21 split into feat-permission-group, feat-user-permission"
