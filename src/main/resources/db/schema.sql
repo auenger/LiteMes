@@ -153,3 +153,21 @@ CREATE TABLE IF NOT EXISTS work_center (
     INDEX idx_wc_factory (factoryId),
     CONSTRAINT fk_wc_factory FOREIGN KEY (factoryId) REFERENCES factory(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='工作中心';
+
+-- Process table
+CREATE TABLE IF NOT EXISTS process (
+    id              BIGINT       NOT NULL AUTO_INCREMENT,
+    processCode     VARCHAR(50)  NOT NULL,
+    name            VARCHAR(50)  NOT NULL,
+    workCenterId    BIGINT       NOT NULL,
+    status          TINYINT      NOT NULL DEFAULT 1 COMMENT '1=启用,0=禁用',
+    deleted         TINYINT      NOT NULL DEFAULT 0,
+    createdBy       VARCHAR(64)  NULL,
+    createdAt       DATETIME     NULL,
+    updatedBy       VARCHAR(64)  NULL,
+    updatedAt       DATETIME     NULL,
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_process_code (processCode, deleted),
+    INDEX idx_process_work_center (workCenterId),
+    CONSTRAINT fk_process_wc FOREIGN KEY (workCenterId) REFERENCES work_center(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='工序';
