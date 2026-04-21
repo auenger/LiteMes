@@ -39,14 +39,6 @@ pending:
     dependencies:
       - feat-department
 
-  - id: feat-shift-schedule
-    name: "班制班次管理"
-    priority: 91
-    size: M
-    parent: feat-enterprise-org
-    dependencies:
-      - feat-project-scaffold
-
   - id: feat-work-center
     name: "工作中心管理"
     priority: 89
@@ -215,22 +207,14 @@ pending:
       - feat-work-center
       - feat-process
 
-active:
-  - id: feat-company
-    name: "公司管理"
-    priority: 95
-    size: M
-    parent: feat-enterprise-org
-    dependencies:
-      - feat-project-scaffold
-    branch: feature/feat-company
-    worktree: ../LiteMes-feat-company
-    started: "2026-04-21"
+active: []
 
 meta:
-  last_updated: "2026-04-21"
+  last_updated: "2026-04-22T00:05:00"
   completion_history:
     feat-project-scaffold: "2026-04-21 completed, tag: feat-project-scaffold-20260421"
+    feat-shift-schedule: "2026-04-21 completed, tag: feat-shift-schedule-20260421"
+    feat-company: "2026-04-22 completed, tag: feat-company-20260422"
   split_history:
     feat-supply-chain: "2026-04-21 split into feat-customer, feat-supplier"
     feat-data-permission: "2026-04-21 split into feat-permission-group, feat-user-permission"

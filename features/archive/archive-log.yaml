@@ -1,0 +1,91 @@
+archived:
+  - id: feat-project-scaffold
+    name: "项目工程骨架"
+    completed: "2026-04-21"
+    tag: feat-project-scaffold-20260421
+    merge_commit: "876ba74"
+    merged_to: main
+    branch_deleted: true
+    branch_name: feature/feat-project-scaffold
+    worktree_deleted: true
+    worktree_path: ../LiteMes-feat-project-scaffold
+    # --- Index metadata ---
+    keywords: [quarkus, maven, vue3, pinia, mybatis-plus, jwt, redis, websocket, scaffold, skeleton, four-layer, architecture, base-entity, soft-delete, exception-handler, openapi, swagger]
+    category: fullstack
+    value_points: 4
+    related_features: [feat-enterprise-org, feat-material-master, feat-data-permission]
+    # --- Git & merge info ---
+    conflicts:
+      had_conflict: false
+      conflict_files: []
+    verification:
+      status: passed
+      scenarios_total: 8
+      scenarios_passed: 6
+    # --- Stats ---
+    stats:
+      started: "2026-04-21"
+      duration: "1 day"
+      commits: 1
+      files_changed: 57
+
+  - id: feat-shift-schedule
+    name: "班制班次管理"
+    completed: "2026-04-21"
+    tag: feat-shift-schedule-20260421
+    merge_commit: "8a90cd4"
+    merged_to: main
+    branch_deleted: true
+    branch_name: feature/feat-shift-schedule
+    worktree_deleted: true
+    worktree_path: ../LiteMes-feat-shift-schedule
+    # --- Index metadata ---
+    keywords: [shift-schedule, shift, 班制, 班次, cross-day, work-hours, default-schedule, pagination, soft-delete, mybatis-plus, quarkus, vue3]
+    category: backend-frontend
+    value_points: 4
+    related_features: [feat-enterprise-org, feat-enterprise-common]
+    # --- Git & merge info ---
+    conflicts:
+      had_conflict: false
+      conflict_files: []
+    verification:
+      status: passed
+      scenarios_total: 7
+      scenarios_passed: 5
+    # --- Stats ---
+    stats:
+      started: "2026-04-21"
+      duration: "less than 1 day"
+      commits: 1
+      files_changed: 23
+
+  - id: feat-company
+    name: "公司管理"
+    completed: "2026-04-22"
+    tag: feat-company-20260422
+    merge_commit: "d8efc0c"
+    merged_to: main
+    branch_deleted: true
+    branch_name: feature/feat-company
+    worktree_deleted: true
+    worktree_path: ../LiteMes-feat-company
+    # --- Index metadata ---
+    keywords: [company, 公司, CRUD, soft-delete, paged-query, fuzzy-search, status-toggle, mybatis-plus, quarkus, vue3, enterprise-org]
+    category: backend-frontend
+    value_points: 3
+    related_features: [feat-enterprise-org, feat-factory, feat-enterprise-common]
+    # --- Git & merge info ---
+    conflicts:
+      had_conflict: true
+      conflict_files: [frontend/src/router/index.ts, src/main/resources/db/schema.sql]
+      resolution: "kept both parallel additions"
+    verification:
+      status: passed
+      scenarios_total: 8
+      scenarios_passed: 7
+    # --- Stats ---
+    stats:
+      started: "2026-04-21"
+      duration: "less than 1 day"
+      commits: 2
+      files_changed: 19
