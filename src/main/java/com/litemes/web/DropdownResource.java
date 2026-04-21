@@ -94,4 +94,11 @@ public class DropdownResource {
     public R<List<DropdownItem>> customerDropdown() {
         return R.ok(dropdownService.getCustomerDropdown());
     }
+
+    @GET
+    @Path("/suppliers")
+    @Operation(summary = "获取供应商下拉列表", description = "返回所有启用状态的供应商列表")
+    public R<List<DropdownItem>> supplierDropdown() {
+        return R.ok(dropdownService.getSupplierDropdown());
+    }
 }

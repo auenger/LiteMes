@@ -86,6 +86,11 @@ const routes = [
     name: 'EquipmentLedgerList',
     component: () => import('../views/equipment-ledger/EquipmentLedgerList.vue'),
   },
+  {
+    path: '/suppliers',
+    name: 'SupplierList',
+    component: () => import('../views/supplier/SupplierList.vue'),
+  },
 ];
 
 const router = createRouter({
