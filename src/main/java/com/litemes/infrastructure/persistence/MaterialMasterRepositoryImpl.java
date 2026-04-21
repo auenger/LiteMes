@@ -8,6 +8,7 @@ import com.litemes.infrastructure.persistence.mapper.MaterialMasterMapper;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -83,5 +84,13 @@ public class MaterialMasterRepositoryImpl implements MaterialMasterRepository {
         LambdaQueryWrapper<MaterialMaster> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(MaterialMaster::getMaterialName, materialName);
         return materialMasterMapper.selectCount(wrapper) > 0;
+    }
+
+    @Override
+    public List<MaterialMaster> findAllActive() {
+        LambdaQueryWrapper<MaterialMaster> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(MaterialMaster::getStatus, 1)
+               .orderByAsc(MaterialMaster::getMaterialCode);
+        return materialMasterMapper.selectList(wrapper);
     }
 }

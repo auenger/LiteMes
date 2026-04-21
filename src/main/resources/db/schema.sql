@@ -348,3 +348,28 @@ CREATE TABLE IF NOT EXISTS equipment_model (
     INDEX idx_equipment_type (equipmentTypeId),
     CONSTRAINT fk_model_type FOREIGN KEY (equipmentTypeId) REFERENCES equipment_type(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='设备型号';
+
+-- Inspection Exemption (免检清单) table
+CREATE TABLE IF NOT EXISTS inspection_exemption (
+    id              BIGINT       NOT NULL AUTO_INCREMENT,
+    materialId      BIGINT       NOT NULL COMMENT '物料ID',
+    materialCode    VARCHAR(50)  NOT NULL COMMENT '物料编码(冗余)',
+    materialName    VARCHAR(255) NOT NULL COMMENT '物料名称(冗余)',
+    supplierId      BIGINT       DEFAULT NULL COMMENT '供应商ID(可空, 逻辑引用)',
+    supplierCode    VARCHAR(50)  DEFAULT NULL COMMENT '供应商编码(冗余,可空)',
+    supplierName    VARCHAR(50)  DEFAULT NULL COMMENT '供应商名称(冗余,可空)',
+    status          TINYINT      NOT NULL DEFAULT 1 COMMENT '1=启用, 0=禁用',
+    validFrom       DATE         DEFAULT NULL COMMENT '有效开始日期',
+    validTo         DATE         DEFAULT NULL COMMENT '有效结束日期',
+    deleted         TINYINT      NOT NULL DEFAULT 0 COMMENT '0=未删除, 1=已删除',
+    createdBy       VARCHAR(64)  NULL,
+    createdAt       DATETIME     NULL,
+    updatedBy       VARCHAR(64)  NULL,
+    updatedAt       DATETIME     NULL,
+    PRIMARY KEY (id),
+    INDEX idx_material (materialId),
+    INDEX idx_supplier (supplierId),
+    INDEX idx_status (status),
+    INDEX idx_valid_date (validFrom, validTo),
+    CONSTRAINT fk_exemption_material FOREIGN KEY (materialId) REFERENCES material_master(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='免检清单';

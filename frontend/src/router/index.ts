@@ -71,6 +71,11 @@ const routes = [
     name: 'EquipmentModelList',
     component: () => import('../views/equipment-model/EquipmentModelList.vue'),
   },
+  {
+    path: '/inspection-exemptions',
+    name: 'InspectionExemptionList',
+    component: () => import('../views/inspection-exemption/InspectionExemptionList.vue'),
+  },
 ];
 
 const router = createRouter({

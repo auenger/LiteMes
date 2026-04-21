@@ -220,3 +220,63 @@ CREATE TABLE IF NOT EXISTS equipment_model (
 INSERT INTO company (id, companyCode, name, shortCode, status, deleted) VALUES (1, 'CO001', '测试公司', 'TC', 1, 0);
 INSERT INTO factory (id, factoryCode, name, shortName, companyId, status, deleted) VALUES (1, 'F001', '测试工厂', 'TF', 1, 1, 0);
 INSERT INTO work_center (id, workCenterCode, name, factoryId, status, deleted) VALUES (1, 'WC001', '测试工作中心', 1, 1, 0);
+
+-- Material tables for inspection exemption tests
+CREATE TABLE IF NOT EXISTS material_master (
+    id                  BIGINT        NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    materialCode        VARCHAR(50)   NOT NULL,
+    materialName        VARCHAR(255)  NOT NULL,
+    status              TINYINT       NOT NULL DEFAULT 1,
+    basicCategory       VARCHAR(50)   NOT NULL,
+    categoryId          BIGINT        NOT NULL,
+    attributeCategory   VARCHAR(50)   NOT NULL,
+    uomId               BIGINT        NOT NULL,
+    size                DECIMAL(18,4) DEFAULT NULL,
+    length              DECIMAL(18,4) DEFAULT NULL,
+    width               DECIMAL(18,4) DEFAULT NULL,
+    model               VARCHAR(50)   DEFAULT NULL,
+    specification       VARCHAR(50)   DEFAULT NULL,
+    thickness           DECIMAL(18,4) DEFAULT NULL,
+    color               VARCHAR(50)   DEFAULT NULL,
+    tgValue             VARCHAR(50)   DEFAULT NULL,
+    copperThickness     VARCHAR(50)   DEFAULT NULL,
+    isCopperContained   TINYINT       DEFAULT NULL,
+    diameter            DECIMAL(18,4) DEFAULT NULL,
+    bladeLength         DECIMAL(18,4) DEFAULT NULL,
+    totalLength         DECIMAL(18,4) DEFAULT NULL,
+    ext1                VARCHAR(50)   DEFAULT NULL,
+    ext2                VARCHAR(50)   DEFAULT NULL,
+    ext3                VARCHAR(50)   DEFAULT NULL,
+    ext4                VARCHAR(50)   DEFAULT NULL,
+    ext5                VARCHAR(50)   DEFAULT NULL,
+    deleted             TINYINT       NOT NULL DEFAULT 0,
+    createdBy           VARCHAR(64)   NULL,
+    createdAt           TIMESTAMP     NULL,
+    updatedBy           VARCHAR(64)   NULL,
+    updatedAt           TIMESTAMP     NULL
+);
+
+-- Seed material data
+INSERT INTO material_category (id, categoryCode, categoryName, isQualityCategory, status, deleted) VALUES (1, 'CAT001', '测试分类', 0, 1, 0);
+INSERT INTO uom (id, uomCode, uomName, status, deleted) VALUES (1, 'PCS', '个', 1, 0);
+INSERT INTO material_master (id, materialCode, materialName, status, basicCategory, categoryId, attributeCategory, uomId, deleted) VALUES (1, 'MAT-001', '测试物料001', 1, '原材料', 1, '采购件', 1, 0);
+INSERT INTO material_master (id, materialCode, materialName, status, basicCategory, categoryId, attributeCategory, uomId, deleted) VALUES (2, 'MAT-002', '测试物料002', 1, '原材料', 1, '采购件', 1, 0);
+
+-- Inspection exemption table
+CREATE TABLE IF NOT EXISTS inspection_exemption (
+    id              BIGINT       NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    materialId      BIGINT       NOT NULL,
+    materialCode    VARCHAR(50)  NOT NULL,
+    materialName    VARCHAR(255) NOT NULL,
+    supplierId      BIGINT       DEFAULT NULL,
+    supplierCode    VARCHAR(50)  DEFAULT NULL,
+    supplierName    VARCHAR(50)  DEFAULT NULL,
+    status          TINYINT      NOT NULL DEFAULT 1,
+    validFrom       DATE         DEFAULT NULL,
+    validTo         DATE         DEFAULT NULL,
+    deleted         TINYINT      NOT NULL DEFAULT 0,
+    createdBy       VARCHAR(64)  NULL,
+    createdAt       TIMESTAMP    NULL,
+    updatedBy       VARCHAR(64)  NULL,
+    updatedAt       TIMESTAMP    NULL
+);

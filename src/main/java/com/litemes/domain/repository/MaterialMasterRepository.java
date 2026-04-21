@@ -3,6 +3,7 @@ package com.litemes.domain.repository;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.litemes.domain.entity.MaterialMaster;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -27,4 +28,6 @@ public interface MaterialMasterRepository {
     boolean existsByMaterialCode(String materialCode);
 
     boolean existsByMaterialName(String materialName);
+
+    List<MaterialMaster> findAllActive();
 }

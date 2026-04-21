@@ -7,6 +7,7 @@ import com.litemes.domain.entity.MaterialCategory;
 import com.litemes.domain.entity.ShiftSchedule;
 import com.litemes.domain.entity.EquipmentType;
 import com.litemes.domain.entity.EquipmentModel;
+import com.litemes.domain.entity.MaterialMaster;
 import com.litemes.domain.entity.Uom;
 import com.litemes.domain.repository.CompanyRepository;
 import com.litemes.domain.repository.DepartmentRepository;
@@ -14,6 +15,7 @@ import com.litemes.domain.repository.EquipmentModelRepository;
 import com.litemes.domain.repository.EquipmentTypeRepository;
 import com.litemes.domain.repository.FactoryRepository;
 import com.litemes.domain.repository.MaterialCategoryRepository;
+import com.litemes.domain.repository.MaterialMasterRepository;
 import com.litemes.domain.repository.ShiftScheduleRepository;
 import com.litemes.domain.repository.UomRepository;
 import com.litemes.web.dto.DropdownItem;
@@ -57,6 +59,9 @@ public class DropdownService {
 
     @Inject
     EquipmentModelRepository equipmentModelRepository;
+
+    @Inject
+    MaterialMasterRepository materialMasterRepository;
 
     /**
      * Get all active companies as dropdown items.
@@ -155,6 +160,16 @@ public class DropdownService {
         }
         return equipmentModelRepository.findAllActive().stream()
                 .map(m -> new DropdownItem(m.getId(), m.getModelCode(), m.getModelName()))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Get all active materials as dropdown items.
+     */
+    public List<DropdownItem> getMaterialDropdown() {
+        LOG.debug("Fetching material dropdown");
+        return materialMasterRepository.findAllActive().stream()
+                .map(m -> new DropdownItem(m.getId(), m.getMaterialCode(), m.getMaterialName()))
                 .collect(Collectors.toList());
     }
 }
