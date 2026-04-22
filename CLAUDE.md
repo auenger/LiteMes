@@ -84,7 +84,17 @@ docker exec ruoyi-mysql mysql -u root -ppassword --default-character-set=utf8mb4
 
 # 前端开发
 cd frontend && npm install && npm run dev
+
+# E2E 测试（Playwright）
+cd frontend && npm run test:e2e          # 运行测试
+cd frontend && npm run test:report       # 查看 HTML 报告（含截图）
 ```
+
+**E2E 测试说明：**
+- 测试目录：`frontend/e2e/`
+- 报告输出：`frontend/evidence/playwright-report/`（HTML）、`frontend/evidence/test-results.json`（JSON）
+- 截图策略：每次测试都截图（`screenshot: 'on'`），Trace 完整记录（`trace: 'on'`）
+- 测试前需确保后端（`./mvnw quarkus:dev`）和前端（`npm run dev`）已启动
 
 ## 四层架构
 

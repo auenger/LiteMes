@@ -1,4 +1,58 @@
 pending:
+  # ── E2E 测试 (parent: feat-e2e-master-data) ──
+  # ── 组织架构 (parent: feat-e2e-org → feat-e2e-master-data) ──
+  - id: feat-e2e-org-base
+    name: "组织架构基础 E2E 测试（公司/工厂 + 公共 Fixture）"
+    priority: 75
+    size: S
+    parent: feat-e2e-org
+  - id: feat-e2e-org-advanced
+    name: "组织架构高级 E2E 测试（部门/班制班次）"
+    priority: 70
+    size: S
+    parent: feat-e2e-org
+    dependencies: [feat-e2e-org-base]
+  # ── 生产基础 ──
+  - id: feat-e2e-production-base
+    name: "生产基础 E2E 测试（工作中心/计量单位/单位换算）"
+    priority: 70
+    size: S
+    parent: feat-e2e-master-data
+    dependencies: [feat-e2e-org-base]
+  # ── 物料管理 (parent: feat-e2e-material → feat-e2e-master-data) ──
+  - id: feat-e2e-material-category
+    name: "物料分类 E2E 测试（树形结构管理）"
+    priority: 70
+    size: S
+    parent: feat-e2e-material
+    dependencies: [feat-e2e-production-base]
+  - id: feat-e2e-material-info
+    name: "物料信息与免检清单 E2E 测试"
+    priority: 70
+    size: S
+    parent: feat-e2e-material
+    dependencies: [feat-e2e-material-category]
+  # ── 设备管理 ──
+  - id: feat-e2e-equipment
+    name: "设备管理 E2E 测试（设备类型/设备型号/设备台账）"
+    priority: 70
+    size: S
+    parent: feat-e2e-master-data
+    dependencies: [feat-e2e-org-base]
+  # ── 供应链 ──
+  - id: feat-e2e-supply-chain
+    name: "供应链 E2E 测试（客户/供应商）"
+    priority: 70
+    size: S
+    parent: feat-e2e-master-data
+    dependencies: [feat-e2e-material-info]
+  # ── 数据权限 ──
+  - id: feat-e2e-permission
+    name: "数据权限 E2E 测试（权限组/用户权限）"
+    priority: 70
+    size: S
+    parent: feat-e2e-master-data
+    dependencies: [feat-e2e-org-base]
 
 active:
 
@@ -247,8 +301,32 @@ completed:
     tag: feat-user-permission-20260422
 
 meta:
-  last_updated: "2026-04-22T16:45:00+08:00"
+  last_updated: "2026-04-22T21:30:00+08:00"
   parents:
+    - id: feat-e2e-master-data
+      name: "基础数据模块 E2E 测试"
+      split: true
+      children:
+        - feat-e2e-org
+        - feat-e2e-production-base
+        - feat-e2e-material
+        - feat-e2e-equipment
+        - feat-e2e-supply-chain
+        - feat-e2e-permission
+    - id: feat-e2e-org
+      name: "组织架构 E2E 测试"
+      split: true
+      parent: feat-e2e-master-data
+      children:
+        - feat-e2e-org-base
+        - feat-e2e-org-advanced
+    - id: feat-e2e-material
+      name: "物料管理 E2E 测试"
+      split: true
+      parent: feat-e2e-master-data
+      children:
+        - feat-e2e-material-category
+        - feat-e2e-material-info
     - id: feat-frontend-overhaul
       name: "前端全面升级"
       split: true

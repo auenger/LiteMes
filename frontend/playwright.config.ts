@@ -6,10 +6,16 @@ export default defineConfig({
   expect: { timeout: 10000 },
   fullyParallel: false,
   retries: 0,
-  reporter: [['html', { open: 'never' }]],
+  reporter: [
+    ['html', { outputFolder: 'evidence/playwright-report', open: 'never' }],
+    ['json', { outputFile: 'evidence/test-results.json' }],
+  ],
+  outputDir: 'evidence/test-artifacts',
   use: {
     baseURL: 'http://localhost:3000',
-    trace: 'on-first-retry',
+    trace: 'on',
+    screenshot: 'on',
+    video: 'retain-on-failure',
   },
   projects: [
     { name: 'chromium', use: { browserName: 'chromium' } },
