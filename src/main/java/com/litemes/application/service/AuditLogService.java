@@ -26,7 +26,8 @@ public class AuditLogService {
 
     private static final Logger LOG = Logger.getLogger(AuditLogService.class);
 
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    @Inject
+    ObjectMapper objectMapper;
 
     @Inject
     AuditLogRepository auditLogRepository;
@@ -37,7 +38,7 @@ public class AuditLogService {
     @Transactional
     public void logCreate(String tableName, Long recordId, Object newValue, String operatorName) {
         try {
-            String newValueJson = OBJECT_MAPPER.writeValueAsString(newValue);
+            String newValueJson = objectMapper.writeValueAsString(newValue);
             AuditLog log = new AuditLog(tableName, recordId, "CREATE",
                     null, newValueJson, null, null, operatorName);
             auditLogRepository.save(log);
@@ -54,8 +55,8 @@ public class AuditLogService {
     public void logUpdate(String tableName, Long recordId, Object oldValue, Object newValue,
                           String operatorName) {
         try {
-            String oldValueJson = OBJECT_MAPPER.writeValueAsString(oldValue);
-            String newValueJson = OBJECT_MAPPER.writeValueAsString(newValue);
+            String oldValueJson = objectMapper.writeValueAsString(oldValue);
+            String newValueJson = objectMapper.writeValueAsString(newValue);
             String changedFields = computeChangedFields(oldValue, newValue);
 
             AuditLog log = new AuditLog(tableName, recordId, "UPDATE",
@@ -73,7 +74,7 @@ public class AuditLogService {
     @Transactional
     public void logDelete(String tableName, Long recordId, Object oldValue, String operatorName) {
         try {
-            String oldValueJson = OBJECT_MAPPER.writeValueAsString(oldValue);
+            String oldValueJson = objectMapper.writeValueAsString(oldValue);
             AuditLog log = new AuditLog(tableName, recordId, "DELETE",
                     oldValueJson, null, null, null, operatorName);
             auditLogRepository.save(log);
@@ -108,8 +109,8 @@ public class AuditLogService {
     @SuppressWarnings("unchecked")
     private String computeChangedFields(Object oldValue, Object newValue) {
         try {
-            Map<String, Object> oldMap = OBJECT_MAPPER.convertValue(oldValue, Map.class);
-            Map<String, Object> newMap = OBJECT_MAPPER.convertValue(newValue, Map.class);
+            Map<String, Object> oldMap = objectMapper.convertValue(oldValue, Map.class);
+            Map<String, Object> newMap = objectMapper.convertValue(newValue, Map.class);
 
             List<String> changed = new ArrayList<>();
             Set<String> allKeys = new HashSet<>();

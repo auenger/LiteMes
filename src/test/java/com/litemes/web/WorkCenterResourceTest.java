@@ -26,7 +26,7 @@ class WorkCenterResourceTest {
     void shouldCreateWorkCenter() {
         Object id = given()
             .contentType(ContentType.JSON)
-            .body("{\"workCenterCode\": \"WC001\", \"name\": \"冲压工作中心\", \"factoryId\": " + FACTORY_ID + "}")
+            .body("{\"workCenterCode\": \"WC-TEST-001\", \"name\": \"冲压工作中心\", \"factoryId\": " + FACTORY_ID + "}")
             .when()
             .post("/api/work-centers")
             .then()

@@ -26,7 +26,7 @@ class ProcessResourceTest {
     void shouldCreateProcess() {
         Object id = given()
             .contentType(ContentType.JSON)
-            .body("{\"processCode\": \"PS001\", \"name\": \"开料\", \"workCenterId\": " + WORK_CENTER_ID + "}")
+            .body("{\"processCode\": \"PS-TEST-001\", \"name\": \"开料\", \"workCenterId\": " + WORK_CENTER_ID + "}")
             .when()
             .post("/api/processes")
             .then()
@@ -43,7 +43,7 @@ class ProcessResourceTest {
     void shouldRejectDuplicateCode() {
         given()
             .contentType(ContentType.JSON)
-            .body("{\"processCode\": \"PS001\", \"name\": \"重复编码\", \"workCenterId\": " + WORK_CENTER_ID + "}")
+            .body("{\"processCode\": \"PS-TEST-001\", \"name\": \"重复编码\", \"workCenterId\": " + WORK_CENTER_ID + "}")
             .when()
             .post("/api/processes")
             .then()
@@ -60,7 +60,7 @@ class ProcessResourceTest {
             .then()
             .statusCode(200)
             .body("code", equalTo(200))
-            .body("data.processCode", equalTo("PS001"))
+            .body("data.processCode", equalTo("PS-TEST-001"))
             .body("data.name", equalTo("开料"))
             .body("data.workCenterId", comparesEqualTo((int) WORK_CENTER_ID.longValue()))
             .body("data.workCenterName", notNullValue())
@@ -86,7 +86,7 @@ class ProcessResourceTest {
             .then()
             .statusCode(200)
             .body("data.name", equalTo("激光开料"))
-            .body("data.processCode", equalTo("PS001")); // Code unchanged
+            .body("data.processCode", equalTo("PS-TEST-001")); // Code unchanged
     }
 
     @Test
@@ -132,7 +132,7 @@ class ProcessResourceTest {
     @Order(8)
     void shouldFilterByProcessCode() {
         given()
-            .queryParam("processCode", "PS")
+            .queryParam("processCode", "PS-TEST")
             .when()
             .get("/api/processes")
             .then()
@@ -224,7 +224,7 @@ class ProcessResourceTest {
         // Create a second process to delete
         Object id = given()
             .contentType(ContentType.JSON)
-            .body("{\"processCode\": \"PS002\", \"name\": \"待删除工序\", \"workCenterId\": " + WORK_CENTER_ID + "}")
+            .body("{\"processCode\": \"PS-TEST-002\", \"name\": \"待删除工序\", \"workCenterId\": " + WORK_CENTER_ID + "}")
             .when()
             .post("/api/processes")
             .then()
@@ -266,7 +266,7 @@ class ProcessResourceTest {
     void shouldRejectNonExistentWorkCenter() {
         given()
             .contentType(ContentType.JSON)
-            .body("{\"processCode\": \"PS998\", \"name\": \"不存在的工作中心\", \"workCenterId\": 99999}")
+            .body("{\"processCode\": \"PS-TEST-998\", \"name\": \"不存在的工作中心\", \"workCenterId\": 99999}")
             .when()
             .post("/api/processes")
             .then()

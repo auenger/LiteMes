@@ -19,8 +19,8 @@ import static org.hamcrest.Matchers.*;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class UomResourceTest {
 
-    private static final String TEST_UOM_CODE = "PCS";
-    private static final String TEST_UOM_NAME = "个";
+    private static final String TEST_UOM_CODE = "TEST_PCS";
+    private static final String TEST_UOM_NAME = "测试个";
 
     /**
      * Helper: get the ID of the test uom by listing and filtering by code.
