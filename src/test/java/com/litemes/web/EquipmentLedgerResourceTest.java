@@ -84,18 +84,18 @@ class EquipmentLedgerResourceTest {
         // Ensure equipment type exists
         given()
             .contentType(ContentType.JSON)
-            .body("{\"typeCode\": \"DRILL\", \"typeName\": \"钻孔设备\"}")
+            .body("{\"typeCode\": \"DRILL-L\", \"typeName\": \"钻孔设备-L\"}")
             .when()
             .post("/api/equipment-types")
             .then()
             .statusCode(201);
 
-        Long typeId = getEquipmentTypeId("DRILL");
+        Long typeId = getEquipmentTypeId("DRILL-L");
 
         // Create equipment model
         given()
             .contentType(ContentType.JSON)
-            .body("{\"modelCode\": \"CNC-500\", \"modelName\": \"CNC钻孔机\", \"equipmentTypeId\": " + typeId + "}")
+            .body("{\"modelCode\": \"CNC-500-L\", \"modelName\": \"CNC钻孔机-L\", \"equipmentTypeId\": " + typeId + "}")
             .when()
             .post("/api/equipment-models")
             .then()
@@ -105,7 +105,7 @@ class EquipmentLedgerResourceTest {
     @Test
     @Order(2)
     void shouldCreateEquipmentLedger() {
-        Long modelId = getEquipmentModelId("CNC-500");
+        Long modelId = getEquipmentModelId("CNC-500-L");
         Long factoryId = getFactoryId("F001");
 
         given()
@@ -131,10 +131,10 @@ class EquipmentLedgerResourceTest {
             .get("/api/equipment-ledger/" + id)
             .then()
             .statusCode(200)
-            .body("data.modelCode", equalTo("CNC-500"))
-            .body("data.modelName", equalTo("CNC钻孔机"))
-            .body("data.typeCode", equalTo("DRILL"))
-            .body("data.typeName", equalTo("钻孔设备"))
+            .body("data.modelCode", equalTo("CNC-500-L"))
+            .body("data.modelName", equalTo("CNC钻孔机-L"))
+            .body("data.typeCode", equalTo("DRILL-L"))
+            .body("data.typeName", equalTo("钻孔设备-L"))
             .body("data.factoryCode", equalTo("F001"))
             .body("data.factoryName", equalTo("测试工厂"));
     }
@@ -142,7 +142,7 @@ class EquipmentLedgerResourceTest {
     @Test
     @Order(4)
     void shouldRejectDuplicateCode() {
-        Long modelId = getEquipmentModelId("CNC-500");
+        Long modelId = getEquipmentModelId("CNC-500-L");
         Long factoryId = getFactoryId("F001");
 
         given()
@@ -179,7 +179,7 @@ class EquipmentLedgerResourceTest {
     @Order(6)
     void shouldUpdateEquipmentLedger() {
         Long id = getTestLedgerId();
-        Long modelId = getEquipmentModelId("CNC-500");
+        Long modelId = getEquipmentModelId("CNC-500-L");
         Long factoryId = getFactoryId("F001");
 
         given()
@@ -211,23 +211,23 @@ class EquipmentLedgerResourceTest {
         // Create another equipment type and model
         given()
             .contentType(ContentType.JSON)
-            .body("{\"typeCode\": \"PRESS\", \"typeName\": \"压合设备\"}")
+            .body("{\"typeCode\": \"PRESS-L\", \"typeName\": \"压合设备-L\"}")
             .when()
             .post("/api/equipment-types")
             .then()
             .statusCode(201);
 
-        Long pressTypeId = getEquipmentTypeId("PRESS");
+        Long pressTypeId = getEquipmentTypeId("PRESS-L");
         given()
             .contentType(ContentType.JSON)
-            .body("{\"modelCode\": \"PRS-200\", \"modelName\": \"压合机\", \"equipmentTypeId\": " + pressTypeId + "}")
+            .body("{\"modelCode\": \"PRS-200-L\", \"modelName\": \"压合机-L\", \"equipmentTypeId\": " + pressTypeId + "}")
             .when()
             .post("/api/equipment-models")
             .then()
             .statusCode(201);
 
         Long id = getTestLedgerId();
-        Long prsModelId = getEquipmentModelId("PRS-200");
+        Long prsModelId = getEquipmentModelId("PRS-200-L");
         Long factoryId = getFactoryId("F001");
 
         // Change equipment model
@@ -247,13 +247,13 @@ class EquipmentLedgerResourceTest {
             .get("/api/equipment-ledger/" + id)
             .then()
             .statusCode(200)
-            .body("data.modelCode", equalTo("PRS-200"))
-            .body("data.modelName", equalTo("压合机"))
-            .body("data.typeCode", equalTo("PRESS"))
-            .body("data.typeName", equalTo("压合设备"));
+            .body("data.modelCode", equalTo("PRS-200-L"))
+            .body("data.modelName", equalTo("压合机-L"))
+            .body("data.typeCode", equalTo("PRESS-L"))
+            .body("data.typeName", equalTo("压合设备-L"));
 
         // Change back to CNC-500 for remaining tests
-        Long cncModelId = getEquipmentModelId("CNC-500");
+        Long cncModelId = getEquipmentModelId("CNC-500-L");
         given()
             .contentType(ContentType.JSON)
             .body("{\"equipmentName\": \"1号钻孔机-Pro\", \"equipmentModelId\": " + cncModelId + ", " +
@@ -285,7 +285,7 @@ class EquipmentLedgerResourceTest {
     @Test
     @Order(9)
     void shouldRejectCreateWithInvalidFactoryId() {
-        Long modelId = getEquipmentModelId("CNC-500");
+        Long modelId = getEquipmentModelId("CNC-500-L");
 
         given()
             .contentType(ContentType.JSON)
@@ -439,7 +439,7 @@ class EquipmentLedgerResourceTest {
     @Test
     @Order(19)
     void shouldRejectCreateWithBlankCode() {
-        Long modelId = getEquipmentModelId("CNC-500");
+        Long modelId = getEquipmentModelId("CNC-500-L");
         Long factoryId = getFactoryId("F001");
 
         given()
@@ -456,7 +456,7 @@ class EquipmentLedgerResourceTest {
     @Test
     @Order(20)
     void shouldDeleteEquipmentLedger() {
-        Long modelId = getEquipmentModelId("CNC-500");
+        Long modelId = getEquipmentModelId("CNC-500-L");
         Long factoryId = getFactoryId("F001");
 
         // Create a new ledger to delete
