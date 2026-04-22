@@ -1,33 +1,51 @@
 import { defineStore } from 'pinia';
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
+import { login as loginApi, getUserInfo as getUserInfoApi, type UserInfo } from '../api/auth';
 
 export const useUserStore = defineStore('user', () => {
   const token = ref<string>(localStorage.getItem('token') || '');
-  const username = ref<string>('');
-  const roles = ref<string[]>([]);
+  const userInfo = ref<UserInfo | null>(null);
 
-  function setToken(newToken: string) {
-    token.value = newToken;
-    localStorage.setItem('token', newToken);
+  const isAuthenticated = computed(() => !!token.value);
+  const username = computed(() => userInfo.value?.realName || userInfo.value?.username || '');
+  const roles = computed(() => userInfo.value?.roles || []);
+
+  async function login(user: string, password: string) {
+    const res = await loginApi(user, password);
+    if (res.code === 200 && res.data) {
+      token.value = res.data.token;
+      localStorage.setItem('token', res.data.token);
+      await fetchUserInfo();
+      return true;
+    }
+    throw new Error(res.message || '登录失败');
   }
 
-  function clearToken() {
+  async function fetchUserInfo() {
+    try {
+      const res = await getUserInfoApi();
+      if (res.code === 200 && res.data) {
+        userInfo.value = res.data;
+      }
+    } catch {
+      userInfo.value = null;
+    }
+  }
+
+  function logout() {
     token.value = '';
-    username.value = '';
-    roles.value = [];
+    userInfo.value = null;
     localStorage.removeItem('token');
-  }
-
-  function isAuthenticated() {
-    return !!token.value;
   }
 
   return {
     token,
+    userInfo,
+    isAuthenticated,
     username,
     roles,
-    setToken,
-    clearToken,
-    isAuthenticated,
+    login,
+    logout,
+    fetchUserInfo,
   };
 });

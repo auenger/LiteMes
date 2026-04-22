@@ -36,9 +36,10 @@ http.interceptors.response.use(
     if (error.response) {
       const status = error.response.status;
       if (status === 401) {
-        // Token expired or invalid - redirect to login
         localStorage.removeItem('token');
-        window.location.href = '/login';
+        if (!window.location.pathname.startsWith('/login')) {
+          window.location.href = '/login';
+        }
       }
     }
     return Promise.reject(error);

@@ -109,6 +109,7 @@ CREATE TABLE IF NOT EXISTS department (
 CREATE TABLE IF NOT EXISTS user (
     id            BIGINT       NOT NULL AUTO_INCREMENT,
     username      VARCHAR(50)  NOT NULL,
+    password      VARCHAR(100) NOT NULL DEFAULT '' COMMENT '密码',
     realName      VARCHAR(50)  NOT NULL,
     status        TINYINT      NOT NULL DEFAULT 1 COMMENT '1=启用,0=禁用',
     createdBy     VARCHAR(64)  NULL,
