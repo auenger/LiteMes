@@ -50,8 +50,7 @@ public class GlobalExceptionMapper implements ExceptionMapper<Exception> {
         }
 
         // Unexpected exceptions - log full stack trace but don't expose to client
-        LOG.errorf("Unexpected error: %s", exception.getMessage());
-        LOG.debug("Stack trace:", exception);
+        LOG.errorf(exception, "Unexpected error: %s", exception.getMessage());
 
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                 .type(MediaType.APPLICATION_JSON)
