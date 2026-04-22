@@ -242,3 +242,18 @@ Feature: 供应商管理
     When 点击禁用
     Then 供应商状态变为禁用，不可被新业务单据引用
 ```
+
+## Merge Record
+
+- **Completed**: 2026-04-22
+- **Merged Branch**: feature/feat-supplier
+- **Merge Commit**: e0848dd
+- **Archive Tag**: feat-supplier-20260422
+- **Conflicts**: none
+- **Verification Status**: passed (with warnings)
+- **Verification Evidence**: evidence/verification-report.md
+- **Development Stats**:
+  - Started: 2026-04-22T16:35:00
+  - Duration: less than 1 day
+  - Commits: 1
+  - Files Changed: 21

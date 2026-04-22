@@ -514,3 +514,94 @@ archived:
       duration: "less than 1 day"
       commits: 1
       files_changed: 23
+
+  - id: feat-supplier
+    name: "供应商管理"
+    completed: "2026-04-22"
+    tag: feat-supplier-20260422
+    merge_commit: "e0848dd"
+    merged_to: main
+    branch_deleted: true
+    branch_name: feature/feat-supplier
+    worktree_deleted: true
+    worktree_path: ../LiteMes-feat-supplier
+    # --- Index metadata ---
+    keywords: [supplier, 供应商, CRUD, soft-delete, paged-query, fuzzy-search, status-toggle, material-association, supplier-material, uniqueness-validation, reference-check, dropdown, mybatis-plus, quarkus, vue3]
+    category: backend-frontend
+    value_points: 3
+    related_features: [feat-supply-chain, feat-customer, feat-material-master, feat-inspection-exemption]
+    # --- Git & merge info ---
+    conflicts:
+      had_conflict: false
+      conflict_files: []
+    verification:
+      status: passed
+      scenarios_total: 9
+      scenarios_passed: 8
+    # --- Stats ---
+    stats:
+      started: "2026-04-22T16:35:00"
+      duration: "less than 1 day"
+      commits: 1
+      files_changed: 21
+
+  - id: feat-permission-group
+    name: "数据权限组管理"
+    completed: "2026-04-22"
+    tag: feat-permission-group-20260422
+    merge_commit: "8c6d1d8"
+    merged_to: main
+    branch_deleted: true
+    branch_name: feature/feat-permission-group
+    worktree_deleted: true
+    worktree_path: ../LiteMes-feat-permission-group
+    # --- Index metadata ---
+    keywords: [data-permission-group, 数据权限组, factory-association, work-center-association, process-association, CRUD, soft-delete, paged-query, fuzzy-search, many-to-many, dropdown, mybatis-plus, quarkus, vue3]
+    category: backend-frontend
+    value_points: 4
+    related_features: [feat-data-permission, feat-user-permission, feat-enterprise-org, feat-work-center, feat-process]
+    # --- Git & merge info ---
+    conflicts:
+      had_conflict: true
+      conflict_files: [frontend/src/router/index.ts, src/main/java/com/litemes/application/service/DropdownService.java, src/main/java/com/litemes/web/DropdownResource.java, src/main/resources/db/schema.sql]
+      resolution: "kept both parallel additions from feat-supplier and feat-permission-group"
+    verification:
+      status: passed
+      scenarios_total: 13
+      scenarios_passed: 13
+    # --- Stats ---
+    stats:
+      started: "2026-04-22T16:30:00"
+      duration: "less than 1 day"
+      commits: 2
+      files_changed: 31
+
+  - id: feat-user-permission
+    name: "用户数据权限管理"
+    completed: "2026-04-22"
+    tag: feat-user-permission-20260422
+    merge_commit: "9436d14"
+    merged_to: main
+    branch_deleted: true
+    branch_name: feature/feat-user-permission
+    worktree_deleted: true
+    worktree_path: ../LiteMes-feat-user-permission
+    # --- Index metadata ---
+    keywords: [user-data-permission, 用户数据权限, permission-interceptor, cache, batch-assign, factory-permission, work-center-permission, process-permission, mybatis-plus, quarkus, vue3]
+    category: backend-frontend
+    value_points: 4
+    related_features: [feat-data-permission, feat-permission-group, feat-enterprise-org, feat-work-center, feat-process]
+    # --- Git & merge info ---
+    conflicts:
+      had_conflict: false
+      conflict_files: []
+    verification:
+      status: passed
+      scenarios_total: 0
+      scenarios_passed: 0
+    # --- Stats ---
+    stats:
+      started: "2026-04-22T17:00:00"
+      duration: "less than 1 day"
+      commits: 1
+      files_changed: 28
