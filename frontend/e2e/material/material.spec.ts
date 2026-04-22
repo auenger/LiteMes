@@ -7,6 +7,37 @@ import {
   assertTableNotContains,
 } from '../helpers/common';
 
+/**
+ * Helper: get the currently visible Element Plus select dropdown.
+ */
+function getVisibleDropdown(page: any) {
+  return page.locator('.el-select-dropdown:visible').last();
+}
+
+/**
+ * Helper: click an el-select, then select an option from the visible dropdown.
+ * Uses force click on the option because Element Plus teleported poppers can
+ * become "not stable" during animation transitions.
+ */
+async function selectOption(page: any, selectLocator: any, optionText: string) {
+  await selectLocator.click({ force: true });
+  await page.waitForTimeout(300);
+  const visibleDropdown = getVisibleDropdown(page);
+  await expect(visibleDropdown).toBeVisible({ timeout: 3000 });
+  await visibleDropdown.locator('.el-select-dropdown__item').filter({ hasText: optionText }).first().click({ force: true });
+}
+
+/**
+ * Helper: click an el-select, then pick the first option from the visible dropdown.
+ */
+async function selectFirstOption(page: any, selectLocator: any) {
+  await selectLocator.click({ force: true });
+  await page.waitForTimeout(300);
+  const visibleDropdown = getVisibleDropdown(page);
+  await expect(visibleDropdown).toBeVisible({ timeout: 3000 });
+  await visibleDropdown.locator('.el-select-dropdown__item').first().click({ force: true });
+}
+
 test.describe('物料信息 E2E 测试', () => {
   const TS = Date.now().toString(36);
   const MAT_CODE = `E2E_MAT_${TS}`;
@@ -38,29 +69,19 @@ test.describe('物料信息 E2E 测试', () => {
 
     // Select basic category (基本分类)
     const basicCatSelect = dialog.locator('.el-form-item').filter({ hasText: '基本分类' }).locator('.el-select');
-    await basicCatSelect.click({ force: true });
-    await page.waitForTimeout(300);
-    await page.locator('.el-select-dropdown__item').filter({ hasText: '原材料' }).first().click();
+    await selectOption(page, basicCatSelect, '原材料');
 
-    // Select material category (物料分类) — use the first available option
+    // Select material category (物料分类)
     const matCatSelect = dialog.locator('.el-form-item').filter({ hasText: '物料分类' }).locator('.el-select');
-    await matCatSelect.click({ force: true });
-    await page.waitForTimeout(300);
-    const matCatOption = page.locator('.el-select-dropdown__item').first();
-    await matCatOption.click();
+    await selectFirstOption(page, matCatSelect);
 
     // Select attribute category (属性分类)
     const attrCatSelect = dialog.locator('.el-form-item').filter({ hasText: '属性分类' }).locator('.el-select');
-    await attrCatSelect.click({ force: true });
-    await page.waitForTimeout(300);
-    await page.locator('.el-select-dropdown__item').filter({ hasText: '采购件' }).first().click();
+    await selectOption(page, attrCatSelect, '采购件');
 
-    // Select UOM (计量单位) — use the first available option
+    // Select UOM (计量单位)
     const uomSelect = dialog.locator('.el-form-item').filter({ hasText: '单位' }).locator('.el-select');
-    await uomSelect.click({ force: true });
-    await page.waitForTimeout(300);
-    const uomOption = page.locator('.el-select-dropdown__item').first();
-    await uomOption.click();
+    await selectFirstOption(page, uomSelect);
 
     await dialog.locator('button:has-text("确定")').click();
 
@@ -82,65 +103,45 @@ test.describe('物料信息 E2E 测试', () => {
 
     // Select basic category
     const basicCatSelect = dialog.locator('.el-form-item').filter({ hasText: '基本分类' }).locator('.el-select');
-    await basicCatSelect.click({ force: true });
-    await page.waitForTimeout(300);
-    await page.locator('.el-select-dropdown__item').filter({ hasText: '原材料' }).first().click();
+    await selectOption(page, basicCatSelect, '原材料');
 
     // Select material category
     const matCatSelect = dialog.locator('.el-form-item').filter({ hasText: '物料分类' }).locator('.el-select');
-    await matCatSelect.click({ force: true });
-    await page.waitForTimeout(300);
-    await page.locator('.el-select-dropdown__item').first().click();
+    await selectFirstOption(page, matCatSelect);
 
     // Select attribute category
     const attrCatSelect = dialog.locator('.el-form-item').filter({ hasText: '属性分类' }).locator('.el-select');
-    await attrCatSelect.click({ force: true });
-    await page.waitForTimeout(300);
-    await page.locator('.el-select-dropdown__item').filter({ hasText: '采购件' }).first().click();
+    await selectOption(page, attrCatSelect, '采购件');
 
     // Select UOM
     const uomSelect = dialog.locator('.el-form-item').filter({ hasText: '单位' }).locator('.el-select');
-    await uomSelect.click({ force: true });
-    await page.waitForTimeout(300);
-    await page.locator('.el-select-dropdown__item').first().click();
+    await selectFirstOption(page, uomSelect);
 
     // Fill PCB attributes section
-    // Size (尺寸) — el-input-number, label "尺寸"
-    const sizeInput = dialog.locator('.el-form-item').filter({ hasText: '尺寸' }).locator('.el-input-number .el-input__inner');
+    // Use locator('.el-form-item__label').filter({ hasText: /^长$/ }) for exact label matching
+    // to avoid "长" matching "刃长"/"总长"
+    const sizeInput = dialog.locator('.el-form-item__label').filter({ hasText: /^尺寸$/ }).locator('..').locator('.el-input-number .el-input__inner');
     await sizeInput.fill('1.5');
 
-    // Length (长)
-    const lengthInput = dialog.locator('.el-form-item').filter({ hasText: '长' }).locator('.el-input-number .el-input__inner');
+    const lengthInput = dialog.locator('.el-form-item__label').filter({ hasText: /^长$/ }).locator('..').locator('.el-input-number .el-input__inner');
     await lengthInput.fill('100');
 
-    // Width (宽)
-    const widthInput = dialog.locator('.el-form-item').filter({ hasText: '宽' }).locator('.el-input-number .el-input__inner');
+    const widthInput = dialog.locator('.el-form-item__label').filter({ hasText: /^宽$/ }).locator('..').locator('.el-input-number .el-input__inner');
     await widthInput.fill('50');
 
-    // Model (型号)
     await dialog.locator('input[placeholder="型号"]').fill('FR-4');
-
-    // Specification (规格)
     await dialog.locator('input[placeholder="规格"]').fill('100x50x1.6');
 
-    // Thickness (厚度)
-    const thicknessInput = dialog.locator('.el-form-item').filter({ hasText: '厚度' }).locator('.el-input-number .el-input__inner');
+    const thicknessInput = dialog.locator('.el-form-item__label').filter({ hasText: /^厚度$/ }).locator('..').locator('.el-input-number .el-input__inner');
     await thicknessInput.fill('1.6');
 
-    // Color (颜色)
     await dialog.locator('input[placeholder="颜色"]').fill('绿');
-
-    // TG value (TG值)
     await dialog.locator('input[placeholder="TG值"]').fill('TG150');
-
-    // Copper thickness (铜厚)
     await dialog.locator('input[placeholder="铜厚"]').fill('35um');
 
     // Is copper contained (是否含铜)
     const copperSelect = dialog.locator('.el-form-item').filter({ hasText: '是否含铜' }).locator('.el-select');
-    await copperSelect.click({ force: true });
-    await page.waitForTimeout(300);
-    await page.locator('.el-select-dropdown__item').filter({ hasText: '是' }).first().click();
+    await selectOption(page, copperSelect, '是');
 
     await dialog.locator('button:has-text("确定")').click();
 
@@ -171,29 +172,17 @@ test.describe('物料信息 E2E 测试', () => {
     await dialog.locator('input[placeholder="请输入物料编码"]').fill(MAT_CODE_EDIT);
     await dialog.locator('input[placeholder="请输入物料名称"]').fill(MAT_NAME_EDIT);
 
-    // Select basic category
     const basicCatSelect = dialog.locator('.el-form-item').filter({ hasText: '基本分类' }).locator('.el-select');
-    await basicCatSelect.click({ force: true });
-    await page.waitForTimeout(300);
-    await page.locator('.el-select-dropdown__item').filter({ hasText: '原材料' }).first().click();
+    await selectOption(page, basicCatSelect, '原材料');
 
-    // Select material category
     const matCatSelect = dialog.locator('.el-form-item').filter({ hasText: '物料分类' }).locator('.el-select');
-    await matCatSelect.click({ force: true });
-    await page.waitForTimeout(300);
-    await page.locator('.el-select-dropdown__item').first().click();
+    await selectFirstOption(page, matCatSelect);
 
-    // Select attribute category
     const attrCatSelect = dialog.locator('.el-form-item').filter({ hasText: '属性分类' }).locator('.el-select');
-    await attrCatSelect.click({ force: true });
-    await page.waitForTimeout(300);
-    await page.locator('.el-select-dropdown__item').filter({ hasText: '采购件' }).first().click();
+    await selectOption(page, attrCatSelect, '采购件');
 
-    // Select UOM
     const uomSelect = dialog.locator('.el-form-item').filter({ hasText: '单位' }).locator('.el-select');
-    await uomSelect.click({ force: true });
-    await page.waitForTimeout(300);
-    await page.locator('.el-select-dropdown__item').first().click();
+    await selectFirstOption(page, uomSelect);
 
     await dialog.locator('button:has-text("确定")').click();
     await expect(page.locator('.el-dialog:visible')).not.toBeVisible({ timeout: 5000 });
@@ -229,29 +218,17 @@ test.describe('物料信息 E2E 测试', () => {
     await dialog.locator('input[placeholder="请输入物料编码"]').fill(MAT_CODE_DEL);
     await dialog.locator('input[placeholder="请输入物料名称"]').fill(MAT_NAME_DEL);
 
-    // Select basic category
     const basicCatSelect = dialog.locator('.el-form-item').filter({ hasText: '基本分类' }).locator('.el-select');
-    await basicCatSelect.click({ force: true });
-    await page.waitForTimeout(300);
-    await page.locator('.el-select-dropdown__item').filter({ hasText: '原材料' }).first().click();
+    await selectOption(page, basicCatSelect, '原材料');
 
-    // Select material category
     const matCatSelect = dialog.locator('.el-form-item').filter({ hasText: '物料分类' }).locator('.el-select');
-    await matCatSelect.click({ force: true });
-    await page.waitForTimeout(300);
-    await page.locator('.el-select-dropdown__item').first().click();
+    await selectFirstOption(page, matCatSelect);
 
-    // Select attribute category
     const attrCatSelect = dialog.locator('.el-form-item').filter({ hasText: '属性分类' }).locator('.el-select');
-    await attrCatSelect.click({ force: true });
-    await page.waitForTimeout(300);
-    await page.locator('.el-select-dropdown__item').filter({ hasText: '采购件' }).first().click();
+    await selectOption(page, attrCatSelect, '采购件');
 
-    // Select UOM
     const uomSelect = dialog.locator('.el-form-item').filter({ hasText: '单位' }).locator('.el-select');
-    await uomSelect.click({ force: true });
-    await page.waitForTimeout(300);
-    await page.locator('.el-select-dropdown__item').first().click();
+    await selectFirstOption(page, uomSelect);
 
     await dialog.locator('button:has-text("确定")').click();
     await expect(page.locator('.el-dialog:visible')).not.toBeVisible({ timeout: 5000 });

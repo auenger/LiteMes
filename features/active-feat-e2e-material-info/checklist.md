@@ -28,3 +28,9 @@
 ### Cleanup
 - [x] afterEach 清理测试数据（反向依赖：免检 → 物料）
 - [x] 测试可重复执行
+
+## Verification Record
+| Date | Status | Results | Evidence |
+|------|--------|---------|----------|
+| 2026-04-23 | PASS | 9/9 tests passed (51.1s) | evidence/playwright-report/ |
+

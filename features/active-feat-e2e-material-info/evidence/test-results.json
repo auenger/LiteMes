@@ -1,0 +1,518 @@
+{
+  "config": {
+    "configFile": "/Users/ryan/mycode/LiteMes-e2e-material-info/frontend/playwright.config.ts",
+    "rootDir": "/Users/ryan/mycode/LiteMes-e2e-material-info/frontend/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 2
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/ryan/mycode/LiteMes-e2e-material-info/frontend/evidence/test-artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Users/ryan/mycode/LiteMes-e2e-material-info/frontend/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "html",
+        {
+          "outputFolder": "evidence/playwright-report",
+          "open": "never"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "evidence/test-results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.59.1",
+    "workers": 8,
+    "webServer": {
+      "command": "npm run dev",
+      "port": 3000,
+      "reuseExistingServer": true,
+      "timeout": 15000
+    }
+  },
+  "suites": [
+    {
+      "title": "material/inspection-exemption.spec.ts",
+      "file": "material/inspection-exemption.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "免检清单 E2E 测试",
+          "file": "material/inspection-exemption.spec.ts",
+          "line": 70,
+          "column": 6,
+          "specs": [
+            {
+              "title": "免检清单列表加载",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4115,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-22T16:16:19.685Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-material-info/frontend/evidence/test-artifacts/material-inspection-exemption-免检清单-E2E-测试-免检清单列表加载-chromium/test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-material-info/frontend/evidence/test-artifacts/material-inspection-exemption-免检清单-E2E-测试-免检清单列表加载-chromium/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "76154b5c8a4116e9898d-a584ff5dde2acd11555f",
+              "file": "material/inspection-exemption.spec.ts",
+              "line": 80,
+              "column": 3
+            },
+            {
+              "title": "新建免检记录",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 13326,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-22T16:16:24.308Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-material-info/frontend/evidence/test-artifacts/material-inspection-exemption-免检清单-E2E-测试-新建免检记录-chromium/test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-material-info/frontend/evidence/test-artifacts/material-inspection-exemption-免检清单-E2E-测试-新建免检记录-chromium/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "76154b5c8a4116e9898d-eacb144b6441fa58073b",
+              "file": "material/inspection-exemption.spec.ts",
+              "line": 84,
+              "column": 3
+            },
+            {
+              "title": "删除免检记录",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 14467,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-22T16:16:38.349Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-material-info/frontend/evidence/test-artifacts/material-inspection-exemption-免检清单-E2E-测试-删除免检记录-chromium/test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-material-info/frontend/evidence/test-artifacts/material-inspection-exemption-免检清单-E2E-测试-删除免检记录-chromium/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "76154b5c8a4116e9898d-68e53c868782d64007fa",
+              "file": "material/inspection-exemption.spec.ts",
+              "line": 111,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "material/material.spec.ts",
+      "file": "material/material.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "物料信息 E2E 测试",
+          "file": "material/material.spec.ts",
+          "line": 41,
+          "column": 6,
+          "specs": [
+            {
+              "title": "物料信息列表加载",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 4691,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-22T16:16:19.692Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-material-info/frontend/evidence/test-artifacts/material-material-物料信息-E2E-测试-物料信息列表加载-chromium/test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-material-info/frontend/evidence/test-artifacts/material-material-物料信息-E2E-测试-物料信息列表加载-chromium/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d9de02eff4db03c1d2d5-5f85366f192ef4bc6e83",
+              "file": "material/material.spec.ts",
+              "line": 57,
+              "column": 3
+            },
+            {
+              "title": "新建物料（基本信息）",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 8022,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-22T16:16:24.901Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-material-info/frontend/evidence/test-artifacts/material-material-物料信息-E2E-测试-新建物料（基本信息）-chromium/test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-material-info/frontend/evidence/test-artifacts/material-material-物料信息-E2E-测试-新建物料（基本信息）-chromium/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d9de02eff4db03c1d2d5-c3482c4cb21a44050d0c",
+              "file": "material/material.spec.ts",
+              "line": 61,
+              "column": 3
+            },
+            {
+              "title": "新建物料含 PCB 属性",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 9213,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-22T16:16:33.513Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-material-info/frontend/evidence/test-artifacts/material-material-物料信息-E2E-测试-新建物料含-PCB-属性-chromium/test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-material-info/frontend/evidence/test-artifacts/material-material-物料信息-E2E-测试-新建物料含-PCB-属性-chromium/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d9de02eff4db03c1d2d5-25670617f4fe43dc61bb",
+              "file": "material/material.spec.ts",
+              "line": 95,
+              "column": 3
+            },
+            {
+              "title": "物料编码必填校验",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 6084,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-22T16:16:43.368Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-material-info/frontend/evidence/test-artifacts/material-material-物料信息-E2E-测试-物料编码必填校验-chromium/test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-material-info/frontend/evidence/test-artifacts/material-material-物料信息-E2E-测试-物料编码必填校验-chromium/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d9de02eff4db03c1d2d5-37ece626f131ab004126",
+              "file": "material/material.spec.ts",
+              "line": 155,
+              "column": 3
+            },
+            {
+              "title": "编辑物料",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 10012,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-22T16:16:49.710Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-material-info/frontend/evidence/test-artifacts/material-material-物料信息-E2E-测试-编辑物料-chromium/test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-material-info/frontend/evidence/test-artifacts/material-material-物料信息-E2E-测试-编辑物料-chromium/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d9de02eff4db03c1d2d5-b3ec95e2500b0c9cf9f7",
+              "file": "material/material.spec.ts",
+              "line": 167,
+              "column": 3
+            },
+            {
+              "title": "删除物料",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 8493,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-22T16:17:00.230Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-material-info/frontend/evidence/test-artifacts/material-material-物料信息-E2E-测试-删除物料-chromium/test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-material-info/frontend/evidence/test-artifacts/material-material-物料信息-E2E-测试-删除物料-chromium/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d9de02eff4db03c1d2d5-93ac68daec2bcb8d3ca0",
+              "file": "material/material.spec.ts",
+              "line": 213,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-04-22T16:16:18.349Z",
+    "duration": 51093.668000000005,
+    "expected": 9,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}
