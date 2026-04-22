@@ -124,3 +124,15 @@ Feature: 物料信息与免检 E2E 测试
 - [x] 免检清单物料关联
 - [x] 测试数据使用 E2E_MAT_ 前缀
 - [x] 测试后清理测试数据
+
+## Merge Record
+- **Completed**: 2026-04-23T00:20:00+08:00
+- **Merged Branch**: feature/e2e-material-info
+- **Merge Commit**: 41bf21f
+- **Archive Tag**: feat-e2e-material-info-20260423
+- **Conflicts**: None
+- **Verification**: 9/9 E2E tests passed (51.1s)
+- **Started**: 2026-04-22T23:50:00+08:00
+- **Duration**: ~30 minutes
+- **Commits**: 3 (start + implement + fix)
+- **Files Changed**: 60

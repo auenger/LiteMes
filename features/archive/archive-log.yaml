@@ -1,4 +1,32 @@
 archived:
+  - id: feat-e2e-material-info
+    name: "物料信息与免检清单 E2E 测试"
+    completed: "2026-04-23T00:20:00+08:00"
+    tag: feat-e2e-material-info-20260423
+    merge_commit: "41bf21f"
+    merged_to: main
+    branch_deleted: true
+    branch_name: feature/e2e-material-info
+    worktree_deleted: true
+    worktree_path: ../LiteMes-e2e-material-info
+    keywords: [e2e, playwright, material, inspection-exemption, 物料信息, 免检清单, crud, pcb-attributes, el-select-dropdown, force-click, exact-label-match]
+    category: testing
+    value_points: 2
+    related_features: [feat-e2e-material, feat-material-info, feat-inspection-exemption, feat-e2e-material-category]
+    conflicts:
+      had_conflict: false
+      conflict_files: []
+    verification:
+      status: passed
+      scenarios_total: 9
+      scenarios_passed: 9
+    stats:
+      started: "2026-04-22T23:50:00+08:00"
+      duration: "~30 minutes"
+      commits: 3
+      files_changed: 60
+    bug_fix: "Fixed Element Plus dropdown interaction: scoped to .el-select-dropdown:visible, used force: true, exact regex label matching for PCB fields"
+
   - id: feat-e2e-material-category
     name: "物料分类 E2E 测试（树形结构管理）"
     completed: "2026-04-22T23:47:00+08:00"
