@@ -746,3 +746,30 @@ archived:
       duration: "less than 1 hour"
       commits: 1
       files_changed: 3
+
+  - id: feat-cascading-selector
+    name: "级联选择器（公司→工厂→部门）"
+    completed: "2026-04-22"
+    tag: feat-cascading-selector-20260422
+    merge_commit: "1409646"
+    merged_to: main
+    branch_deleted: true
+    branch_name: feature/cascading-selector
+    worktree_deleted: true
+    worktree_path: ../LiteMes-cascading-selector
+    keywords: [cascading-selector, 级联, company, factory, department, dropdown, el-select, v-model, vue3, element-plus]
+    category: frontend
+    value_points: 2
+    related_features: [feat-frontend-overhaul, feat-frontend-ui-lib, feat-enterprise-common]
+    conflicts:
+      had_conflict: false
+      conflict_files: []
+    verification:
+      status: passed
+      scenarios_total: 2
+      scenarios_passed: 2
+    stats:
+      started: "2026-04-22T23:30:00+08:00"
+      duration: "less than 30 minutes"
+      commits: 1
+      files_changed: 2

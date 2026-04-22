@@ -10,13 +10,6 @@ pending:
       - feat-cascading-selector
       - feat-auth-frontend
 
-  - id: feat-cascading-selector
-    name: "级联选择器（公司→工厂→部门）"
-    priority: 70
-    size: S
-    dependencies:
-      - feat-frontend-ui-lib
-
   - id: feat-auth-frontend
     name: "登录认证前端"
     priority: 60
@@ -30,6 +23,11 @@ blocked:
 
 completed:
   # ── 前端升级 (parent: feat-frontend-overhaul) ──
+  - id: feat-cascading-selector
+    name: "级联选择器（公司→工厂→部门）"
+    parent: feat-frontend-overhaul
+    completed_at: "2026-04-22T23:35:00+08:00"
+    tag: feat-cascading-selector-20260422
   - id: feat-process-frontend
     name: "工序管理前端（API + View + Route）"
     parent: feat-frontend-overhaul
@@ -186,7 +184,7 @@ completed:
     tag: feat-user-permission-20260422
 
 meta:
-  last_updated: "2026-04-22T22:45:00+08:00"
+  last_updated: "2026-04-22T23:35:00+08:00"
   parents:
     - id: feat-frontend-overhaul
       name: "前端全面升级"
