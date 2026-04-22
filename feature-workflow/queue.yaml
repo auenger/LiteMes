@@ -1,14 +1,4 @@
 pending:
-  - id: feat-frontend-overhaul
-    name: "前端全面升级"
-    priority: 95
-    size: L
-    children:
-      - feat-frontend-ui-lib
-      - feat-frontend-layout
-      - feat-process-frontend
-      - feat-cascading-selector
-      - feat-auth-frontend
 
 active:
 
@@ -16,45 +6,73 @@ blocked:
 
 completed:
   # ── 前端升级 (parent: feat-frontend-overhaul) ──
+  - id: feat-frontend-overhaul
+    name: "前端全面升级"
+    priority: 95
+    size: L
+    completed_at: "2026-04-23T00:05:00+08:00"
+    tag: feat-frontend-overhaul-20260422
+    children:
+      - feat-frontend-ui-lib
+      - feat-frontend-layout
+      - feat-process-frontend
+      - feat-cascading-selector
+      - feat-auth-frontend
   - id: feat-auth-frontend
     name: "登录认证前端"
     parent: feat-frontend-overhaul
+    priority: 95
+    size: S
     completed_at: "2026-04-22T23:55:00+08:00"
     tag: feat-auth-frontend-20260422
   - id: feat-cascading-selector
     name: "级联选择器（公司→工厂→部门）"
     parent: feat-frontend-overhaul
+    priority: 95
+    size: XS
     completed_at: "2026-04-22T23:35:00+08:00"
     tag: feat-cascading-selector-20260422
   - id: feat-process-frontend
     name: "工序管理前端（API + View + Route）"
     parent: feat-frontend-overhaul
+    priority: 95
+    size: S
     completed_at: "2026-04-22T22:45:00+08:00"
     tag: feat-process-frontend-20260422
   - id: feat-frontend-layout
     name: "导航布局（侧边栏 + 面包屑 + Tab 页签）"
     parent: feat-frontend-overhaul
+    priority: 95
+    size: M
     completed_at: "2026-04-22T21:30:00+08:00"
     tag: feat-frontend-layout-20260422
   - id: feat-frontend-ui-lib
     name: "UI 组件库引入与样式重构（Element Plus + Tailwind CSS）"
     parent: feat-frontend-overhaul
+    priority: 95
+    size: M
     completed_at: "2026-04-22T20:30:00+08:00"
     tag: feat-frontend-ui-lib-20260422
 
   # ── Bug Fix ──
   - id: fix-test-create-400
     name: "修复测试失败 - API Create 返回 400"
+    priority: 80
+    size: XS
     completed_at: "2026-04-22T19:50:00+08:00"
     tag: fix-test-create-400-20260422
   - id: fix-audit-serialization
     name: "修复 AuditLogService Jackson 日期时间序列化错误"
+    priority: 80
+    size: XS
     completed_at: "2026-04-22T22:15:00+08:00"
     tag: fix-audit-serialization-20260422
 
   # ── 项目基础 ──
   - id: feat-project-scaffold
     name: "项目脚手架搭建"
+    priority: 100
+    size: L
     completed_at: "2026-04-21T00:00:00+08:00"
     tag: feat-project-scaffold-20260421
 
@@ -62,47 +80,63 @@ completed:
   - id: feat-shift-schedule
     name: "班次管理"
     parent: feat-enterprise-org
+    priority: 90
+    size: S
     completed_at: "2026-04-21T00:00:00+08:00"
     tag: feat-shift-schedule-20260421
   - id: feat-company
     name: "公司管理"
     parent: feat-enterprise-org
+    priority: 90
+    size: S
     dependencies: [feat-project-scaffold]
     completed_at: "2026-04-22T00:00:00+08:00"
     tag: feat-company-20260422
   - id: feat-factory
     name: "工厂管理"
     parent: feat-enterprise-org
+    priority: 90
+    size: S
     dependencies: [feat-company]
     completed_at: "2026-04-22T00:00:00+08:00"
     tag: feat-factory-20260422
   - id: feat-department
     name: "部门管理"
     parent: feat-enterprise-org
+    priority: 90
+    size: S
     dependencies: [feat-factory]
     completed_at: "2026-04-22T00:00:00+08:00"
     tag: feat-department-20260422
   - id: feat-department-user
     name: "部门人员管理"
     parent: feat-enterprise-org
+    priority: 90
+    size: S
     dependencies: [feat-department]
     completed_at: "2026-04-22T00:00:00+08:00"
     tag: feat-department-user-20260422
   - id: feat-enterprise-common
     name: "企业管理公共模块"
     parent: feat-enterprise-org
+    priority: 90
+    size: M
     dependencies: [feat-company, feat-factory, feat-department]
     completed_at: "2026-04-22T00:00:00+08:00"
     tag: feat-enterprise-common-20260422
   - id: feat-work-center
     name: "工作中心管理"
     parent: feat-enterprise-org
+    priority: 90
+    size: S
     dependencies: [feat-factory, feat-department]
     completed_at: "2026-04-22T00:00:00+08:00"
     tag: feat-work-center-20260422
   - id: feat-process
     name: "工序管理"
     parent: feat-enterprise-org
+    priority: 90
+    size: S
     dependencies: [feat-work-center]
     completed_at: "2026-04-22T00:00:00+08:00"
     tag: feat-process-20260422
@@ -111,24 +145,32 @@ completed:
   - id: feat-uom
     name: "计量单位管理"
     parent: feat-material-master
+    priority: 85
+    size: M
     dependencies: [feat-enterprise-common]
     completed_at: "2026-04-22T00:00:00+08:00"
     tag: feat-uom-20260422
   - id: feat-material-category
     name: "物料分类管理"
     parent: feat-material-master
+    priority: 85
+    size: S
     dependencies: [feat-enterprise-common]
     completed_at: "2026-04-22T00:00:00+08:00"
     tag: feat-material-category-20260422
   - id: feat-material-info
     name: "物料信息管理"
     parent: feat-material-master
+    priority: 85
+    size: L
     dependencies: [feat-uom, feat-material-category]
     completed_at: "2026-04-22T00:00:00+08:00"
     tag: feat-material-info-20260422
   - id: feat-inspection-exemption
     name: "免检管理"
     parent: feat-material-master
+    priority: 85
+    size: S
     dependencies: [feat-material-info, feat-supplier]
     completed_at: "2026-04-22T00:00:00+08:00"
     tag: feat-inspection-exemption-20260422
@@ -137,18 +179,24 @@ completed:
   - id: feat-equipment-type
     name: "设备类型管理"
     parent: feat-equipment-master
+    priority: 80
+    size: S
     dependencies: [feat-enterprise-common]
     completed_at: "2026-04-22T00:00:00+08:00"
     tag: feat-equipment-type-20260422
   - id: feat-equipment-model
     name: "设备型号管理"
     parent: feat-equipment-master
+    priority: 80
+    size: S
     dependencies: [feat-equipment-type]
     completed_at: "2026-04-22T00:00:00+08:00"
     tag: feat-equipment-model-20260422
   - id: feat-equipment-ledger
     name: "设备台账管理"
     parent: feat-equipment-master
+    priority: 80
+    size: M
     dependencies: [feat-equipment-model, feat-work-center]
     completed_at: "2026-04-22T00:00:00+08:00"
     tag: feat-equipment-ledger-20260422
@@ -157,12 +205,16 @@ completed:
   - id: feat-customer
     name: "客户管理"
     parent: feat-supply-chain
+    priority: 75
+    size: S
     dependencies: [feat-material-info]
     completed_at: "2026-04-22T00:00:00+08:00"
     tag: feat-customer-20260422
   - id: feat-supplier
     name: "供应商管理"
     parent: feat-supply-chain
+    priority: 75
+    size: S
     dependencies: [feat-material-info]
     completed_at: "2026-04-22T00:00:00+08:00"
     tag: feat-supplier-20260422
@@ -171,22 +223,28 @@ completed:
   - id: feat-permission-group
     name: "数据权限组管理"
     parent: feat-data-permission
+    priority: 70
+    size: M
     dependencies: [feat-enterprise-common, feat-work-center, feat-process]
     completed_at: "2026-04-22T00:00:00+08:00"
     tag: feat-permission-group-20260422
   - id: feat-user-permission
     name: "用户数据权限管理"
     parent: feat-data-permission
+    priority: 70
+    size: M
     dependencies: [feat-permission-group]
     completed_at: "2026-04-22T00:00:00+08:00"
     tag: feat-user-permission-20260422
 
 meta:
-  last_updated: "2026-04-22T23:55:00+08:00"
+  last_updated: "2026-04-23T00:05:00+08:00"
   parents:
     - id: feat-frontend-overhaul
       name: "前端全面升级"
       split: true
+      completed: true
+      completed_at: "2026-04-23T00:05:00+08:00"
       children:
         - feat-frontend-ui-lib
         - feat-frontend-layout

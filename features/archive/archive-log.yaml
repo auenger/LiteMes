@@ -1,4 +1,20 @@
 archived:
+  - id: feat-frontend-overhaul
+    name: "前端全面升级（模块索引）"
+    completed: "2026-04-22"
+    tag: feat-frontend-overhaul-20260422
+    is_parent_index: true
+    children:
+      - feat-frontend-ui-lib
+      - feat-frontend-layout
+      - feat-process-frontend
+      - feat-cascading-selector
+      - feat-auth-frontend
+    keywords: [frontend-overhaul, element-plus, tailwind-css, layout, auth, cascading-selector, navigation, dark-theme, vue3]
+    category: frontend
+    value_points: 17
+    related_features: [feat-frontend-ui-lib, feat-frontend-layout, feat-process-frontend, feat-cascading-selector, feat-auth-frontend]
+
   - id: feat-frontend-layout
     name: "导航布局（侧边栏 + 面包屑 + Tab 页签）"
     completed: "2026-04-22"
