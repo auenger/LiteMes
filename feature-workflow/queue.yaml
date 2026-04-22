@@ -5,6 +5,15 @@ active:
 blocked:
 
 completed:
+  # ── 冒烟测试 ──
+  - id: feat-e2e-smoke-test
+    name: "端到端冒烟测试（CORS 修复 + 基础功能验证）"
+    priority: 90
+    size: M
+    dependencies: [feat-auth-frontend]
+    completed_at: "2026-04-22T16:45:00+08:00"
+    tag: feat-e2e-smoke-test-20260422
+
   # ── 前端升级 (parent: feat-frontend-overhaul) ──
   - id: feat-frontend-overhaul
     name: "前端全面升级"
@@ -238,7 +247,7 @@ completed:
     tag: feat-user-permission-20260422
 
 meta:
-  last_updated: "2026-04-23T00:05:00+08:00"
+  last_updated: "2026-04-22T16:45:00+08:00"
   parents:
     - id: feat-frontend-overhaul
       name: "前端全面升级"

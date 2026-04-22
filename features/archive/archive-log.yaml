@@ -816,3 +816,30 @@ archived:
       duration: "less than 1 hour"
       commits: 1
       files_changed: 14
+
+  - id: feat-e2e-smoke-test
+    name: "端到端冒烟测试（CORS 修复 + 基础功能验证）"
+    completed: "2026-04-22"
+    tag: feat-e2e-smoke-test-20260422
+    merge_commit: "de236b3"
+    merged_to: main
+    branch_deleted: true
+    branch_name: feature/e2e-smoke-test
+    worktree_deleted: true
+    worktree_path: ../LiteMes-e2e-smoke-test
+    keywords: [e2e, smoke-test, playwright, cors, jwt-fix, hmac, login, auth, company-crud, route-guard]
+    category: testing
+    value_points: 3
+    related_features: [feat-auth-frontend]
+    conflicts:
+      had_conflict: false
+      conflict_files: []
+    verification:
+      status: passed
+      scenarios_total: 5
+      scenarios_passed: 5
+    stats:
+      started: "2026-04-22T20:30:00+08:00"
+      duration: "~40 minutes"
+      commits: 1
+      files_changed: 9
