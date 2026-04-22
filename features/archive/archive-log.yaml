@@ -1,4 +1,31 @@
 archived:
+  - id: feat-e2e-material-category
+    name: "物料分类 E2E 测试（树形结构管理）"
+    completed: "2026-04-22T23:47:00+08:00"
+    tag: feat-e2e-material-category-20260422
+    merge_commit: "f68b2ce"
+    merged_to: main
+    branch_deleted: true
+    branch_name: feature/e2e-material-category
+    worktree_deleted: true
+    worktree_path: ../LiteMes-e2e-material-category
+    keywords: [e2e, playwright, material-category, tree-structure, hierarchy, parent-child, crud, auth-fixture, el-select, el-dialog]
+    category: testing
+    value_points: 2
+    related_features: [feat-e2e-material, feat-material-category, feat-e2e-production-base]
+    conflicts:
+      had_conflict: false
+      conflict_files: []
+    verification:
+      status: passed
+      scenarios_total: 5
+      scenarios_passed: 5
+    stats:
+      started: "2026-04-22T23:45:00+08:00"
+      duration: "~5 minutes"
+      commits: 1
+      files_changed: 1
+
   - id: feat-e2e-production-base
     name: "生产基础 E2E 测试（工作中心/计量单位/单位换算）"
     completed: "2026-04-22T23:20:00+08:00"
