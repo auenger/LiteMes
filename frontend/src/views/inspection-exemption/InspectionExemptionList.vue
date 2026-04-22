@@ -1,196 +1,162 @@
 <template>
-  <div class="inspection-exemption-page">
-    <div class="page-header">
-      <h2>免检清单管理</h2>
-      <div class="header-actions">
-        <div class="table-settings-wrapper" style="position: relative;">
-          <button class="btn" @click="showTableSettings = !showTableSettings">表格设置</button>
-          <TableSettingsPanel
-            :visible="showTableSettings"
-            :columns="columns"
-            @close="showTableSettings = false"
-          />
+  <div class="h-full flex flex-col space-y-3">
+    <!-- Filter Card -->
+    <div class="bg-card p-3 border border-border-color shadow-sm rounded-sm shrink-0">
+      <el-form :inline="true" :model="query" size="default" class="flex flex-wrap gap-y-3 items-center !mb-0">
+        <el-form-item label="物料" class="!mb-0">
+          <el-select v-model="query.materialId" placeholder="全部物料" clearable filterable class="!w-48">
+            <el-option v-for="m in materialOptions" :key="m.id" :value="m.id" :label="`${m.code} - ${m.name}`" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="状态" class="!mb-0">
+          <el-select v-model="query.status" placeholder="全部状态" clearable class="!w-32">
+            <el-option :value="1" label="启用" />
+            <el-option :value="0" label="禁用" />
+          </el-select>
+        </el-form-item>
+        <el-form-item class="!mb-0 !mr-0">
+          <el-button type="primary" :icon="Search" @click="search">查询</el-button>
+          <el-button :icon="Refresh" @click="resetQuery">重置</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
+
+    <!-- Main Content Card -->
+    <div class="flex-1 bg-card border border-border-color shadow-sm rounded-sm flex flex-col overflow-hidden">
+      <div class="px-4 py-2.5 border-b border-border-color flex justify-between items-center shrink-0">
+        <div class="flex gap-2">
+          <el-button type="primary" :icon="Plus" @click="openCreateDialog">新建免检规则</el-button>
+          <div class="relative">
+            <el-button :icon="Setting" @click="showTableSettings = !showTableSettings">表格设置</el-button>
+            <TableSettingsPanel
+              :visible="showTableSettings"
+              :columns="columns"
+              @close="showTableSettings = false"
+              @toggle="toggleColumn"
+              @reset="resetSettings"
+            />
+          </div>
         </div>
-        <button class="btn btn-primary" @click="openCreateDialog">新建免检规则</button>
       </div>
-    </div>
-
-    <!-- Search Bar -->
-    <div class="search-bar">
-      <select v-model="query.materialId" class="input select">
-        <option :value="undefined">全部物料</option>
-        <option v-for="m in materialOptions" :key="m.id" :value="m.id">
-          {{ m.code }} - {{ m.name }}
-        </option>
-      </select>
-      <select v-model="query.status" class="input select">
-        <option :value="undefined">全部状态</option>
-        <option :value="1">启用</option>
-        <option :value="0">禁用</option>
-      </select>
-      <button class="btn" @click="search">查询</button>
-      <button class="btn btn-secondary" @click="resetQuery">重置</button>
-    </div>
-
-    <!-- Inspection Exemption Table -->
-    <table class="table">
-      <thead>
-        <tr>
-          <th v-if="isColumnVisible('materialCode')">物料编码</th>
-          <th v-if="isColumnVisible('materialName')">物料名称</th>
-          <th v-if="isColumnVisible('supplierCode')">供应商编码</th>
-          <th v-if="isColumnVisible('supplierName')">供应商名称</th>
-          <th v-if="isColumnVisible('validPeriod')">有效期</th>
-          <th v-if="isColumnVisible('status')">状态</th>
-          <th v-if="isColumnVisible('createdBy')">创建人</th>
-          <th v-if="isColumnVisible('createdAt')">创建时间</th>
-          <th>操作</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-if="loading">
-          <td :colspan="visibleColCount + 1" class="text-center">加载中...</td>
-        </tr>
-        <tr v-else-if="exemptions.length === 0">
-          <td :colspan="visibleColCount + 1" class="text-center">暂无数据</td>
-        </tr>
-        <tr
-          v-for="item in exemptions"
-          :key="item.id"
-          :class="{ 'row-expired': item.expired }"
-        >
-          <td v-if="isColumnVisible('materialCode')">{{ item.materialCode }}</td>
-          <td v-if="isColumnVisible('materialName')">{{ item.materialName }}</td>
-          <td v-if="isColumnVisible('supplierCode')">{{ item.supplierCode || '-' }}</td>
-          <td v-if="isColumnVisible('supplierName')">{{ item.supplierName || '-' }}</td>
-          <td v-if="isColumnVisible('validPeriod')">
-            <template v-if="item.validFrom || item.validTo">
-              {{ item.validFrom || '...' }} ~ {{ item.validTo || '...' }}
+      <div class="flex-1 p-2.5 overflow-hidden">
+        <el-table :data="exemptions" border stripe height="100%" v-loading="loading" :row-class-name="rowClassName">
+          <el-table-column v-if="isColumnVisible('materialCode')" prop="materialCode" label="物料编码" min-width="120" />
+          <el-table-column v-if="isColumnVisible('materialName')" prop="materialName" label="物料名称" min-width="120" />
+          <el-table-column v-if="isColumnVisible('supplierCode')" prop="supplierCode" label="供应商编码" min-width="110">
+            <template #default="{ row }">{{ row.supplierCode || '-' }}</template>
+          </el-table-column>
+          <el-table-column v-if="isColumnVisible('supplierName')" prop="supplierName" label="供应商名称" min-width="110">
+            <template #default="{ row }">{{ row.supplierName || '-' }}</template>
+          </el-table-column>
+          <el-table-column v-if="isColumnVisible('validPeriod')" label="有效期" min-width="180">
+            <template #default="{ row }">
+              <template v-if="row.validFrom || row.validTo">
+                {{ row.validFrom || '...' }} ~ {{ row.validTo || '...' }}
+              </template>
+              <template v-else>
+                <span class="text-gray-400">永久</span>
+              </template>
             </template>
-            <template v-else>
-              <span class="text-muted">永久</span>
+          </el-table-column>
+          <el-table-column v-if="isColumnVisible('status')" prop="status" label="状态" min-width="80">
+            <template #default="{ row }">
+              <el-tag :type="getStatusTagType(row)" size="small">
+                {{ getStatusLabel(row) }}
+              </el-tag>
             </template>
-          </td>
-          <td v-if="isColumnVisible('status')">
-            <span :class="['status-badge', getStatusClass(item)]">
-              {{ getStatusLabel(item) }}
-            </span>
-          </td>
-          <td v-if="isColumnVisible('createdBy')">{{ item.createdBy || '-' }}</td>
-          <td v-if="isColumnVisible('createdAt')">{{ formatDate(item.createdAt) }}</td>
-          <td class="actions">
-            <button class="btn btn-sm" @click="openEditDialog(item)">编辑</button>
-            <button
-              v-if="item.status === 1 && !item.expired"
-              class="btn btn-sm btn-warning"
-              @click="toggleStatus(item)"
-            >
-              禁用
-            </button>
-            <button
-              v-else-if="item.status === 0"
-              class="btn btn-sm btn-success"
-              @click="toggleStatus(item)"
-            >
-              启用
-            </button>
-            <button class="btn btn-sm btn-danger" @click="confirmDelete(item)">删除</button>
-            <button class="btn btn-sm btn-info" @click="openAuditLog(item)">变更履历</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <!-- Pagination -->
-    <div class="pagination" v-if="total > 0">
-      <span class="pagination-info">
-        共 {{ total }} 条，第 {{ query.page || 1 }} / {{ totalPages }} 页
-      </span>
-      <button class="btn btn-sm" :disabled="query.page <= 1" @click="goPage(1)">首页</button>
-      <button class="btn btn-sm" :disabled="query.page <= 1" @click="goPage((query.page || 1) - 1)">上一页</button>
-      <button class="btn btn-sm" :disabled="query.page >= totalPages" @click="goPage((query.page || 1) + 1)">下一页</button>
-      <button class="btn btn-sm" :disabled="query.page >= totalPages" @click="goPage(totalPages)">末页</button>
+          </el-table-column>
+          <el-table-column v-if="isColumnVisible('createdBy')" prop="createdBy" label="创建人" min-width="100">
+            <template #default="{ row }">{{ row.createdBy || '-' }}</template>
+          </el-table-column>
+          <el-table-column v-if="isColumnVisible('createdAt')" prop="createdAt" label="创建时间" min-width="160">
+            <template #default="{ row }">{{ formatDate(row.createdAt) }}</template>
+          </el-table-column>
+          <el-table-column label="操作" min-width="280" fixed="right">
+            <template #default="{ row }">
+              <div class="flex gap-1">
+                <el-button size="small" @click="openEditDialog(row)">编辑</el-button>
+                <el-button
+                  v-if="row.status === 1 && !row.expired"
+                  size="small"
+                  type="warning"
+                  @click="toggleStatus(row)"
+                >禁用</el-button>
+                <el-button
+                  v-else-if="row.status === 0"
+                  size="small"
+                  type="success"
+                  @click="toggleStatus(row)"
+                >启用</el-button>
+                <el-button size="small" type="danger" @click="confirmDelete(row)">删除</el-button>
+                <el-button size="small" type="info" @click="openAuditLog(row)">变更履历</el-button>
+              </div>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+      <div class="px-4 py-3 border-t border-border-color flex justify-end shrink-0">
+        <el-pagination
+          layout="total, sizes, prev, pager, next"
+          :total="total"
+          :page-size="query.size"
+          :current-page="query.page"
+          background
+          size="small"
+          @current-change="goPage"
+          @size-change="(size: number) => { query.size = size; search() }"
+        />
+      </div>
     </div>
 
     <!-- Create/Edit Dialog -->
-    <div v-if="dialogVisible" class="dialog-overlay" @click.self="closeDialog">
-      <div class="dialog">
-        <div class="dialog-header">
-          <h3>{{ isEdit ? '编辑免检规则' : '新建免检规则' }}</h3>
-          <button class="dialog-close" @click="closeDialog">&times;</button>
-        </div>
-        <div class="dialog-body">
-          <div class="form-group">
-            <label>物料 <span class="required">*</span></label>
-            <select v-model="form.materialId" class="input select" :disabled="isEdit">
-              <option :value="null" disabled>请选择物料</option>
-              <option v-for="m in materialOptions" :key="m.id" :value="m.id">
-                {{ m.code }} - {{ m.name }}
-              </option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>供应商</label>
-            <input
-              v-model="form.supplierDisplay"
-              type="text"
-              class="input"
-              disabled
-              placeholder="供应商模块尚未开发，暂不可选"
-            />
-            <small class="form-hint">供应商功能开发后可选择，留空表示全局免检</small>
-          </div>
-          <div class="form-group">
-            <label>有效开始日期</label>
-            <input
-              v-model="form.validFrom"
-              type="date"
-              class="input"
-            />
-          </div>
-          <div class="form-group">
-            <label>有效结束日期</label>
-            <input
-              v-model="form.validTo"
-              type="date"
-              class="input"
-            />
-            <small class="form-hint">留空表示永久有效</small>
-          </div>
-          <div class="form-group" v-if="!isEdit">
-            <label>规则说明</label>
-            <p class="rule-description">{{ getRuleDescription() }}</p>
-          </div>
-        </div>
-        <div class="dialog-footer">
-          <button class="btn" @click="closeDialog">取消</button>
-          <button class="btn btn-primary" @click="submitForm" :disabled="submitting">
-            {{ submitting ? '提交中...' : '确定' }}
-          </button>
-        </div>
-        <div v-if="formError" class="form-error">{{ formError }}</div>
-      </div>
-    </div>
+    <el-dialog
+      v-model="dialogVisible"
+      :title="isEdit ? '编辑免检规则' : '新建免检规则'"
+      width="520px"
+      destroy-on-close
+    >
+      <el-form label-width="100px">
+        <el-form-item label="物料" required>
+          <el-select v-model="form.materialId" placeholder="请选择物料" :disabled="isEdit" filterable class="!w-full">
+            <el-option v-for="m in materialOptions" :key="m.id" :value="m.id" :label="`${m.code} - ${m.name}`" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="供应商">
+          <el-input v-model="form.supplierDisplay" disabled placeholder="供应商模块尚未开发，暂不可选" />
+          <span class="text-gray-400 text-xs mt-1 block">供应商功能开发后可选择，留空表示全局免检</span>
+        </el-form-item>
+        <el-form-item label="有效开始日期">
+          <el-date-picker v-model="form.validFrom" type="date" value-format="YYYY-MM-DD" placeholder="选择开始日期" class="!w-full" />
+        </el-form-item>
+        <el-form-item label="有效结束日期">
+          <el-date-picker v-model="form.validTo" type="date" value-format="YYYY-MM-DD" placeholder="选择结束日期" class="!w-full" />
+          <span class="text-gray-400 text-xs mt-1 block">留空表示永久有效</span>
+        </el-form-item>
+        <el-form-item v-if="!isEdit" label="规则说明">
+          <p class="m-0 p-2 bg-blue-50 rounded text-blue-500 text-sm">{{ getRuleDescription() }}</p>
+        </el-form-item>
+      </el-form>
+      <div v-if="formError" class="text-red-500 text-xs px-4 pb-2">{{ formError }}</div>
+      <template #footer>
+        <el-button @click="closeDialog">取消</el-button>
+        <el-button type="primary" @click="submitForm" :loading="submitting">确定</el-button>
+      </template>
+    </el-dialog>
 
     <!-- Delete Confirm Dialog -->
-    <div v-if="deleteDialogVisible" class="dialog-overlay" @click.self="closeDeleteDialog">
-      <div class="dialog dialog-sm">
-        <div class="dialog-header">
-          <h3>确认删除</h3>
-          <button class="dialog-close" @click="closeDeleteDialog">&times;</button>
-        </div>
-        <div class="dialog-body">
-          <p>确定要删除免检规则 "{{ deleteTarget?.materialName }}" ({{ deleteTarget?.materialCode }}) 吗？</p>
-          <p class="text-muted">删除后不可恢复。</p>
-        </div>
-        <div class="dialog-footer">
-          <button class="btn" @click="closeDeleteDialog">取消</button>
-          <button class="btn btn-danger" @click="doDelete" :disabled="submitting">
-            {{ submitting ? '删除中...' : '删除' }}
-          </button>
-        </div>
-      </div>
-    </div>
+    <el-dialog
+      v-model="deleteDialogVisible"
+      title="确认删除"
+      width="420px"
+      destroy-on-close
+    >
+      <p>确定要删除免检规则 "{{ deleteTarget?.materialName }}" ({{ deleteTarget?.materialCode }}) 吗？</p>
+      <p class="text-gray-400 text-sm mt-2">删除后不可恢复。</p>
+      <template #footer>
+        <el-button @click="closeDeleteDialog">取消</el-button>
+        <el-button type="danger" @click="doDelete" :loading="submitting">删除</el-button>
+      </template>
+    </el-dialog>
 
     <!-- Audit Log Dialog -->
     <AuditLogDialog
@@ -205,6 +171,7 @@
 
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted } from 'vue';
+import { Search, Refresh, Plus, Setting } from '@element-plus/icons-vue';
 import {
   listInspectionExemptions,
   createInspectionExemption,
@@ -440,14 +407,18 @@ async function toggleStatus(item: InspectionExemptionDto) {
   }
 }
 
-function getStatusClass(item: InspectionExemptionDto): string {
-  if (item.expired) return 'status-expired';
-  return item.status === 1 ? 'status-enabled' : 'status-disabled';
+function getStatusTagType(item: InspectionExemptionDto): string {
+  if (item.expired) return 'info';
+  return item.status === 1 ? 'success' : 'danger';
 }
 
 function getStatusLabel(item: InspectionExemptionDto): string {
   if (item.expired) return '已过期';
   return item.status === 1 ? '启用' : '禁用';
+}
+
+function rowClassName({ row }: { row: InspectionExemptionDto }): string {
+  return row.expired ? 'opacity-60' : '';
 }
 
 function formatDate(dateStr: string | undefined) {
@@ -460,322 +431,3 @@ onMounted(() => {
   fetchList();
 });
 </script>
-
-<style scoped>
-.inspection-exemption-page {
-  padding: 20px;
-}
-
-.page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.page-header h2 {
-  margin: 0;
-  font-size: 20px;
-  color: #333;
-}
-
-.search-bar {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 16px;
-  flex-wrap: wrap;
-}
-
-.input {
-  padding: 6px 12px;
-  border: 1px solid #d9d9d9;
-  border-radius: 4px;
-  font-size: 14px;
-  outline: none;
-  transition: border-color 0.2s;
-}
-
-.input:focus {
-  border-color: #1890ff;
-}
-
-.input-disabled {
-  background-color: #f5f5f5;
-  cursor: not-allowed;
-}
-
-.select {
-  min-width: 120px;
-}
-
-.btn {
-  padding: 6px 16px;
-  border: 1px solid #d9d9d9;
-  border-radius: 4px;
-  background: #fff;
-  cursor: pointer;
-  font-size: 14px;
-  transition: all 0.2s;
-}
-
-.btn:hover {
-  border-color: #1890ff;
-  color: #1890ff;
-}
-
-.btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.btn-primary {
-  background: #1890ff;
-  color: #fff;
-  border-color: #1890ff;
-}
-
-.btn-primary:hover {
-  background: #40a9ff;
-  color: #fff;
-}
-
-.btn-secondary {
-  background: #f0f0f0;
-  border-color: #d9d9d9;
-}
-
-.btn-sm {
-  padding: 2px 8px;
-  font-size: 12px;
-}
-
-.btn-danger {
-  color: #ff4d4f;
-  border-color: #ff4d4f;
-}
-
-.btn-danger:hover {
-  background: #ff4d4f;
-  color: #fff;
-}
-
-.btn-warning {
-  color: #faad14;
-  border-color: #faad14;
-}
-
-.btn-warning:hover {
-  background: #faad14;
-  color: #fff;
-}
-
-.btn-success {
-  color: #52c41a;
-  border-color: #52c41a;
-}
-
-.btn-success:hover {
-  background: #52c41a;
-  color: #fff;
-}
-
-.btn-info {
-  color: #1890ff;
-  border-color: #1890ff;
-}
-
-.btn-info:hover {
-  background: #1890ff;
-  color: #fff;
-}
-
-.header-actions {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
-
-.table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 16px;
-}
-
-.table th,
-.table td {
-  padding: 10px 12px;
-  border: 1px solid #f0f0f0;
-  text-align: left;
-  font-size: 14px;
-}
-
-.table th {
-  background: #fafafa;
-  font-weight: 600;
-  color: #333;
-}
-
-.table tbody tr:hover {
-  background: #f5f5f5;
-}
-
-.row-expired {
-  opacity: 0.6;
-}
-
-.row-expired td {
-  text-decoration: line-through;
-  color: #999;
-}
-
-.actions {
-  display: flex;
-  gap: 6px;
-}
-
-.status-badge {
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-size: 12px;
-}
-
-.status-enabled {
-  background: #f6ffed;
-  color: #52c41a;
-  border: 1px solid #b7eb8f;
-}
-
-.status-disabled {
-  background: #fff2f0;
-  color: #ff4d4f;
-  border: 1px solid #ffccc7;
-}
-
-.status-expired {
-  background: #f5f5f5;
-  color: #999;
-  border: 1px solid #d9d9d9;
-}
-
-.pagination {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.pagination-info {
-  font-size: 14px;
-  color: #666;
-  margin-right: auto;
-}
-
-.text-center {
-  text-align: center;
-}
-
-.text-muted {
-  color: #999;
-  font-size: 13px;
-}
-
-.required {
-  color: #ff4d4f;
-}
-
-.form-hint {
-  color: #999;
-  font-size: 12px;
-  margin-top: 4px;
-  display: block;
-}
-
-.rule-description {
-  margin: 0;
-  padding: 8px 12px;
-  background: #f0f5ff;
-  border-radius: 4px;
-  font-size: 13px;
-  color: #1890ff;
-}
-
-/* Dialog styles */
-.dialog-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
-
-.dialog {
-  background: #fff;
-  border-radius: 8px;
-  width: 520px;
-  max-width: 90vw;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-}
-
-.dialog-sm {
-  width: 400px;
-}
-
-.dialog-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 24px;
-  border-bottom: 1px solid #f0f0f0;
-}
-
-.dialog-header h3 {
-  margin: 0;
-  font-size: 16px;
-}
-
-.dialog-close {
-  background: none;
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
-  color: #999;
-}
-
-.dialog-body {
-  padding: 24px;
-}
-
-.dialog-footer {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  padding: 12px 24px;
-  border-top: 1px solid #f0f0f0;
-}
-
-.form-group {
-  margin-bottom: 16px;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 6px;
-  font-size: 14px;
-  color: #333;
-}
-
-.form-group .input {
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.form-error {
-  padding: 8px 24px 16px;
-  color: #ff4d4f;
-  font-size: 13px;
-}
-</style>
