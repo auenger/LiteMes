@@ -692,3 +692,30 @@ archived:
       duration: "less than 1 hour"
       commits: 1
       files_changed: 3
+
+  - id: fix-audit-serialization
+    name: "修复 AuditLogService Jackson 日期时间序列化错误"
+    completed: "2026-04-22"
+    tag: fix-audit-serialization-20260422
+    merge_commit: "b2ab282"
+    merged_to: main
+    branch_deleted: true
+    branch_name: feature/fix-audit-serialization
+    worktree_deleted: true
+    worktree_path: ../LiteMes-fix-audit-serialization
+    keywords: [jackson, serialization, localdate, localdatetime, jsr310, audit-log, quarkus-config, bug-fix]
+    category: bug-fix
+    value_points: 2
+    related_features: [feat-enterprise-common, feat-equipment-ledger, feat-inspection-exemption]
+    conflicts:
+      had_conflict: false
+      conflict_files: []
+    verification:
+      status: passed
+      scenarios_total: 3
+      scenarios_passed: 3
+    stats:
+      started: "2026-04-22T22:00:00+08:00"
+      duration: "less than 30 minutes"
+      commits: 1
+      files_changed: 1

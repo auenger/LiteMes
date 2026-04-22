@@ -32,13 +32,6 @@ pending:
       - feat-frontend-layout
 
 active:
-  - id: fix-audit-serialization
-    name: "修复 AuditLogService Jackson 日期时间序列化错误"
-    priority: 80
-    size: S
-    branch: feature/fix-audit-serialization
-    worktree: ../LiteMes-fix-audit-serialization
-    started_at: "2026-04-22T22:00:00+08:00"
 
 blocked:
 
@@ -60,6 +53,10 @@ completed:
     name: "修复测试失败 - API Create 返回 400"
     completed_at: "2026-04-22T19:50:00+08:00"
     tag: fix-test-create-400-20260422
+  - id: fix-audit-serialization
+    name: "修复 AuditLogService Jackson 日期时间序列化错误"
+    completed_at: "2026-04-22T22:15:00+08:00"
+    tag: fix-audit-serialization-20260422
 
   # ── 项目基础 ──
   - id: feat-project-scaffold
@@ -191,7 +188,7 @@ completed:
     tag: feat-user-permission-20260422
 
 meta:
-  last_updated: "2026-04-22T22:00:00+08:00"
+  last_updated: "2026-04-22T22:15:00+08:00"
   parents:
     - id: feat-frontend-overhaul
       name: "前端全面升级"
