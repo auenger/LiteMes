@@ -1,1 +1,16 @@
 target/
+
+# IDE / tool config
+.collaborator/
+
+# Build artifacts
+META-INF/
+
+# External repos
+company-ai-marketplace/
+
+# Generated files
+io/
+
+# Office temp lock files
+docx/.~*
