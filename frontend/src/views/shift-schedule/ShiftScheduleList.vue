@@ -210,9 +210,9 @@ async function loadSchedules() {
       pageNum: pagination.value.pageNum,
       pageSize: pagination.value.pageSize,
     });
-    if (res.data?.data) {
-      schedules.value = res.data.data.records || [];
-      pagination.value.total = res.data.data.total;
+    if (res.code === 200 && res.data) {
+      schedules.value = res.data.records || [];
+      pagination.value.total = res.data.total;
     }
   } catch (e) {
     console.error('Failed to load schedules:', e);
@@ -223,8 +223,8 @@ async function loadSchedules() {
 async function loadShifts(scheduleId: number) {
   try {
     const res = await listShifts(scheduleId);
-    if (res.data?.data) {
-      shifts.value = res.data.data;
+    if (res.code === 200 && res.data) {
+      shifts.value = res.data;
     }
   } catch (e) {
     console.error('Failed to load shifts:', e);

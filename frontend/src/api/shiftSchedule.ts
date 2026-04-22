@@ -114,7 +114,10 @@ export function createShift(scheduleId: number, data: {
   endTime: string;
   crossDay?: number;
 }) {
-  return apiPost<ApiResponse<number>>(`/api/shift-schedules/${scheduleId}/shifts`, data);
+  return apiPost<ApiResponse<number>>(`/api/shift-schedules/${scheduleId}/shifts`, {
+    ...data,
+    shiftScheduleId: scheduleId,
+  });
 }
 
 export function updateShift(scheduleId: number, id: number, data: {
