@@ -19,8 +19,8 @@ import static org.hamcrest.Matchers.*;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class EquipmentTypeResourceTest {
 
-    private static final String TEST_TYPE_CODE = "DRILL";
-    private static final String TEST_TYPE_NAME = "钻孔设备";
+    private static final String TEST_TYPE_CODE = "DRILL-T";
+    private static final String TEST_TYPE_NAME = "钻孔设备-T";
 
     /**
      * Helper: get the ID of the test equipment type by listing and filtering by code.

@@ -60,7 +60,7 @@ class WorkCenterResourceTest {
             .then()
             .statusCode(200)
             .body("code", equalTo(200))
-            .body("data.workCenterCode", equalTo("WC001"))
+            .body("data.workCenterCode", equalTo("WC-TEST-001"))
             .body("data.name", equalTo("冲压工作中心"))
             .body("data.factoryId", comparesEqualTo((int) FACTORY_ID.longValue()))
             .body("data.factoryName", notNullValue())
@@ -86,7 +86,7 @@ class WorkCenterResourceTest {
             .then()
             .statusCode(200)
             .body("data.name", equalTo("新冲压工作中心"))
-            .body("data.workCenterCode", equalTo("WC001")); // Code unchanged
+            .body("data.workCenterCode", equalTo("WC-TEST-001")); // Code unchanged
     }
 
     @Test
