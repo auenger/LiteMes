@@ -121,3 +121,14 @@ Feature: 组织架构高级 E2E 测试
 - [ ] 工厂级联关联验证
 - [ ] 测试数据使用 E2E_ORG_ 前缀
 - [ ] 测试后清理测试数据
+
+## Merge Record
+
+- **Completed**: 2026-04-22
+- **Branch**: feature/e2e-org-advanced
+- **Merge commit**: f9593eb
+- **Archive tag**: feat-e2e-org-advanced-20260422
+- **Conflicts**: none
+- **Verification**: 9/9 scenarios passed
+- **Stats**: 1 commit, 4 files changed (271 insertions, 6 deletions)
+- **Duration**: ~1 hour

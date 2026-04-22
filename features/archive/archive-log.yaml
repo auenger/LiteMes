@@ -1,4 +1,31 @@
 archived:
+  - id: feat-e2e-org-advanced
+    name: "组织架构高级 E2E 测试（部门/班制班次）"
+    completed: "2026-04-22T23:30:00+08:00"
+    tag: feat-e2e-org-advanced-20260422
+    merge_commit: f9593eb
+    merged_to: main
+    branch_deleted: true
+    branch_name: feature/e2e-org-advanced
+    worktree_deleted: true
+    worktree_path: ../LiteMes-e2e-org-advanced
+    keywords: [e2e, playwright, department, shift-schedule, 班制, 部门, tree-structure, nested-dialog, crud, auth-fixture]
+    category: testing
+    value_points: 3
+    related_features: [feat-e2e-org-base, feat-department, feat-shift-schedule]
+    conflicts:
+      had_conflict: false
+      conflict_files: []
+    verification:
+      status: passed
+      scenarios_total: 9
+      scenarios_passed: 9
+    stats:
+      started: "2026-04-22T23:10:00+08:00"
+      duration: "~20 minutes"
+      commits: 1
+      files_changed: 4
+
   - id: feat-e2e-org-base
     name: "组织架构基础 E2E 测试（公司/工厂 + 公共 Fixture）"
     completed: "2026-04-22T22:30:00+08:00"
