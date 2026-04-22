@@ -77,8 +77,8 @@
           <div class="border border-gray-200 rounded p-2 max-h-60 overflow-y-auto">
             <el-input v-model="userSearchKeyword" placeholder="搜索用户名/姓名" size="small" class="mb-2" @input="filterUsers" />
             <div>
-              <label v-for="user in filteredUsers" :key="user.id" class="flex items-center gap-2 py-1 px-1 cursor-pointer hover:bg-gray-50">
-                <input type="checkbox" :value="user.id" v-model="selectedUserIds" />
+              <label v-for="user in filteredUsers" :key="user.userId" class="flex items-center gap-2 py-1 px-1 cursor-pointer hover:bg-gray-50">
+                <input type="checkbox" :value="user.userId" v-model="selectedUserIds" />
                 <span class="text-sm">{{ user.username }} ({{ user.realName }})</span>
               </label>
               <p v-if="filteredUsers.length === 0" class="text-gray-400 text-sm">无匹配用户</p>
@@ -88,7 +88,7 @@
         </el-form-item>
         <el-form-item label="选择权限组" required>
           <el-select v-model="selectedGroupId" placeholder="请选择权限组" class="!w-full">
-            <el-option v-for="group in permissionGroups" :key="group.id" :label="group.groupName" :value="group.id" />
+            <el-option v-for="group in permissionGroups" :key="group.id" :label="group.name" :value="group.id" />
           </el-select>
         </el-form-item>
       </el-form>
