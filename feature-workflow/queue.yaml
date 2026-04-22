@@ -1,12 +1,5 @@
 pending:
   # ── E2E 测试 (parent: feat-e2e-master-data) ──
-  # ── 组织架构 (parent: feat-e2e-org → feat-e2e-master-data) ──
-  - id: feat-e2e-org-advanced
-    name: "组织架构高级 E2E 测试（部门/班制班次）"
-    priority: 70
-    size: S
-    parent: feat-e2e-org
-    dependencies: [feat-e2e-org-base]
   # ── 生产基础 ──
   - id: feat-e2e-production-base
     name: "生产基础 E2E 测试（工作中心/计量单位/单位换算）"
@@ -50,6 +43,15 @@ pending:
     dependencies: [feat-e2e-org-base]
 
 active:
+  - id: feat-e2e-org-advanced
+    name: "组织架构高级 E2E 测试（部门/班制班次）"
+    priority: 70
+    size: S
+    parent: feat-e2e-org
+    dependencies: [feat-e2e-org-base]
+    branch: feature/e2e-org-advanced
+    worktree: ../LiteMes-e2e-org-advanced
+    started_at: "2026-04-22T23:10:00+08:00"
 
 blocked:
 
@@ -304,7 +306,7 @@ completed:
     tag: feat-user-permission-20260422
 
 meta:
-  last_updated: "2026-04-22T21:30:00+08:00"
+  last_updated: "2026-04-22T23:10:00+08:00"
   parents:
     - id: feat-e2e-master-data
       name: "基础数据模块 E2E 测试"

@@ -1,0 +1,518 @@
+{
+  "config": {
+    "configFile": "/Users/ryan/mycode/LiteMes-e2e-org-advanced/frontend/playwright.config.ts",
+    "rootDir": "/Users/ryan/mycode/LiteMes-e2e-org-advanced/frontend/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 2
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/ryan/mycode/LiteMes-e2e-org-advanced/frontend/evidence/test-artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Users/ryan/mycode/LiteMes-e2e-org-advanced/frontend/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "html",
+        {
+          "outputFolder": "evidence/playwright-report",
+          "open": "never"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "evidence/test-results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.59.1",
+    "workers": 8,
+    "webServer": {
+      "command": "npm run dev",
+      "port": 3000,
+      "reuseExistingServer": true,
+      "timeout": 15000
+    }
+  },
+  "suites": [
+    {
+      "title": "org/department.spec.ts",
+      "file": "org/department.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "部门管理 E2E 测试",
+          "file": "org/department.spec.ts",
+          "line": 10,
+          "column": 6,
+          "specs": [
+            {
+              "title": "部门列表加载",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 10356,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-22T14:06:02.207Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-org-advanced/frontend/evidence/test-artifacts/org-department-部门管理-E2E-测试-部门列表加载-chromium/test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-org-advanced/frontend/evidence/test-artifacts/org-department-部门管理-E2E-测试-部门列表加载-chromium/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "38cf5d5c4d04850b3e92-572a10b5cf99a7232c3f",
+              "file": "org/department.spec.ts",
+              "line": 108,
+              "column": 3
+            },
+            {
+              "title": "新建顶级部门",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 11840,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-22T14:06:13.520Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-org-advanced/frontend/evidence/test-artifacts/org-department-部门管理-E2E-测试-新建顶级部门-chromium/test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-org-advanced/frontend/evidence/test-artifacts/org-department-部门管理-E2E-测试-新建顶级部门-chromium/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "38cf5d5c4d04850b3e92-1d76d2deb16457c80f9c",
+              "file": "org/department.spec.ts",
+              "line": 112,
+              "column": 3
+            },
+            {
+              "title": "新建子部门",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 11886,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-22T14:06:25.811Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-org-advanced/frontend/evidence/test-artifacts/org-department-部门管理-E2E-测试-新建子部门-chromium/test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-org-advanced/frontend/evidence/test-artifacts/org-department-部门管理-E2E-测试-新建子部门-chromium/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "38cf5d5c4d04850b3e92-83efc53819af0e82e027",
+              "file": "org/department.spec.ts",
+              "line": 116,
+              "column": 3
+            },
+            {
+              "title": "删除子部门",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 13383,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-22T14:06:38.305Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-org-advanced/frontend/evidence/test-artifacts/org-department-部门管理-E2E-测试-删除子部门-chromium/test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-org-advanced/frontend/evidence/test-artifacts/org-department-部门管理-E2E-测试-删除子部门-chromium/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "38cf5d5c4d04850b3e92-02e1a7e50943a3e4aa16",
+              "file": "org/department.spec.ts",
+              "line": 121,
+              "column": 3
+            },
+            {
+              "title": "编辑部门",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 8585,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-22T14:06:52.414Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-org-advanced/frontend/evidence/test-artifacts/org-department-部门管理-E2E-测试-编辑部门-chromium/test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-org-advanced/frontend/evidence/test-artifacts/org-department-部门管理-E2E-测试-编辑部门-chromium/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "38cf5d5c4d04850b3e92-98fa2423ef8908a5830d",
+              "file": "org/department.spec.ts",
+              "line": 131,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "org/shift-schedule.spec.ts",
+      "file": "org/shift-schedule.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "班制班次 E2E 测试",
+          "file": "org/shift-schedule.spec.ts",
+          "line": 9,
+          "column": 6,
+          "specs": [
+            {
+              "title": "班制列表加载",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 5779,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-22T14:06:02.203Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-org-advanced/frontend/evidence/test-artifacts/org-shift-schedule-班制班次-E2E-测试-班制列表加载-chromium/test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-org-advanced/frontend/evidence/test-artifacts/org-shift-schedule-班制班次-E2E-测试-班制列表加载-chromium/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a5e154d303c41b7646af-6d3d3ff09ca16e034647",
+              "file": "org/shift-schedule.spec.ts",
+              "line": 45,
+              "column": 3
+            },
+            {
+              "title": "新建班制",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 4213,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-22T14:06:08.500Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-org-advanced/frontend/evidence/test-artifacts/org-shift-schedule-班制班次-E2E-测试-新建班制-chromium/test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-org-advanced/frontend/evidence/test-artifacts/org-shift-schedule-班制班次-E2E-测试-新建班制-chromium/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a5e154d303c41b7646af-6b4464024400bf171196",
+              "file": "org/shift-schedule.spec.ts",
+              "line": 49,
+              "column": 3
+            },
+            {
+              "title": "管理班次（嵌套对话框）",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 5416,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-22T14:06:12.935Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-org-advanced/frontend/evidence/test-artifacts/org-shift-schedule-班制班次-E2E-测试-管理班次（嵌套对话框）-chromium/test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-org-advanced/frontend/evidence/test-artifacts/org-shift-schedule-班制班次-E2E-测试-管理班次（嵌套对话框）-chromium/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a5e154d303c41b7646af-0fa52c6d1de8c3bb79f6",
+              "file": "org/shift-schedule.spec.ts",
+              "line": 53,
+              "column": 3
+            },
+            {
+              "title": "删除班制",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 5338,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-22T14:06:18.592Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-org-advanced/frontend/evidence/test-artifacts/org-shift-schedule-班制班次-E2E-测试-删除班制-chromium/test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-org-advanced/frontend/evidence/test-artifacts/org-shift-schedule-班制班次-E2E-测试-删除班制-chromium/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a5e154d303c41b7646af-803628f50cdaa46071d9",
+              "file": "org/shift-schedule.spec.ts",
+              "line": 99,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-04-22T14:05:58.992Z",
+    "duration": 62827.261999999995,
+    "expected": 9,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}
