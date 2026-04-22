@@ -605,3 +605,33 @@ archived:
       duration: "less than 1 day"
       commits: 1
       files_changed: 28
+
+  - id: fix-test-create-400
+    name: "修复测试失败 - API Create 返回 400"
+    completed: "2026-04-22"
+    tag: fix-test-create-400-20260422
+    merge_commit: "a1218db"
+    merged_to: main
+    branch_deleted: true
+    branch_name: feature/fix-test-create-400
+    worktree_deleted: true
+    worktree_path: ../LiteMes-fix-test-create-400
+    # --- Index metadata ---
+    keywords: [test-fix, 400, conflict, duplicate-code, equipment-type, equipment-model, equipment-ledger, work-center, test-isolation]
+    category: test-fix
+    value_points: 2
+    related_features: [feat-equipment-type, feat-equipment-model, feat-equipment-ledger, feat-work-center]
+    # --- Git & merge info ---
+    conflicts:
+      had_conflict: false
+      conflict_files: []
+    verification:
+      status: passed
+      scenarios_total: 6
+      scenarios_passed: 6
+    # --- Stats ---
+    stats:
+      started: "2026-04-22T19:30:00"
+      duration: "less than 1 hour"
+      commits: 1
+      files_changed: 3
