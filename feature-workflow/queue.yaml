@@ -1,9 +1,4 @@
 pending:
-  - id: fix-audit-serialization
-    name: "修复 AuditLogService Jackson 日期时间序列化错误"
-    priority: 80
-    size: S
-
   - id: feat-frontend-overhaul
     name: "前端全面升级"
     priority: 95
@@ -37,6 +32,13 @@ pending:
       - feat-frontend-layout
 
 active:
+  - id: fix-audit-serialization
+    name: "修复 AuditLogService Jackson 日期时间序列化错误"
+    priority: 80
+    size: S
+    branch: feature/fix-audit-serialization
+    worktree: ../LiteMes-fix-audit-serialization
+    started_at: "2026-04-22T22:00:00+08:00"
 
 blocked:
 
@@ -189,7 +191,7 @@ completed:
     tag: feat-user-permission-20260422
 
 meta:
-  last_updated: "2026-04-22T21:30:00+08:00"
+  last_updated: "2026-04-22T22:00:00+08:00"
   parents:
     - id: feat-frontend-overhaul
       name: "前端全面升级"
