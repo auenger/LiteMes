@@ -1,12 +1,5 @@
 pending:
   # ── E2E 测试 (parent: feat-e2e-master-data) ──
-  # ── 供应链 ──
-  - id: feat-e2e-supply-chain
-    name: "供应链 E2E 测试（客户/供应商）"
-    priority: 70
-    size: S
-    parent: feat-e2e-master-data
-    dependencies: [feat-e2e-material-info]
   # ── 数据权限 ──
   - id: feat-e2e-permission
     name: "数据权限 E2E 测试（权限组/用户权限）"
@@ -16,6 +9,15 @@ pending:
     dependencies: [feat-e2e-org-base]
 
 active:
+  - id: feat-e2e-supply-chain
+    name: "供应链 E2E 测试（客户/供应商）"
+    priority: 70
+    size: S
+    parent: feat-e2e-master-data
+    dependencies: [feat-e2e-material-info]
+    branch: feature/e2e-supply-chain
+    worktree: ../LiteMes-e2e-supply-chain
+    started_at: "2026-04-22T01:00:00+08:00"
 
 blocked:
 
@@ -315,7 +317,7 @@ completed:
     tag: feat-user-permission-20260422
 
 meta:
-  last_updated: "2026-04-23T00:45:00+08:00"
+  last_updated: "2026-04-22T01:00:00+08:00"
   parents:
     - id: feat-e2e-master-data
       name: "基础数据模块 E2E 测试"
