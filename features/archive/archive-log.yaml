@@ -1,4 +1,31 @@
 archived:
+  - id: feat-e2e-supply-chain
+    name: "供应链 E2E 测试（客户/供应商）"
+    completed: "2026-04-22T01:00:00+08:00"
+    tag: feat-e2e-supply-chain-20260422
+    merge_commit: "de8c2b7"
+    merged_to: main
+    branch_deleted: true
+    branch_name: feature/e2e-supply-chain
+    worktree_deleted: true
+    worktree_path: ../LiteMes-e2e-supply-chain
+    keywords: [e2e, playwright, customer, supplier, 供应链, 客户, 供应商, crud, auth-fixture, type-select]
+    category: testing
+    value_points: 2
+    related_features: [feat-e2e-master-data, feat-customer, feat-supplier]
+    conflicts:
+      had_conflict: false
+      conflict_files: []
+    verification:
+      status: passed
+      scenarios_total: 10
+      scenarios_passed: 10
+    stats:
+      started: "2026-04-22T01:00:00+08:00"
+      duration: "~10 minutes"
+      commits: 3
+      files_changed: 2
+
   - id: feat-e2e-equipment
     name: "设备管理 E2E 测试（设备类型/设备型号/设备台账）"
     completed: "2026-04-23T00:45:00+08:00"

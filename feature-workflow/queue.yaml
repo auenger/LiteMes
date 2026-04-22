@@ -9,19 +9,19 @@ pending:
     dependencies: [feat-e2e-org-base]
 
 active:
+
+blocked:
+
+completed:
   - id: feat-e2e-supply-chain
     name: "供应链 E2E 测试（客户/供应商）"
     priority: 70
     size: S
     parent: feat-e2e-master-data
     dependencies: [feat-e2e-material-info]
-    branch: feature/e2e-supply-chain
-    worktree: ../LiteMes-e2e-supply-chain
-    started_at: "2026-04-22T01:00:00+08:00"
+    completed_at: "2026-04-23T01:00:00+08:00"
+    tag: feat-e2e-supply-chain-20260422
 
-blocked:
-
-completed:
   - id: feat-e2e-equipment
     name: "设备管理 E2E 测试（设备类型/设备型号/设备台账）"
     priority: 70
@@ -317,7 +317,7 @@ completed:
     tag: feat-user-permission-20260422
 
 meta:
-  last_updated: "2026-04-22T01:00:00+08:00"
+  last_updated: "2026-04-23T01:00:00+08:00"
   parents:
     - id: feat-e2e-master-data
       name: "基础数据模块 E2E 测试"

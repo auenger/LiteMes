@@ -122,3 +122,13 @@ Feature: 供应链 E2E 测试
 - [ ] 编码不可编辑验证
 - [ ] 测试数据使用 E2E_SC_ 前缀
 - [ ] 测试后清理测试数据
+
+## Merge Record
+
+- **Completed:** 2026-04-22T01:00:00+08:00
+- **Merged Branch:** feature/e2e-supply-chain
+- **Merge Commit:** de8c2b789f24b4068682da6a18ee04a1f111597d
+- **Archive Tag:** feat-e2e-supply-chain-20260422
+- **Conflicts:** None
+- **Verification:** 10/10 E2E tests passed (47.1s)
+- **Stats:** 3 commits, 2 new files (customer.spec.ts, supplier.spec.ts)
