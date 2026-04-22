@@ -1,4 +1,31 @@
 archived:
+  - id: feat-e2e-equipment
+    name: "设备管理 E2E 测试（设备类型/设备型号/设备台账）"
+    completed: "2026-04-23T00:45:00+08:00"
+    tag: feat-e2e-equipment-20260422
+    merge_commit: "3c273f1"
+    merged_to: main
+    branch_deleted: true
+    branch_name: feature/e2e-equipment
+    worktree_deleted: true
+    worktree_path: ../LiteMes-e2e-equipment
+    keywords: [e2e, playwright, equipment-type, equipment-model, equipment-ledger, 设备类型, 设备型号, 设备台账, crud, cascade, running-status, manage-status, factory, date-picker]
+    category: testing
+    value_points: 3
+    related_features: [feat-e2e-master-data, feat-equipment-type, feat-equipment-model, feat-equipment-ledger]
+    conflicts:
+      had_conflict: false
+      conflict_files: []
+    verification:
+      status: passed
+      scenarios_total: 14
+      scenarios_passed: 14
+    stats:
+      started: "2026-04-22T12:30:00+08:00"
+      duration: "~30 minutes"
+      commits: 2
+      files_changed: 3
+
   - id: feat-e2e-material-info
     name: "物料信息与免检清单 E2E 测试"
     completed: "2026-04-23T00:20:00+08:00"

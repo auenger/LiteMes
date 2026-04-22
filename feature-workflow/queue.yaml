@@ -16,19 +16,19 @@ pending:
     dependencies: [feat-e2e-org-base]
 
 active:
+
+blocked:
+
+completed:
   - id: feat-e2e-equipment
     name: "设备管理 E2E 测试（设备类型/设备型号/设备台账）"
     priority: 70
     size: S
     parent: feat-e2e-master-data
     dependencies: [feat-e2e-org-base]
-    branch: feature/e2e-equipment
-    worktree: ../LiteMes-e2e-equipment
-    started_at: "2026-04-22T12:30:00+08:00"
+    completed_at: "2026-04-23T00:45:00+08:00"
+    tag: feat-e2e-equipment-20260422
 
-blocked:
-
-completed:
   - id: feat-e2e-material-info
     name: "物料信息与免检清单 E2E 测试"
     priority: 70
@@ -315,7 +315,7 @@ completed:
     tag: feat-user-permission-20260422
 
 meta:
-  last_updated: "2026-04-22T12:30:00+08:00"
+  last_updated: "2026-04-23T00:45:00+08:00"
   parents:
     - id: feat-e2e-master-data
       name: "基础数据模块 E2E 测试"

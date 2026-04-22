@@ -1,0 +1,760 @@
+{
+  "config": {
+    "configFile": "/Users/ryan/mycode/LiteMes-e2e-equipment/frontend/playwright.config.ts",
+    "rootDir": "/Users/ryan/mycode/LiteMes-e2e-equipment/frontend/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 3
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/ryan/mycode/LiteMes-e2e-equipment/frontend/evidence/test-artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 3
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Users/ryan/mycode/LiteMes-e2e-equipment/frontend/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "html",
+        {
+          "outputFolder": "evidence/playwright-report",
+          "open": "never"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "evidence/test-results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.59.1",
+    "workers": 8,
+    "webServer": {
+      "command": "npm run dev",
+      "port": 3000,
+      "reuseExistingServer": true,
+      "timeout": 15000
+    }
+  },
+  "suites": [
+    {
+      "title": "equipment/equipment-ledger.spec.ts",
+      "file": "equipment/equipment-ledger.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "设备台账 E2E 测试",
+          "file": "equipment/equipment-ledger.spec.ts",
+          "line": 85,
+          "column": 6,
+          "specs": [
+            {
+              "title": "设备台账列表加载",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 5235,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-22T16:40:14.763Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-equipment/frontend/evidence/test-artifacts/equipment-equipment-ledger-设备台账-E2E-测试-设备台账列表加载-chromium/test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-equipment/frontend/evidence/test-artifacts/equipment-equipment-ledger-设备台账-E2E-测试-设备台账列表加载-chromium/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "21744b4dfb70fd3374b2-0b4f656fcde33db692d3",
+              "file": "equipment/equipment-ledger.spec.ts",
+              "line": 122,
+              "column": 3
+            },
+            {
+              "title": "新建设备（完整表单）",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 22013,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-22T16:40:20.637Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-equipment/frontend/evidence/test-artifacts/equipment-equipment-ledger-设备台账-E2E-测试-新建设备（完整表单）-chromium/test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-equipment/frontend/evidence/test-artifacts/equipment-equipment-ledger-设备台账-E2E-测试-新建设备（完整表单）-chromium/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "21744b4dfb70fd3374b2-b1f3b7c241af5271f4e4",
+              "file": "equipment/equipment-ledger.spec.ts",
+              "line": 126,
+              "column": 3
+            },
+            {
+              "title": "级联选择器联动验证",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 17419,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-22T16:40:44.145Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-equipment/frontend/evidence/test-artifacts/equipment-equipment-ledger-设备台账-E2E-测试-级联选择器联动验证-chromium/test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-equipment/frontend/evidence/test-artifacts/equipment-equipment-ledger-设备台账-E2E-测试-级联选择器联动验证-chromium/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "21744b4dfb70fd3374b2-85843714cb37ead756ef",
+              "file": "equipment/equipment-ledger.spec.ts",
+              "line": 177,
+              "column": 3
+            },
+            {
+              "title": "编辑设备台账",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 22331,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-22T16:41:02.599Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-equipment/frontend/evidence/test-artifacts/equipment-equipment-ledger-设备台账-E2E-测试-编辑设备台账-chromium/test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-equipment/frontend/evidence/test-artifacts/equipment-equipment-ledger-设备台账-E2E-测试-编辑设备台账-chromium/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "21744b4dfb70fd3374b2-a705a6abe5e6186aae15",
+              "file": "equipment/equipment-ledger.spec.ts",
+              "line": 236,
+              "column": 3
+            },
+            {
+              "title": "删除设备台账",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 19499,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-22T16:41:26.281Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-equipment/frontend/evidence/test-artifacts/equipment-equipment-ledger-设备台账-E2E-测试-删除设备台账-chromium/test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-equipment/frontend/evidence/test-artifacts/equipment-equipment-ledger-设备台账-E2E-测试-删除设备台账-chromium/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "21744b4dfb70fd3374b2-de7e5034889a7fdb6033",
+              "file": "equipment/equipment-ledger.spec.ts",
+              "line": 299,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "equipment/equipment-model.spec.ts",
+      "file": "equipment/equipment-model.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "设备型号 E2E 测试",
+          "file": "equipment/equipment-model.spec.ts",
+          "line": 39,
+          "column": 6,
+          "specs": [
+            {
+              "title": "设备型号列表加载",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 5544,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-22T16:40:14.758Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-equipment/frontend/evidence/test-artifacts/equipment-equipment-model-设备型号-E2E-测试-设备型号列表加载-chromium/test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-equipment/frontend/evidence/test-artifacts/equipment-equipment-model-设备型号-E2E-测试-设备型号列表加载-chromium/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ea5ce0bbc90e675e71f8-e50fbb6d8890021cd769",
+              "file": "equipment/equipment-model.spec.ts",
+              "line": 62,
+              "column": 3
+            },
+            {
+              "title": "新建设备型号（关联设备类型）",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 11590,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-22T16:40:20.997Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-equipment/frontend/evidence/test-artifacts/equipment-equipment-model-设备型号-E2E-测试-新建设备型号（关联设备类型）-chromium/test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-equipment/frontend/evidence/test-artifacts/equipment-equipment-model-设备型号-E2E-测试-新建设备型号（关联设备类型）-chromium/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ea5ce0bbc90e675e71f8-5bbcf104d7fc37d9264b",
+              "file": "equipment/equipment-model.spec.ts",
+              "line": 66,
+              "column": 3
+            },
+            {
+              "title": "编辑设备型号",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 12527,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-22T16:40:33.468Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-equipment/frontend/evidence/test-artifacts/equipment-equipment-model-设备型号-E2E-测试-编辑设备型号-chromium/test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-equipment/frontend/evidence/test-artifacts/equipment-equipment-model-设备型号-E2E-测试-编辑设备型号-chromium/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ea5ce0bbc90e675e71f8-c7b1f39f0db804fba646",
+              "file": "equipment/equipment-model.spec.ts",
+              "line": 95,
+              "column": 3
+            },
+            {
+              "title": "删除设备型号",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 10251,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-22T16:40:47.045Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-equipment/frontend/evidence/test-artifacts/equipment-equipment-model-设备型号-E2E-测试-删除设备型号-chromium/test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-equipment/frontend/evidence/test-artifacts/equipment-equipment-model-设备型号-E2E-测试-删除设备型号-chromium/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ea5ce0bbc90e675e71f8-d6539719691de56cb313",
+              "file": "equipment/equipment-model.spec.ts",
+              "line": 137,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "equipment/equipment-type.spec.ts",
+      "file": "equipment/equipment-type.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "设备类型 E2E 测试",
+          "file": "equipment/equipment-type.spec.ts",
+          "line": 9,
+          "column": 6,
+          "specs": [
+            {
+              "title": "设备类型列表加载",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 5559,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-22T16:40:14.752Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-equipment/frontend/evidence/test-artifacts/equipment-equipment-type-设备类型-E2E-测试-设备类型列表加载-chromium/test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-equipment/frontend/evidence/test-artifacts/equipment-equipment-type-设备类型-E2E-测试-设备类型列表加载-chromium/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9934e5ddb3a2197c2c27-a34aab900925a392a1e9",
+              "file": "equipment/equipment-type.spec.ts",
+              "line": 23,
+              "column": 3
+            },
+            {
+              "title": "新建设备类型",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 5819,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-22T16:40:20.996Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-equipment/frontend/evidence/test-artifacts/equipment-equipment-type-设备类型-E2E-测试-新建设备类型-chromium/test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-equipment/frontend/evidence/test-artifacts/equipment-equipment-type-设备类型-E2E-测试-新建设备类型-chromium/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9934e5ddb3a2197c2c27-a4c9a6ee2f20339f6957",
+              "file": "equipment/equipment-type.spec.ts",
+              "line": 27,
+              "column": 3
+            },
+            {
+              "title": "设备类型编码必填校验",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 5521,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-22T16:40:27.152Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-equipment/frontend/evidence/test-artifacts/equipment-equipment-type-设备类型-E2E-测试-设备类型编码必填校验-chromium/test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-equipment/frontend/evidence/test-artifacts/equipment-equipment-type-设备类型-E2E-测试-设备类型编码必填校验-chromium/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9934e5ddb3a2197c2c27-b776e40fa139f0c3cae9",
+              "file": "equipment/equipment-type.spec.ts",
+              "line": 43,
+              "column": 3
+            },
+            {
+              "title": "编辑设备类型",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 7506,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-22T16:40:32.943Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-equipment/frontend/evidence/test-artifacts/equipment-equipment-type-设备类型-E2E-测试-编辑设备类型-chromium/test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-equipment/frontend/evidence/test-artifacts/equipment-equipment-type-设备类型-E2E-测试-编辑设备类型-chromium/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9934e5ddb3a2197c2c27-f645ac69fee121fe8d02",
+              "file": "equipment/equipment-type.spec.ts",
+              "line": 55,
+              "column": 3
+            },
+            {
+              "title": "删除设备类型",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 6883,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-22T16:40:40.949Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-equipment/frontend/evidence/test-artifacts/equipment-equipment-type-设备类型-E2E-测试-删除设备类型-chromium/test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-equipment/frontend/evidence/test-artifacts/equipment-equipment-type-设备类型-E2E-测试-删除设备类型-chromium/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9934e5ddb3a2197c2c27-8216413e1838838485e2",
+              "file": "equipment/equipment-type.spec.ts",
+              "line": 88,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-04-22T16:40:13.333Z",
+    "duration": 93966.511,
+    "expected": 14,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}
