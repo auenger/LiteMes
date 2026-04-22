@@ -1,4 +1,24 @@
 archived:
+  - id: feat-e2e-org-base
+    name: "组织架构基础 E2E 测试（公司/工厂 + 公共 Fixture）"
+    completed: "2026-04-22T22:30:00+08:00"
+    tag: feat-e2e-org-base-20260422
+    merge_commit: ef72285
+    merged_to: main
+    branch_deleted: true
+    branch_name: feature/e2e-org-base
+    worktree_deleted: true
+    conflicts:
+      had_conflict: false
+    verification:
+      status: passed
+      scenarios_total: 10
+      scenarios_passed: 10
+    stats:
+      started: "2026-04-22T22:00:00+08:00"
+      duration: "30min"
+      commits: 1
+      files_changed: 4
   - id: feat-frontend-overhaul
     name: "前端全面升级（模块索引）"
     completed: "2026-04-22"

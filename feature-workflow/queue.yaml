@@ -1,11 +1,6 @@
 pending:
   # ── E2E 测试 (parent: feat-e2e-master-data) ──
   # ── 组织架构 (parent: feat-e2e-org → feat-e2e-master-data) ──
-  - id: feat-e2e-org-base
-    name: "组织架构基础 E2E 测试（公司/工厂 + 公共 Fixture）"
-    priority: 75
-    size: S
-    parent: feat-e2e-org
   - id: feat-e2e-org-advanced
     name: "组织架构高级 E2E 测试（部门/班制班次）"
     priority: 70
@@ -59,6 +54,14 @@ active:
 blocked:
 
 completed:
+  - id: feat-e2e-org-base
+    name: "组织架构基础 E2E 测试（公司/工厂 + 公共 Fixture）"
+    priority: 75
+    size: S
+    parent: feat-e2e-org
+    completed_at: "2026-04-22T22:30:00+08:00"
+    tag: feat-e2e-org-base-20260422
+
   # ── 冒烟测试 ──
   - id: feat-e2e-smoke-test
     name: "端到端冒烟测试（CORS 修复 + 基础功能验证）"
