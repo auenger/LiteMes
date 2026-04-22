@@ -8,13 +8,31 @@ import {
 
 /**
  * Helper: click an el-select, then select an option from the visible dropdown.
+ * Uses force click and waits for the dropdown popper to appear.
  */
 async function selectOption(page: any, selectLocator: any, optionText: string) {
+  // Ensure the select element is visible before clicking
+  await expect(selectLocator).toBeVisible({ timeout: 5000 });
   await selectLocator.click({ force: true });
-  await page.waitForTimeout(300);
+  // Wait longer for Element Plus popper animation
+  await page.waitForTimeout(500);
   const visibleDropdown = page.locator('.el-select-dropdown:visible').last();
-  await expect(visibleDropdown).toBeVisible({ timeout: 3000 });
+  await expect(visibleDropdown).toBeVisible({ timeout: 5000 });
   await visibleDropdown.locator('.el-select-dropdown__item').filter({ hasText: optionText }).first().click({ force: true });
+  await page.waitForTimeout(300);
+}
+
+/**
+ * Helper: click an el-select, then pick the first option from the visible dropdown.
+ */
+async function selectFirstOption(page: any, selectLocator: any) {
+  await expect(selectLocator).toBeVisible({ timeout: 5000 });
+  await selectLocator.click({ force: true });
+  await page.waitForTimeout(500);
+  const visibleDropdown = page.locator('.el-select-dropdown:visible').last();
+  await expect(visibleDropdown).toBeVisible({ timeout: 5000 });
+  await visibleDropdown.locator('.el-select-dropdown__item').first().click({ force: true });
+  await page.waitForTimeout(300);
 }
 
 /**
@@ -109,10 +127,12 @@ test.describe('设备台账 E2E 测试', () => {
     // Create prerequisite type and model
     await createEquipmentModelViaUI(page, MODEL_CODE, MODEL_NAME, TYPE_CODE, TYPE_NAME);
 
-    // Navigate to equipment ledger
+    // Navigate to equipment ledger and wait for full load
     await page.goto('/equipment-ledger');
     await page.waitForLoadState('networkidle');
     await expect(page.locator('.el-table')).toBeVisible({ timeout: 10000 });
+    // Wait for dropdown data to load (fetchDropdownData runs on mount)
+    await page.waitForTimeout(1000);
 
     await page.locator('button:has-text("新建设备")').click();
     const dialog = page.locator('.el-dialog:visible');
@@ -123,10 +143,10 @@ test.describe('设备台账 E2E 测试', () => {
     await dialog.locator('input[placeholder="请输入设备名称"]').fill(LEDGER_NAME);
 
     // Select equipment model (which auto-fills type name)
-    const modelSelect = dialog.locator('.el-form-item').filter({ hasText: '设备型号' }).locator('.el-select');
+    const modelSelect = dialog.locator('.el-select').first();
     await selectOption(page, modelSelect, MODEL_CODE);
 
-    // Select running status
+    // Select running status - use the select that has "运行" option
     const runningStatusSelect = dialog.locator('.el-form-item').filter({ hasText: '运行状态' }).locator('.el-select');
     await selectOption(page, runningStatusSelect, '运行');
 
@@ -136,12 +156,7 @@ test.describe('设备台账 E2E 测试', () => {
 
     // Select factory
     const factorySelect = dialog.locator('.el-form-item').filter({ hasText: '工厂' }).locator('.el-select');
-    await factorySelect.click({ force: true });
-    await page.waitForTimeout(300);
-    const factoryDropdown = page.locator('.el-select-dropdown:visible').last();
-    await expect(factoryDropdown).toBeVisible({ timeout: 3000 });
-    // Pick the first factory option
-    await factoryDropdown.locator('.el-select-dropdown__item').first().click({ force: true });
+    await selectFirstOption(page, factorySelect);
 
     // Fill manufacturer
     await dialog.locator('input[placeholder="请输入生产厂家"]').fill('E2E测试厂商');
@@ -195,21 +210,20 @@ test.describe('设备台账 E2E 测试', () => {
     await page.goto('/equipment-ledger');
     await page.waitForLoadState('networkidle');
     await expect(page.locator('.el-table')).toBeVisible({ timeout: 10000 });
+    // Wait for dropdown data to load
+    await page.waitForTimeout(1000);
 
     // Open the filter's equipment type dropdown and select the cascade type
-    const filterTypeSelect = page.locator('.el-form-item').filter({ hasText: '设备类型' }).locator('.el-select').first();
-    await filterTypeSelect.click({ force: true });
-    await page.waitForTimeout(300);
-    let filterDropdown = page.locator('.el-select-dropdown:visible').last();
-    await expect(filterDropdown).toBeVisible({ timeout: 3000 });
-    await filterDropdown.locator('.el-select-dropdown__item').filter({ hasText: TYPE_CODE_CASCADE }).first().click({ force: true });
+    // The filter form uses el-select with placeholder "全部设备类型"
+    const filterTypeSelect = page.locator('.el-select').filter({ hasText: '全部设备类型' }).first();
+    await selectOption(page, filterTypeSelect, TYPE_CODE_CASCADE);
 
     // Now open the filter's equipment model dropdown and verify only models of the selected type appear
-    const filterModelSelect = page.locator('.el-form-item').filter({ hasText: '设备型号' }).locator('.el-select').first();
+    const filterModelSelect = page.locator('.el-select').filter({ hasText: '全部设备型号' }).first();
     await filterModelSelect.click({ force: true });
-    await page.waitForTimeout(300);
-    filterDropdown = page.locator('.el-select-dropdown:visible').last();
-    await expect(filterDropdown).toBeVisible({ timeout: 3000 });
+    await page.waitForTimeout(500);
+    const filterDropdown = page.locator('.el-select-dropdown:visible').last();
+    await expect(filterDropdown).toBeVisible({ timeout: 5000 });
 
     // Both cascade models should appear
     await expect(filterDropdown.locator('.el-select-dropdown__item').filter({ hasText: MODEL_CODE_CASCADE_1 }).first()).toBeVisible({ timeout: 3000 });
@@ -227,6 +241,8 @@ test.describe('设备台账 E2E 测试', () => {
     await page.goto('/equipment-ledger');
     await page.waitForLoadState('networkidle');
     await expect(page.locator('.el-table')).toBeVisible({ timeout: 10000 });
+    // Wait for dropdown data to load
+    await page.waitForTimeout(1000);
 
     await page.locator('button:has-text("新建设备")').click();
     let dialog = page.locator('.el-dialog:visible');
@@ -234,7 +250,7 @@ test.describe('设备台账 E2E 测试', () => {
     await dialog.locator('input[placeholder="请输入设备编码"]').fill(LEDGER_CODE_EDIT);
     await dialog.locator('input[placeholder="请输入设备名称"]').fill(LEDGER_NAME_EDIT);
 
-    const modelSelect = dialog.locator('.el-form-item').filter({ hasText: '设备型号' }).locator('.el-select');
+    const modelSelect = dialog.locator('.el-select').first();
     await selectOption(page, modelSelect, MODEL_CODE_EDIT);
 
     const runningStatusSelect = dialog.locator('.el-form-item').filter({ hasText: '运行状态' }).locator('.el-select');
@@ -244,11 +260,7 @@ test.describe('设备台账 E2E 测试', () => {
     await selectOption(page, manageStatusSelect, '使用中');
 
     const factorySelect = dialog.locator('.el-form-item').filter({ hasText: '工厂' }).locator('.el-select');
-    await factorySelect.click({ force: true });
-    await page.waitForTimeout(300);
-    const factoryDropdown = page.locator('.el-select-dropdown:visible').last();
-    await expect(factoryDropdown).toBeVisible({ timeout: 3000 });
-    await factoryDropdown.locator('.el-select-dropdown__item').first().click({ force: true });
+    await selectFirstOption(page, factorySelect);
 
     await dialog.locator('input[placeholder="请输入生产厂家"]').fill('E2E编辑厂商');
     const today = new Date().toISOString().split('T')[0];
@@ -292,6 +304,8 @@ test.describe('设备台账 E2E 测试', () => {
     await page.goto('/equipment-ledger');
     await page.waitForLoadState('networkidle');
     await expect(page.locator('.el-table')).toBeVisible({ timeout: 10000 });
+    // Wait for dropdown data to load
+    await page.waitForTimeout(1000);
 
     await page.locator('button:has-text("新建设备")').click();
     let dialog = page.locator('.el-dialog:visible');
@@ -299,7 +313,7 @@ test.describe('设备台账 E2E 测试', () => {
     await dialog.locator('input[placeholder="请输入设备编码"]').fill(LEDGER_CODE_DEL);
     await dialog.locator('input[placeholder="请输入设备名称"]').fill(LEDGER_NAME_DEL);
 
-    const modelSelect = dialog.locator('.el-form-item').filter({ hasText: '设备型号' }).locator('.el-select');
+    const modelSelect = dialog.locator('.el-select').first();
     await selectOption(page, modelSelect, MODEL_CODE_DEL);
 
     const runningStatusSelect = dialog.locator('.el-form-item').filter({ hasText: '运行状态' }).locator('.el-select');
@@ -309,11 +323,7 @@ test.describe('设备台账 E2E 测试', () => {
     await selectOption(page, manageStatusSelect, '使用中');
 
     const factorySelect = dialog.locator('.el-form-item').filter({ hasText: '工厂' }).locator('.el-select');
-    await factorySelect.click({ force: true });
-    await page.waitForTimeout(300);
-    const factoryDropdown = page.locator('.el-select-dropdown:visible').last();
-    await expect(factoryDropdown).toBeVisible({ timeout: 3000 });
-    await factoryDropdown.locator('.el-select-dropdown__item').first().click({ force: true });
+    await selectFirstOption(page, factorySelect);
 
     await dialog.locator('input[placeholder="请输入生产厂家"]').fill('E2E删除厂商');
     const today = new Date().toISOString().split('T')[0];
