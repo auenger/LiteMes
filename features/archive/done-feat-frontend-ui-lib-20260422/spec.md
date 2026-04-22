@@ -133,3 +133,12 @@ Feature: UI 组件库引入与样式重构
 - [ ] 无重复 CSS
 - [ ] 脚手架文件已清理
 - [ ] 所有 CRUD 功能正常
+
+## Merge Record
+- **completed**: 2026-04-22T20:30:00+08:00
+- **merged_branch**: feature/feat-frontend-ui-lib
+- **merge_commit**: 4b734b2e66245b09df55b537c78c04e5fffdc7ed
+- **archive_tag**: feat-frontend-ui-lib-20260422
+- **conflicts**: none
+- **verification**: build passed (vite build success, vue-tsc clean)
+- **stats**: started 2026-04-22, duration < 1 day, commits 1, files_changed 31, net_lines -6071

@@ -15,11 +15,6 @@ pending:
       - feat-cascading-selector
       - feat-auth-frontend
 
-  - id: feat-frontend-ui-lib
-    name: "UI 组件库引入与样式重构（Element Plus + Tailwind CSS）"
-    priority: 95
-    size: L
-
   - id: feat-frontend-layout
     name: "导航布局（侧边栏 + 面包屑 + Tab 页签）"
     priority: 90
@@ -53,6 +48,13 @@ active:
 blocked:
 
 completed:
+  # ── 前端升级 (parent: feat-frontend-overhaul) ──
+  - id: feat-frontend-ui-lib
+    name: "UI 组件库引入与样式重构（Element Plus + Tailwind CSS）"
+    parent: feat-frontend-overhaul
+    completed_at: "2026-04-22T20:30:00+08:00"
+    tag: feat-frontend-ui-lib-20260422
+
   # ── Bug Fix ──
   - id: fix-test-create-400
     name: "修复测试失败 - API Create 返回 400"
@@ -189,7 +191,7 @@ completed:
     tag: feat-user-permission-20260422
 
 meta:
-  last_updated: "2026-04-22T19:50:00+08:00"
+  last_updated: "2026-04-22T20:30:00+08:00"
   parents:
     - id: feat-frontend-overhaul
       name: "前端全面升级"
