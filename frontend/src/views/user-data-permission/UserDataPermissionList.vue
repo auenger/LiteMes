@@ -1,331 +1,204 @@
 <template>
-  <div class="user-permission-page">
-    <div class="page-header">
-      <h2>用户数据权限</h2>
-      <div class="header-actions">
-        <button class="btn btn-primary" @click="openBatchDialog">批量授权</button>
+  <div class="h-full flex flex-col space-y-3">
+    <!-- Filter Card -->
+    <div class="bg-card p-3 border border-border-color shadow-sm rounded-sm shrink-0">
+      <el-form :inline="true" :model="query" size="default" class="flex flex-wrap gap-y-3 items-center !mb-0">
+        <el-form-item label="用户名" class="!mb-0">
+          <el-input v-model="query.username" placeholder="用户名" clearable class="!w-40" @keyup.enter="search" />
+        </el-form-item>
+        <el-form-item label="姓名" class="!mb-0">
+          <el-input v-model="query.realName" placeholder="姓名" clearable class="!w-40" @keyup.enter="search" />
+        </el-form-item>
+        <el-form-item class="!mb-0 !mr-0">
+          <el-button type="primary" :icon="Search" @click="search">查询</el-button>
+          <el-button :icon="Refresh" @click="resetQuery">重置</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
+
+    <!-- Main Content Card -->
+    <div class="flex-1 bg-card border border-border-color shadow-sm rounded-sm flex flex-col overflow-hidden">
+      <div class="px-4 py-2.5 border-b border-border-color flex justify-between items-center shrink-0">
+        <div class="flex gap-2">
+          <el-button type="primary" :icon="Plus" @click="openBatchDialog">批量授权</el-button>
+        </div>
       </div>
-    </div>
-
-    <!-- Search Bar -->
-    <div class="search-bar">
-      <input
-        v-model="query.username"
-        type="text"
-        placeholder="用户名"
-        class="input"
-        @keyup.enter="search"
-      />
-      <input
-        v-model="query.realName"
-        type="text"
-        placeholder="姓名"
-        class="input"
-        @keyup.enter="search"
-      />
-      <button class="btn" @click="search">查询</button>
-      <button class="btn btn-secondary" @click="resetQuery">重置</button>
-    </div>
-
-    <!-- Table -->
-    <table class="table">
-      <thead>
-        <tr>
-          <th>用户名</th>
-          <th>姓名</th>
-          <th>权限组</th>
-          <th>工厂数</th>
-          <th>工作中心数</th>
-          <th>工序数</th>
-          <th>创建人</th>
-          <th>创建时间</th>
-          <th>操作</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-if="loading">
-          <td colspan="9" class="text-center">加载中...</td>
-        </tr>
-        <tr v-else-if="permissions.length === 0">
-          <td colspan="9" class="text-center">暂无数据</td>
-        </tr>
-        <tr v-for="perm in permissions" :key="perm.userId">
-          <td>{{ perm.username }}</td>
-          <td>{{ perm.realName }}</td>
-          <td>
-            <span v-if="perm.groupName" class="tag tag-blue">{{ perm.groupName }}</span>
-            <span v-else class="text-muted">-</span>
-          </td>
-          <td>{{ perm.factoryCount || 0 }}</td>
-          <td>{{ perm.workCenterCount || 0 }}</td>
-          <td>{{ perm.processCount || 0 }}</td>
-          <td>{{ perm.createdBy || '-' }}</td>
-          <td>{{ formatDate(perm.createdAt) }}</td>
-          <td class="actions">
-            <button
-              class="btn btn-sm btn-info"
-              @click="openTabDialog(perm)"
-            >
-              权限管理
-            </button>
-            <button
-              v-if="perm.id"
-              class="btn btn-sm btn-danger"
-              @click="confirmDelete(perm)"
-            >
-              删除
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <!-- Pagination -->
-    <div class="pagination" v-if="total > 0">
-      <span class="pagination-info">
-        共 {{ total }} 条，第 {{ query.page || 1 }} / {{ totalPages }} 页
-      </span>
-      <button class="btn btn-sm" :disabled="query.page <= 1" @click="goPage(1)">首页</button>
-      <button class="btn btn-sm" :disabled="query.page <= 1" @click="goPage((query.page || 1) - 1)">上一页</button>
-      <button class="btn btn-sm" :disabled="query.page >= totalPages" @click="goPage((query.page || 1) + 1)">下一页</button>
-      <button class="btn btn-sm" :disabled="query.page >= totalPages" @click="goPage(totalPages)">末页</button>
+      <div class="flex-1 p-2.5 overflow-hidden">
+        <el-table :data="permissions" border stripe height="100%" v-loading="loading">
+          <el-table-column prop="username" label="用户名" min-width="120" />
+          <el-table-column prop="realName" label="姓名" min-width="100" />
+          <el-table-column label="权限组" min-width="120">
+            <template #default="{ row }">
+              <el-tag v-if="row.groupName" type="primary" size="small">{{ row.groupName }}</el-tag>
+              <span v-else class="text-gray-400">-</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="工厂数" min-width="80">
+            <template #default="{ row }">{{ row.factoryCount || 0 }}</template>
+          </el-table-column>
+          <el-table-column label="工作中心数" min-width="100">
+            <template #default="{ row }">{{ row.workCenterCount || 0 }}</template>
+          </el-table-column>
+          <el-table-column label="工序数" min-width="80">
+            <template #default="{ row }">{{ row.processCount || 0 }}</template>
+          </el-table-column>
+          <el-table-column label="创建人" min-width="100">
+            <template #default="{ row }">{{ row.createdBy || '-' }}</template>
+          </el-table-column>
+          <el-table-column label="创建时间" min-width="160">
+            <template #default="{ row }">{{ formatDate(row.createdAt) }}</template>
+          </el-table-column>
+          <el-table-column label="操作" min-width="160" fixed="right">
+            <template #default="{ row }">
+              <el-button size="small" type="info" @click="openTabDialog(row)">权限管理</el-button>
+              <el-button v-if="row.id" size="small" type="danger" @click="confirmDelete(row)">删除</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+      <div class="px-4 py-3 border-t border-border-color flex justify-end shrink-0">
+        <el-pagination
+          layout="total, sizes, prev, pager, next"
+          :total="total"
+          :page-size="query.size"
+          :current-page="query.page"
+          background
+          size="small"
+          @current-change="goPage"
+          @size-change="(size: number) => { query.size = size; search() }"
+        />
+      </div>
     </div>
 
     <!-- Batch Assign Dialog -->
-    <div v-if="batchDialogVisible" class="dialog-overlay" @click.self="closeBatchDialog">
-      <div class="dialog dialog-lg">
-        <div class="dialog-header">
-          <h3>批量授权</h3>
-          <button class="dialog-close" @click="closeBatchDialog">&times;</button>
-        </div>
-        <div class="dialog-body">
-          <div class="form-group">
-            <label>选择用户 <span class="required">*</span></label>
-            <div class="user-select-area">
-              <input
-                v-model="userSearchKeyword"
-                type="text"
-                placeholder="搜索用户名/姓名"
-                class="input input-sm"
-                @input="filterUsers"
-              />
-              <div class="checkbox-list">
-                <label v-for="user in filteredUsers" :key="user.id" class="checkbox-item">
-                  <input
-                    type="checkbox"
-                    :value="user.id"
-                    v-model="selectedUserIds"
-                  />
-                  {{ user.username }} ({{ user.realName }})
-                </label>
-                <p v-if="filteredUsers.length === 0" class="text-muted">无匹配用户</p>
-              </div>
+    <el-dialog v-model="batchDialogVisible" title="批量授权" width="700px" @close="closeBatchDialog">
+      <el-form label-width="100px">
+        <el-form-item label="选择用户" required>
+          <div class="border border-gray-200 rounded p-2 max-h-60 overflow-y-auto">
+            <el-input v-model="userSearchKeyword" placeholder="搜索用户名/姓名" size="small" class="mb-2" @input="filterUsers" />
+            <div>
+              <label v-for="user in filteredUsers" :key="user.id" class="flex items-center gap-2 py-1 px-1 cursor-pointer hover:bg-gray-50">
+                <input type="checkbox" :value="user.id" v-model="selectedUserIds" />
+                <span class="text-sm">{{ user.username }} ({{ user.realName }})</span>
+              </label>
+              <p v-if="filteredUsers.length === 0" class="text-gray-400 text-sm">无匹配用户</p>
             </div>
-            <p class="selection-summary">已选 {{ selectedUserIds.length }} 个用户</p>
           </div>
-          <div class="form-group">
-            <label>选择权限组 <span class="required">*</span></label>
-            <select v-model="selectedGroupId" class="input">
-              <option :value="null" disabled>请选择权限组</option>
-              <option v-for="group in permissionGroups" :key="group.id" :value="group.id">
-                {{ group.groupName }}
-              </option>
-            </select>
-          </div>
-        </div>
-        <div class="dialog-footer">
-          <button class="btn" @click="closeBatchDialog">取消</button>
-          <button class="btn btn-primary" @click="submitBatchAssign" :disabled="submitting">
-            {{ submitting ? '提交中...' : '确认授权' }}
-          </button>
-        </div>
-        <div v-if="batchError" class="form-error">{{ batchError }}</div>
-      </div>
-    </div>
+          <p class="text-sm text-gray-500 mt-1">已选 {{ selectedUserIds.length }} 个用户</p>
+        </el-form-item>
+        <el-form-item label="选择权限组" required>
+          <el-select v-model="selectedGroupId" placeholder="请选择权限组" class="!w-full">
+            <el-option v-for="group in permissionGroups" :key="group.id" :label="group.groupName" :value="group.id" />
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div v-if="batchError" class="text-red-500 text-sm px-4 pb-2">{{ batchError }}</div>
+      <template #footer>
+        <el-button @click="closeBatchDialog">取消</el-button>
+        <el-button type="primary" @click="submitBatchAssign" :loading="submitting">确认授权</el-button>
+      </template>
+    </el-dialog>
 
     <!-- Delete Confirm Dialog -->
-    <div v-if="deleteDialogVisible" class="dialog-overlay" @click.self="closeDeleteDialog">
-      <div class="dialog dialog-sm">
-        <div class="dialog-header">
-          <h3>确认删除</h3>
-          <button class="dialog-close" @click="closeDeleteDialog">&times;</button>
-        </div>
-        <div class="dialog-body">
-          <p>确定要删除用户 "{{ deleteTarget?.username }}" 的数据权限吗？</p>
-          <p class="text-muted">删除后所有关联的工厂/工作中心/工序权限将一并删除，不可恢复。</p>
-        </div>
-        <div class="dialog-footer">
-          <button class="btn" @click="closeDeleteDialog">取消</button>
-          <button class="btn btn-danger" @click="doDelete" :disabled="submitting">
-            {{ submitting ? '删除中...' : '删除' }}
-          </button>
-        </div>
-      </div>
-    </div>
+    <el-dialog v-model="deleteDialogVisible" title="确认删除" width="400px" @close="closeDeleteDialog">
+      <p>确定要删除用户 "{{ deleteTarget?.username }}" 的数据权限吗？</p>
+      <p class="text-gray-400 text-sm mt-2">删除后所有关联的工厂/工作中心/工序权限将一并删除，不可恢复。</p>
+      <template #footer>
+        <el-button @click="closeDeleteDialog">取消</el-button>
+        <el-button type="danger" @click="doDelete" :loading="submitting">删除</el-button>
+      </template>
+    </el-dialog>
 
     <!-- Tab Dialog for Direct Assignment -->
-    <div v-if="tabDialogVisible" class="dialog-overlay" @click.self="closeTabDialog">
-      <div class="dialog dialog-lg">
-        <div class="dialog-header">
-          <h3>权限管理 - {{ tabPermission?.username }} ({{ tabPermission?.realName }})</h3>
-          <button class="dialog-close" @click="closeTabDialog">&times;</button>
-        </div>
-        <div class="dialog-body">
-          <div class="tab-bar">
-            <button
-              :class="['tab-btn', activeTab === 'factory' ? 'tab-active' : '']"
-              @click="switchTab('factory')"
-            >
-              工厂 ({{ currentFactories.length }})
-            </button>
-            <button
-              :class="['tab-btn', activeTab === 'workCenter' ? 'tab-active' : '']"
-              @click="switchTab('workCenter')"
-            >
-              工作中心 ({{ currentWorkCenters.length }})
-            </button>
-            <button
-              :class="['tab-btn', activeTab === 'process' ? 'tab-active' : '']"
-              @click="switchTab('process')"
-            >
-              工序 ({{ currentProcesses.length }})
-            </button>
+    <el-dialog v-model="tabDialogVisible" :title="`权限管理 - ${tabPermission?.username} (${tabPermission?.realName})`" width="700px" @close="closeTabDialog">
+      <el-tabs v-model="activeTab">
+        <el-tab-pane label="工厂" name="factory">
+          <div class="flex justify-between items-center mb-2">
+            <span class="text-sm text-gray-500">已选 {{ selectedFactoryIds.length }} 项</span>
+            <el-button size="small" type="primary" @click="saveDirectFactories" :loading="submitting">
+              {{ submitting ? '保存中...' : '保存直接授权' }}
+            </el-button>
           </div>
-
-          <!-- Factory Tab -->
-          <div v-if="activeTab === 'factory'" class="tab-content">
-            <div class="select-actions">
-              <span class="selection-info">已选 {{ selectedFactoryIds.length }} 项</span>
-              <button class="btn btn-sm btn-primary" @click="saveDirectFactories" :disabled="submitting">
-                {{ submitting ? '保存中...' : '保存直接授权' }}
-              </button>
-            </div>
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>选择</th>
-                  <th>工厂编码</th>
-                  <th>工厂名称</th>
-                  <th>来源</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-if="factoryOptions.length === 0">
-                  <td colspan="4" class="text-center">暂无工厂数据</td>
-                </tr>
-                <tr v-for="f in factoryOptions" :key="f.id">
-                  <td>
-                    <input
-                      type="checkbox"
-                      :value="f.id"
-                      v-model="selectedFactoryIds"
-                    />
-                  </td>
-                  <td>{{ f.code }}</td>
-                  <td>{{ f.name }}</td>
-                  <td>
-                    <span v-if="getSourceTag(f.id, 'factory')" :class="['tag', getSourceTag(f.id, 'factory') === 'GROUP' ? 'tag-green' : 'tag-orange']">
-                      {{ getSourceTag(f.id, 'factory') === 'GROUP' ? '权限组' : '直接' }}
-                    </span>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+          <el-table :data="factoryOptions" border size="small" max-height="400">
+            <el-table-column label="选择" min-width="60">
+              <template #default="{ row }">
+                <el-checkbox :value="row.id" v-model="selectedFactoryIds" />
+              </template>
+            </el-table-column>
+            <el-table-column prop="code" label="工厂编码" min-width="120" />
+            <el-table-column prop="name" label="工厂名称" min-width="120" />
+            <el-table-column label="来源" min-width="80">
+              <template #default="{ row }">
+                <el-tag v-if="getSourceTag(row.id, 'factory')" :type="getSourceTag(row.id, 'factory') === 'GROUP' ? 'success' : 'warning'" size="small">
+                  {{ getSourceTag(row.id, 'factory') === 'GROUP' ? '权限组' : '直接' }}
+                </el-tag>
+              </template>
+            </el-table-column>
+          </el-table>
+          <el-empty v-if="factoryOptions.length === 0" description="暂无工厂数据" />
+        </el-tab-pane>
+        <el-tab-pane label="工作中心" name="workCenter">
+          <div class="flex justify-between items-center mb-2">
+            <span class="text-sm text-gray-500">已选 {{ selectedWorkCenterIds.length }} 项</span>
+            <el-button size="small" type="primary" @click="saveDirectWorkCenters" :loading="submitting">
+              {{ submitting ? '保存中...' : '保存直接授权' }}
+            </el-button>
           </div>
-
-          <!-- Work Center Tab -->
-          <div v-if="activeTab === 'workCenter'" class="tab-content">
-            <div class="select-actions">
-              <span class="selection-info">已选 {{ selectedWorkCenterIds.length }} 项</span>
-              <button class="btn btn-sm btn-primary" @click="saveDirectWorkCenters" :disabled="submitting">
-                {{ submitting ? '保存中...' : '保存直接授权' }}
-              </button>
-            </div>
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>选择</th>
-                  <th>工作中心编码</th>
-                  <th>工作中心名称</th>
-                  <th>来源</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-if="workCenterOptions.length === 0">
-                  <td colspan="4" class="text-center">暂无工作中心数据</td>
-                </tr>
-                <tr v-for="wc in workCenterOptions" :key="wc.id">
-                  <td>
-                    <input
-                      type="checkbox"
-                      :value="wc.id"
-                      v-model="selectedWorkCenterIds"
-                    />
-                  </td>
-                  <td>{{ wc.code }}</td>
-                  <td>{{ wc.name }}</td>
-                  <td>
-                    <span v-if="getSourceTag(wc.id, 'workCenter')" :class="['tag', getSourceTag(wc.id, 'workCenter') === 'GROUP' ? 'tag-green' : 'tag-orange']">
-                      {{ getSourceTag(wc.id, 'workCenter') === 'GROUP' ? '权限组' : '直接' }}
-                    </span>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+          <el-table :data="workCenterOptions" border size="small" max-height="400">
+            <el-table-column label="选择" min-width="60">
+              <template #default="{ row }">
+                <el-checkbox :value="row.id" v-model="selectedWorkCenterIds" />
+              </template>
+            </el-table-column>
+            <el-table-column prop="code" label="工作中心编码" min-width="120" />
+            <el-table-column prop="name" label="工作中心名称" min-width="120" />
+            <el-table-column label="来源" min-width="80">
+              <template #default="{ row }">
+                <el-tag v-if="getSourceTag(row.id, 'workCenter')" :type="getSourceTag(row.id, 'workCenter') === 'GROUP' ? 'success' : 'warning'" size="small">
+                  {{ getSourceTag(row.id, 'workCenter') === 'GROUP' ? '权限组' : '直接' }}
+                </el-tag>
+              </template>
+            </el-table-column>
+          </el-table>
+          <el-empty v-if="workCenterOptions.length === 0" description="暂无工作中心数据" />
+        </el-tab-pane>
+        <el-tab-pane label="工序" name="process">
+          <div class="flex justify-between items-center mb-2">
+            <span class="text-sm text-gray-500">已选 {{ selectedProcessIds.length }} 项</span>
+            <el-button size="small" type="primary" @click="saveDirectProcesses" :loading="submitting">
+              {{ submitting ? '保存中...' : '保存直接授权' }}
+            </el-button>
           </div>
-
-          <!-- Process Tab -->
-          <div v-if="activeTab === 'process'" class="tab-content">
-            <div class="select-actions">
-              <span class="selection-info">已选 {{ selectedProcessIds.length }} 项</span>
-              <button class="btn btn-sm btn-primary" @click="saveDirectProcesses" :disabled="submitting">
-                {{ submitting ? '保存中...' : '保存直接授权' }}
-              </button>
-            </div>
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>选择</th>
-                  <th>工序编码</th>
-                  <th>工序名称</th>
-                  <th>来源</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-if="processOptions.length === 0">
-                  <td colspan="4" class="text-center">暂无工序数据</td>
-                </tr>
-                <tr v-for="p in processOptions" :key="p.id">
-                  <td>
-                    <input
-                      type="checkbox"
-                      :value="p.id"
-                      v-model="selectedProcessIds"
-                    />
-                  </td>
-                  <td>{{ p.code }}</td>
-                  <td>{{ p.name }}</td>
-                  <td>
-                    <span v-if="getSourceTag(p.id, 'process')" :class="['tag', getSourceTag(p.id, 'process') === 'GROUP' ? 'tag-green' : 'tag-orange']">
-                      {{ getSourceTag(p.id, 'process') === 'GROUP' ? '权限组' : '直接' }}
-                    </span>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div class="dialog-footer">
-          <button class="btn" @click="closeTabDialog">关闭</button>
-        </div>
-        <div v-if="tabError" class="form-error">{{ tabError }}</div>
-      </div>
-    </div>
+          <el-table :data="processOptions" border size="small" max-height="400">
+            <el-table-column label="选择" min-width="60">
+              <template #default="{ row }">
+                <el-checkbox :value="row.id" v-model="selectedProcessIds" />
+              </template>
+            </el-table-column>
+            <el-table-column prop="code" label="工序编码" min-width="120" />
+            <el-table-column prop="name" label="工序名称" min-width="120" />
+            <el-table-column label="来源" min-width="80">
+              <template #default="{ row }">
+                <el-tag v-if="getSourceTag(row.id, 'process')" :type="getSourceTag(row.id, 'process') === 'GROUP' ? 'success' : 'warning'" size="small">
+                  {{ getSourceTag(row.id, 'process') === 'GROUP' ? '权限组' : '直接' }}
+                </el-tag>
+              </template>
+            </el-table-column>
+          </el-table>
+          <el-empty v-if="processOptions.length === 0" description="暂无工序数据" />
+        </el-tab-pane>
+      </el-tabs>
+      <div v-if="tabError" class="text-red-500 text-sm mt-3">{{ tabError }}</div>
+      <template #footer>
+        <el-button @click="closeTabDialog">关闭</el-button>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted } from 'vue';
+import { Search, Refresh, Plus } from '@element-plus/icons-vue';
 import {
   listUserDataPermissions,
   batchAssignPermission,
@@ -625,363 +498,3 @@ onMounted(() => {
   fetchList();
 });
 </script>
-
-<style scoped>
-.user-permission-page {
-  padding: 20px;
-}
-
-.page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.page-header h2 {
-  margin: 0;
-  font-size: 20px;
-  color: #333;
-}
-
-.search-bar {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 16px;
-  flex-wrap: wrap;
-}
-
-.input {
-  padding: 6px 12px;
-  border: 1px solid #d9d9d9;
-  border-radius: 4px;
-  font-size: 14px;
-  outline: none;
-  transition: border-color 0.2s;
-}
-
-.input:focus {
-  border-color: #1890ff;
-}
-
-.input-sm {
-  padding: 4px 8px;
-  font-size: 13px;
-}
-
-select.input {
-  min-width: 200px;
-}
-
-.btn {
-  padding: 6px 16px;
-  border: 1px solid #d9d9d9;
-  border-radius: 4px;
-  background: #fff;
-  cursor: pointer;
-  font-size: 14px;
-  transition: all 0.2s;
-}
-
-.btn:hover {
-  border-color: #1890ff;
-  color: #1890ff;
-}
-
-.btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.btn-primary {
-  background: #1890ff;
-  color: #fff;
-  border-color: #1890ff;
-}
-
-.btn-primary:hover {
-  background: #40a9ff;
-  color: #fff;
-}
-
-.btn-secondary {
-  background: #f0f0f0;
-  border-color: #d9d9d9;
-}
-
-.btn-sm {
-  padding: 2px 8px;
-  font-size: 12px;
-}
-
-.btn-danger {
-  color: #ff4d4f;
-  border-color: #ff4d4f;
-}
-
-.btn-danger:hover {
-  background: #ff4d4f;
-  color: #fff;
-}
-
-.btn-info {
-  color: #1890ff;
-  border-color: #1890ff;
-}
-
-.btn-info:hover {
-  background: #1890ff;
-  color: #fff;
-}
-
-.header-actions {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
-
-.table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 16px;
-}
-
-.table th,
-.table td {
-  padding: 10px 12px;
-  border: 1px solid #f0f0f0;
-  text-align: left;
-  font-size: 14px;
-}
-
-.table th {
-  background: #fafafa;
-  font-weight: 600;
-  color: #333;
-}
-
-.table tbody tr:hover {
-  background: #f5f5f5;
-}
-
-.actions {
-  display: flex;
-  gap: 6px;
-}
-
-.pagination {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.pagination-info {
-  font-size: 14px;
-  color: #666;
-  margin-right: auto;
-}
-
-.text-center {
-  text-align: center;
-}
-
-.text-muted {
-  color: #999;
-  font-size: 13px;
-}
-
-.required {
-  color: #ff4d4f;
-}
-
-/* Tags */
-.tag {
-  display: inline-block;
-  padding: 2px 8px;
-  border-radius: 3px;
-  font-size: 12px;
-  font-weight: 500;
-}
-
-.tag-blue {
-  background: #e6f7ff;
-  color: #1890ff;
-  border: 1px solid #91d5ff;
-}
-
-.tag-green {
-  background: #f6ffed;
-  color: #52c41a;
-  border: 1px solid #b7eb8f;
-}
-
-.tag-orange {
-  background: #fff7e6;
-  color: #fa8c16;
-  border: 1px solid #ffd591;
-}
-
-/* Dialog styles */
-.dialog-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
-
-.dialog {
-  background: #fff;
-  border-radius: 8px;
-  width: 480px;
-  max-width: 90vw;
-  max-height: 85vh;
-  overflow-y: auto;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-}
-
-.dialog-lg {
-  width: 700px;
-}
-
-.dialog-sm {
-  width: 400px;
-}
-
-.dialog-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 24px;
-  border-bottom: 1px solid #f0f0f0;
-}
-
-.dialog-header h3 {
-  margin: 0;
-  font-size: 16px;
-}
-
-.dialog-close {
-  background: none;
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
-  color: #999;
-}
-
-.dialog-body {
-  padding: 24px;
-}
-
-.dialog-footer {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  padding: 12px 24px;
-  border-top: 1px solid #f0f0f0;
-}
-
-.form-group {
-  margin-bottom: 16px;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 6px;
-  font-size: 14px;
-  color: #333;
-}
-
-.form-group .input {
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.form-error {
-  padding: 8px 24px 16px;
-  color: #ff4d4f;
-  font-size: 13px;
-}
-
-/* User select area */
-.user-select-area {
-  border: 1px solid #d9d9d9;
-  border-radius: 4px;
-  padding: 8px;
-  max-height: 250px;
-  overflow-y: auto;
-}
-
-.checkbox-list {
-  margin-top: 8px;
-}
-
-.checkbox-item {
-  display: block;
-  padding: 4px 0;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-.checkbox-item:hover {
-  background: #f5f5f5;
-}
-
-.selection-summary {
-  margin-top: 8px;
-  font-size: 13px;
-  color: #666;
-}
-
-/* Tab styles */
-.tab-bar {
-  display: flex;
-  gap: 0;
-  border-bottom: 2px solid #f0f0f0;
-  margin-bottom: 16px;
-}
-
-.tab-btn {
-  padding: 8px 20px;
-  border: none;
-  background: none;
-  cursor: pointer;
-  font-size: 14px;
-  color: #666;
-  border-bottom: 2px solid transparent;
-  margin-bottom: -2px;
-  transition: all 0.2s;
-}
-
-.tab-btn:hover {
-  color: #1890ff;
-}
-
-.tab-active {
-  color: #1890ff;
-  border-bottom-color: #1890ff;
-  font-weight: 600;
-}
-
-.tab-content {
-  max-height: 400px;
-  overflow-y: auto;
-}
-
-.select-actions {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-}
-
-.selection-info {
-  font-size: 13px;
-  color: #666;
-}
-</style>

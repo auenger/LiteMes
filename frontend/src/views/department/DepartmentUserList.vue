@@ -1,148 +1,108 @@
 <template>
-  <div class="department-user-page">
-    <div class="page-header">
-      <div class="header-left">
-        <button class="btn" @click="goBack">&lt; 返回部门列表</button>
-        <h2>{{ departmentName }} - 部门用户</h2>
+  <div class="h-full flex flex-col space-y-3">
+    <!-- Header -->
+    <div class="bg-card p-3 border border-border-color shadow-sm rounded-sm shrink-0 flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <el-button :icon="Refresh" @click="goBack">返回部门列表</el-button>
+        <h2 class="text-lg font-semibold m-0">{{ departmentName }} - 部门用户</h2>
       </div>
-      <button class="btn btn-primary" @click="openSelectUserDialog">选择用户</button>
+      <el-button type="primary" :icon="Plus" @click="openSelectUserDialog">选择用户</el-button>
     </div>
 
-    <!-- Department User Table -->
-    <table class="table">
-      <thead>
-        <tr>
-          <th>用户名</th>
-          <th>姓名</th>
-          <th>分配时间</th>
-          <th>分配人</th>
-          <th>操作</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-if="loading">
-          <td colspan="5" class="text-center">加载中...</td>
-        </tr>
-        <tr v-else-if="users.length === 0">
-          <td colspan="5" class="text-center">暂无用户，点击"选择用户"添加</td>
-        </tr>
-        <tr v-for="du in users" :key="du.id">
-          <td>{{ du.username }}</td>
-          <td>{{ du.realName }}</td>
-          <td>{{ formatDate(du.createdAt) }}</td>
-          <td>{{ du.createdBy || '-' }}</td>
-          <td class="actions">
-            <button class="btn btn-sm btn-danger" @click="confirmRemove(du)">移除</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <!-- Main Content Card -->
+    <div class="flex-1 bg-card border border-border-color shadow-sm rounded-sm flex flex-col overflow-hidden">
+      <!-- Table -->
+      <div class="flex-1 p-2.5 overflow-hidden">
+        <el-table :data="users" border stripe height="100%" v-loading="loading">
+          <el-table-column prop="username" label="用户名" width="180" />
+          <el-table-column prop="realName" label="姓名" width="180" />
+          <el-table-column label="分配时间" width="200">
+            <template #default="{ row }">{{ formatDate(row.createdAt) }}</template>
+          </el-table-column>
+          <el-table-column label="分配人" width="150">
+            <template #default="{ row }">{{ row.createdBy || '-' }}</template>
+          </el-table-column>
+          <el-table-column label="操作" width="120" fixed="right" align="center">
+            <template #default="{ row }">
+              <el-button link type="danger" size="small" @click="confirmRemove(row)">移除</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+    </div>
 
     <!-- Select User Dialog -->
-    <div v-if="selectDialogVisible" class="dialog-overlay" @click.self="closeSelectDialog">
-      <div class="dialog dialog-lg">
-        <div class="dialog-header">
-          <h3>选择用户</h3>
-          <button class="dialog-close" @click="closeSelectDialog">&times;</button>
-        </div>
-        <div class="dialog-body">
-          <!-- User Search -->
-          <div class="search-bar">
-            <input
-              v-model="userQuery.username"
-              type="text"
-              placeholder="用户名"
-              class="input"
-              @keyup.enter="searchUsers"
-            />
-            <input
-              v-model="userQuery.realName"
-              type="text"
-              placeholder="姓名"
-              class="input"
-              @keyup.enter="searchUsers"
-            />
-            <button class="btn" @click="searchUsers">查询</button>
-          </div>
+    <el-dialog title="选择用户" width="680px" v-model="selectDialogVisible">
+      <!-- User Search -->
+      <el-form :inline="true" size="default" class="flex flex-wrap gap-y-3 items-center !mb-3">
+        <el-form-item label="用户名" class="!mb-0">
+          <el-input v-model="userQuery.username" placeholder="用户名" clearable class="!w-40" @keyup.enter="searchUsers" />
+        </el-form-item>
+        <el-form-item label="姓名" class="!mb-0">
+          <el-input v-model="userQuery.realName" placeholder="姓名" clearable class="!w-40" @keyup.enter="searchUsers" />
+        </el-form-item>
+        <el-form-item class="!mb-0 !mr-0">
+          <el-button type="primary" :icon="Search" @click="searchUsers">查询</el-button>
+        </el-form-item>
+      </el-form>
 
-          <!-- User List for Selection -->
-          <table class="table">
-            <thead>
-              <tr>
-                <th class="col-check">
-                  <input type="checkbox" v-model="selectAll" @change="toggleSelectAll" />
-                </th>
-                <th>用户名</th>
-                <th>姓名</th>
-                <th>状态</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-if="userLoading">
-                <td colspan="4" class="text-center">加载中...</td>
-              </tr>
-              <tr v-else-if="availableUsers.length === 0">
-                <td colspan="4" class="text-center">没有找到用户</td>
-              </tr>
-              <tr v-for="u in availableUsers" :key="u.id">
-                <td class="col-check">
-                  <input type="checkbox" :value="u.id" v-model="selectedUserIds" />
-                </td>
-                <td>{{ u.username }}</td>
-                <td>{{ u.realName }}</td>
-                <td>
-                  <span :class="['status-badge', u.status === 1 ? 'status-enabled' : 'status-disabled']">
-                    {{ u.status === 1 ? '启用' : '禁用' }}
-                  </span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+      <!-- User List for Selection -->
+      <el-table :data="availableUsers" border stripe max-height="400" v-loading="userLoading">
+        <el-table-column width="55" align="center">
+          <template #header>
+            <el-checkbox v-model="selectAll" @change="toggleSelectAll" />
+          </template>
+          <template #default="{ row }">
+            <el-checkbox :value="row.id" v-model="selectedUserIds" />
+          </template>
+        </el-table-column>
+        <el-table-column prop="username" label="用户名" width="150" />
+        <el-table-column prop="realName" label="姓名" width="150" />
+        <el-table-column label="状态" width="100" align="center">
+          <template #default="{ row }">
+            <el-tag :type="row.status === 1 ? 'success' : 'danger'" size="small">
+              {{ row.status === 1 ? '启用' : '禁用' }}
+            </el-tag>
+          </template>
+        </el-table-column>
+      </el-table>
 
-          <!-- User Pagination -->
-          <div class="pagination" v-if="userTotal > 0">
-            <span class="pagination-info">
-              共 {{ userTotal }} 条，第 {{ userQuery.page }} / {{ userTotalPages }} 页
-            </span>
-            <button class="btn btn-sm" :disabled="userQuery.page <= 1" @click="userQuery.page--; searchUsers()">上一页</button>
-            <button class="btn btn-sm" :disabled="userQuery.page >= userTotalPages" @click="userQuery.page++; searchUsers()">下一页</button>
-          </div>
-        </div>
-        <div class="dialog-footer">
-          <span class="selected-info">已选择 {{ selectedUserIds.length }} 人</span>
-          <button class="btn" @click="closeSelectDialog">取消</button>
-          <button class="btn btn-primary" @click="doAssign" :disabled="submitting || selectedUserIds.length === 0">
-            {{ submitting ? '提交中...' : '确认分配' }}
-          </button>
-        </div>
-        <div v-if="formError" class="form-error">{{ formError }}</div>
+      <!-- User Pagination -->
+      <div class="flex justify-end mt-3">
+        <el-pagination
+          layout="total, prev, pager, next"
+          :total="userTotal"
+          v-model:current-page="userQuery.page"
+          v-model:page-size="userQuery.size"
+          background
+          size="small"
+          @current-change="doSearchUsers"
+        />
       </div>
-    </div>
 
-    <!-- Remove Confirm Dialog -->
-    <div v-if="removeDialogVisible" class="dialog-overlay" @click.self="closeRemoveDialog">
-      <div class="dialog dialog-sm">
-        <div class="dialog-header">
-          <h3>确认移除</h3>
-          <button class="dialog-close" @click="closeRemoveDialog">&times;</button>
-        </div>
-        <div class="dialog-body">
-          <p>确定要将用户 "{{ removeTarget?.realName }}" ({{ removeTarget?.username }}) 从该部门移除吗？</p>
-        </div>
-        <div class="dialog-footer">
-          <button class="btn" @click="closeRemoveDialog">取消</button>
-          <button class="btn btn-danger" @click="doRemove" :disabled="submitting">
-            {{ submitting ? '移除中...' : '确认移除' }}
-          </button>
-        </div>
-      </div>
-    </div>
+      <div v-if="formError" class="text-red-500 text-sm px-4 mt-2">{{ formError }}</div>
+      <template #footer>
+        <span class="text-gray-500 text-sm mr-auto">已选择 {{ selectedUserIds.length }} 人</span>
+        <el-button @click="closeSelectDialog">取消</el-button>
+        <el-button type="primary" @click="doAssign" :loading="submitting" :disabled="selectedUserIds.length === 0">确认分配</el-button>
+      </template>
+    </el-dialog>
+
+    <!-- Remove Confirm -->
+    <el-dialog title="确认移除" width="400px" v-model="removeDialogVisible">
+      <p>确定要将用户 "{{ removeTarget?.realName }}" ({{ removeTarget?.username }}) 从该部门移除吗？</p>
+      <template #footer>
+        <el-button @click="closeRemoveDialog">取消</el-button>
+        <el-button type="danger" @click="doRemove" :loading="submitting">确认移除</el-button>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { Search, Refresh, Plus } from '@element-plus/icons-vue';
 import {
   listDepartmentUsers,
   assignUsers,
@@ -317,238 +277,3 @@ onMounted(() => {
   fetchUsers();
 });
 </script>
-
-<style scoped>
-.department-user-page {
-  padding: 20px;
-}
-
-.page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.header-left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.page-header h2 {
-  margin: 0;
-  font-size: 20px;
-  color: #333;
-}
-
-.search-bar {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 16px;
-  flex-wrap: wrap;
-}
-
-.input {
-  padding: 6px 12px;
-  border: 1px solid #d9d9d9;
-  border-radius: 4px;
-  font-size: 14px;
-  outline: none;
-  transition: border-color 0.2s;
-}
-
-.input:focus {
-  border-color: #1890ff;
-}
-
-.btn {
-  padding: 6px 16px;
-  border: 1px solid #d9d9d9;
-  border-radius: 4px;
-  background: #fff;
-  cursor: pointer;
-  font-size: 14px;
-  transition: all 0.2s;
-}
-
-.btn:hover {
-  border-color: #1890ff;
-  color: #1890ff;
-}
-
-.btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.btn-primary {
-  background: #1890ff;
-  color: #fff;
-  border-color: #1890ff;
-}
-
-.btn-primary:hover {
-  background: #40a9ff;
-  color: #fff;
-}
-
-.btn-sm {
-  padding: 2px 8px;
-  font-size: 12px;
-}
-
-.btn-danger {
-  color: #ff4d4f;
-  border-color: #ff4d4f;
-}
-
-.btn-danger:hover {
-  background: #ff4d4f;
-  color: #fff;
-}
-
-.table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 16px;
-}
-
-.table th,
-.table td {
-  padding: 10px 12px;
-  border: 1px solid #f0f0f0;
-  text-align: left;
-  font-size: 14px;
-}
-
-.table th {
-  background: #fafafa;
-  font-weight: 600;
-  color: #333;
-}
-
-.table tbody tr:hover {
-  background: #f5f5f5;
-}
-
-.col-check {
-  width: 40px;
-  text-align: center;
-}
-
-.actions {
-  display: flex;
-  gap: 6px;
-}
-
-.status-badge {
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-size: 12px;
-}
-
-.status-enabled {
-  background: #f6ffed;
-  color: #52c41a;
-  border: 1px solid #b7eb8f;
-}
-
-.status-disabled {
-  background: #fff2f0;
-  color: #ff4d4f;
-  border: 1px solid #ffccc7;
-}
-
-.pagination {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.pagination-info {
-  font-size: 14px;
-  color: #666;
-  margin-right: auto;
-}
-
-.text-center {
-  text-align: center;
-}
-
-/* Dialog styles */
-.dialog-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
-
-.dialog {
-  background: #fff;
-  border-radius: 8px;
-  width: 480px;
-  max-width: 90vw;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-}
-
-.dialog-lg {
-  width: 680px;
-}
-
-.dialog-sm {
-  width: 400px;
-}
-
-.dialog-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 24px;
-  border-bottom: 1px solid #f0f0f0;
-}
-
-.dialog-header h3 {
-  margin: 0;
-  font-size: 16px;
-}
-
-.dialog-close {
-  background: none;
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
-  color: #999;
-}
-
-.dialog-body {
-  padding: 24px;
-}
-
-.dialog-footer {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 24px;
-  border-top: 1px solid #f0f0f0;
-}
-
-.selected-info {
-  margin-right: auto;
-  font-size: 14px;
-  color: #666;
-}
-
-.form-error {
-  padding: 8px 24px 16px;
-  color: #ff4d4f;
-  font-size: 13px;
-}
-</style>

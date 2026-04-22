@@ -1,187 +1,166 @@
 <template>
-  <div class="shift-schedule-list">
-    <h2>班制管理</h2>
-
-    <!-- Search Bar -->
-    <div class="search-bar">
-      <input v-model="searchForm.shiftCode" placeholder="班制编码" class="search-input" />
-      <input v-model="searchForm.name" placeholder="班制名称" class="search-input" />
-      <select v-model="searchForm.status" class="search-select">
-        <option :value="undefined">全部状态</option>
-        <option :value="1">启用</option>
-        <option :value="0">禁用</option>
-      </select>
-      <button @click="handleSearch" class="btn btn-primary">查询</button>
-      <button @click="handleReset" class="btn btn-default">重置</button>
-      <button @click="showCreateDialog = true" class="btn btn-success">新增班制</button>
+  <div class="h-full flex flex-col space-y-3">
+    <!-- Filter Card -->
+    <div class="bg-card p-3 border border-border-color shadow-sm rounded-sm shrink-0">
+      <el-form :inline="true" :model="searchForm" size="default" class="flex flex-wrap gap-y-3 items-center !mb-0">
+        <el-form-item label="班制编码" class="!mb-0">
+          <el-input v-model="searchForm.shiftCode" placeholder="班制编码" clearable class="!w-40" />
+        </el-form-item>
+        <el-form-item label="班制名称" class="!mb-0">
+          <el-input v-model="searchForm.name" placeholder="班制名称" clearable class="!w-40" />
+        </el-form-item>
+        <el-form-item label="状态" class="!mb-0">
+          <el-select v-model="searchForm.status" placeholder="全部状态" clearable class="!w-28">
+            <el-option label="启用" :value="1" />
+            <el-option label="禁用" :value="0" />
+          </el-select>
+        </el-form-item>
+        <el-form-item class="!mb-0 !mr-0">
+          <el-button type="primary" :icon="Search" @click="handleSearch">查询</el-button>
+          <el-button :icon="Refresh" @click="handleReset">重置</el-button>
+        </el-form-item>
+      </el-form>
     </div>
 
-    <!-- Shift Schedule Table -->
-    <table class="data-table">
-      <thead>
-        <tr>
-          <th>班制编码</th>
-          <th>班制名称</th>
-          <th>是否默认</th>
-          <th>状态</th>
-          <th>创建人</th>
-          <th>创建时间</th>
-          <th>操作</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="item in schedules" :key="item.id">
-          <td>{{ item.shiftCode }}</td>
-          <td>{{ item.name }}</td>
-          <td>{{ item.isDefault === 1 ? '是' : '否' }}</td>
-          <td>
-            <span :class="['status-tag', item.status === 1 ? 'status-enabled' : 'status-disabled']">
-              {{ item.status === 1 ? '启用' : '禁用' }}
-            </span>
-          </td>
-          <td>{{ item.createdBy }}</td>
-          <td>{{ formatDateTime(item.createdAt) }}</td>
-          <td class="action-cell">
-            <button @click="handleEdit(item)" class="btn btn-sm btn-primary">编辑</button>
-            <button @click="handleToggleStatus(item)" class="btn btn-sm" :class="item.status === 1 ? 'btn-warning' : 'btn-success'">
-              {{ item.status === 1 ? '禁用' : '启用' }}
-            </button>
-            <button @click="handleViewShifts(item)" class="btn btn-sm btn-info">班次</button>
-            <button @click="handleDelete(item)" class="btn btn-sm btn-danger">删除</button>
-          </td>
-        </tr>
-        <tr v-if="schedules.length === 0">
-          <td colspan="7" class="empty-row">暂无数据</td>
-        </tr>
-      </tbody>
-    </table>
+    <!-- Main Content Card -->
+    <div class="flex-1 bg-card border border-border-color shadow-sm rounded-sm flex flex-col overflow-hidden">
+      <!-- Toolbar -->
+      <div class="px-4 py-2.5 border-b border-border-color flex justify-between items-center shrink-0">
+        <div class="flex gap-2">
+          <el-button type="primary" :icon="Plus" @click="showCreateDialog = true">新增班制</el-button>
+        </div>
+      </div>
 
-    <!-- Pagination -->
-    <div class="pagination" v-if="pagination.total > 0">
-      <span class="pagination-info">
-        共 {{ pagination.total }} 条，第 {{ pagination.pageNum }} / {{ totalPages }} 页
-      </span>
-      <button @click="handlePageChange(1)" :disabled="pagination.pageNum <= 1" class="btn btn-sm">首页</button>
-      <button @click="handlePageChange(pagination.pageNum - 1)" :disabled="pagination.pageNum <= 1" class="btn btn-sm">上一页</button>
-      <button @click="handlePageChange(pagination.pageNum + 1)" :disabled="pagination.pageNum >= totalPages" class="btn btn-sm">下一页</button>
-      <button @click="handlePageChange(totalPages)" :disabled="pagination.pageNum >= totalPages" class="btn btn-sm">末页</button>
-    </div>
+      <!-- Table -->
+      <div class="flex-1 p-2.5 overflow-hidden">
+        <el-table :data="schedules" border stripe height="100%">
+          <el-table-column prop="shiftCode" label="班制编码" width="150" />
+          <el-table-column prop="name" label="班制名称" width="180" />
+          <el-table-column label="是否默认" width="100" align="center">
+            <template #default="{ row }">{{ row.isDefault === 1 ? '是' : '否' }}</template>
+          </el-table-column>
+          <el-table-column label="状态" width="100" align="center">
+            <template #default="{ row }">
+              <el-tag :type="row.status === 1 ? 'success' : 'danger'" size="small">
+                {{ row.status === 1 ? '启用' : '禁用' }}
+              </el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column prop="createdBy" label="创建人" width="120" />
+          <el-table-column label="创建时间" width="180">
+            <template #default="{ row }">{{ formatDateTime(row.createdAt) }}</template>
+          </el-table-column>
+          <el-table-column label="操作" width="240" fixed="right" align="center">
+            <template #default="{ row }">
+              <el-button link type="primary" size="small" @click="handleEdit(row)">编辑</el-button>
+              <el-button link :type="row.status === 1 ? 'warning' : 'success'" size="small" @click="handleToggleStatus(row)">
+                {{ row.status === 1 ? '禁用' : '启用' }}
+              </el-button>
+              <el-button link type="primary" size="small" @click="handleViewShifts(row)">班次</el-button>
+              <el-button link type="danger" size="small" @click="handleDelete(row)">删除</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
 
-    <!-- Create/Edit Dialog -->
-    <div v-if="showCreateDialog || showEditDialog" class="dialog-overlay" @click.self="closeDialog">
-      <div class="dialog-content">
-        <h3>{{ showEditDialog ? '编辑班制' : '新增班制' }}</h3>
-        <form @submit.prevent="handleSubmit">
-          <div class="form-group">
-            <label>班制编码</label>
-            <input v-model="formData.shiftCode" :disabled="showEditDialog" required maxlength="50" />
-          </div>
-          <div class="form-group">
-            <label>班制名称</label>
-            <input v-model="formData.name" required maxlength="50" />
-          </div>
-          <div class="form-group">
-            <label>
-              <input type="checkbox" v-model="formData.isDefault" :true-value="1" :false-value="0" />
-              设为默认班制
-            </label>
-          </div>
-          <div class="form-actions">
-            <button type="submit" class="btn btn-primary">确定</button>
-            <button type="button" @click="closeDialog" class="btn btn-default">取消</button>
-          </div>
-        </form>
+      <!-- Pagination -->
+      <div class="px-4 py-3 border-t border-border-color flex justify-end shrink-0">
+        <el-pagination
+          layout="total, sizes, prev, pager, next"
+          :total="pagination.total"
+          :page-sizes="[10, 20, 50]"
+          v-model:current-page="pagination.pageNum"
+          v-model:page-size="pagination.pageSize"
+          background
+          size="small"
+          @current-change="loadSchedules"
+          @size-change="loadSchedules"
+        />
       </div>
     </div>
+
+    <!-- Create/Edit Schedule Dialog -->
+    <el-dialog :title="showEditDialog ? '编辑班制' : '新增班制'" width="480px" :model-value="showCreateDialog || showEditDialog" @update:model-value="closeDialog">
+      <el-form label-width="80px">
+        <el-form-item label="班制编码" required>
+          <el-input v-model="formData.shiftCode" :disabled="showEditDialog" placeholder="请输入班制编码" maxlength="50" />
+        </el-form-item>
+        <el-form-item label="班制名称" required>
+          <el-input v-model="formData.name" placeholder="请输入班制名称" maxlength="50" />
+        </el-form-item>
+        <el-form-item label="默认班制">
+          <el-checkbox v-model="formData.isDefault" :true-value="1" :false-value="0">设为默认班制</el-checkbox>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <el-button @click="closeDialog">取消</el-button>
+        <el-button type="primary" @click="handleSubmit" :loading="false">确定</el-button>
+      </template>
+    </el-dialog>
 
     <!-- Shift List Dialog -->
-    <div v-if="showShiftDialog" class="dialog-overlay" @click.self="showShiftDialog = false">
-      <div class="dialog-content dialog-wide">
-        <h3>{{ currentSchedule?.name }} - 班次管理</h3>
-        <div class="search-bar">
-          <button @click="showShiftCreateDialog = true" class="btn btn-success">新增班次</button>
-        </div>
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>班次编码</th>
-              <th>班次名称</th>
-              <th>开始时间</th>
-              <th>结束时间</th>
-              <th>是否跨天</th>
-              <th>工时(h)</th>
-              <th>状态</th>
-              <th>操作</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="shift in shifts" :key="shift.id">
-              <td>{{ shift.shiftCode }}</td>
-              <td>{{ shift.name }}</td>
-              <td>{{ shift.startTime }}</td>
-              <td>{{ shift.endTime }}</td>
-              <td>{{ shift.crossDay === 1 ? '是' : '否' }}</td>
-              <td>{{ shift.workHours }}</td>
-              <td>
-                <span :class="['status-tag', shift.status === 1 ? 'status-enabled' : 'status-disabled']">
-                  {{ shift.status === 1 ? '启用' : '禁用' }}
-                </span>
-              </td>
-              <td class="action-cell">
-                <button @click="handleEditShift(shift)" class="btn btn-sm btn-primary">编辑</button>
-                <button @click="handleDeleteShift(shift)" class="btn btn-sm btn-danger">删除</button>
-              </td>
-            </tr>
-            <tr v-if="shifts.length === 0">
-              <td colspan="8" class="empty-row">暂无班次</td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="form-actions">
-          <button @click="showShiftDialog = false" class="btn btn-default">关闭</button>
-        </div>
+    <el-dialog :title="`${currentSchedule?.name} - 班次管理`" width="720px" v-model="showShiftDialog">
+      <div class="mb-3">
+        <el-button type="primary" :icon="Plus" @click="showShiftCreateDialog = true">新增班次</el-button>
       </div>
-    </div>
+      <el-table :data="shifts" border stripe max-height="400">
+        <el-table-column prop="shiftCode" label="班次编码" width="120" />
+        <el-table-column prop="name" label="班次名称" width="120" />
+        <el-table-column prop="startTime" label="开始时间" width="100" />
+        <el-table-column prop="endTime" label="结束时间" width="100" />
+        <el-table-column label="是否跨天" width="100" align="center">
+          <template #default="{ row }">{{ row.crossDay === 1 ? '是' : '否' }}</template>
+        </el-table-column>
+        <el-table-column prop="workHours" label="工时(h)" width="90" align="center" />
+        <el-table-column label="状态" width="100" align="center">
+          <template #default="{ row }">
+            <el-tag :type="row.status === 1 ? 'success' : 'danger'" size="small">
+              {{ row.status === 1 ? '启用' : '禁用' }}
+            </el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" width="150" fixed="right" align="center">
+          <template #default="{ row }">
+            <el-button link type="primary" size="small" @click="handleEditShift(row)">编辑</el-button>
+            <el-button link type="danger" size="small" @click="handleDeleteShift(row)">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <template #footer>
+        <el-button @click="showShiftDialog = false">关闭</el-button>
+      </template>
+    </el-dialog>
 
     <!-- Shift Create/Edit Dialog -->
-    <div v-if="showShiftCreateDialog || showShiftEditDialog" class="dialog-overlay" @click.self="closeShiftFormDialog">
-      <div class="dialog-content">
-        <h3>{{ showShiftEditDialog ? '编辑班次' : '新增班次' }}</h3>
-        <form @submit.prevent="handleShiftSubmit">
-          <div class="form-group">
-            <label>班次编码</label>
-            <input v-model="shiftFormData.shiftCode" :disabled="showShiftEditDialog" required maxlength="50" />
-          </div>
-          <div class="form-group">
-            <label>班次名称</label>
-            <input v-model="shiftFormData.name" required maxlength="50" />
-          </div>
-          <div class="form-group">
-            <label>开始时间</label>
-            <input v-model="shiftFormData.startTime" type="time" required />
-          </div>
-          <div class="form-group">
-            <label>结束时间</label>
-            <input v-model="shiftFormData.endTime" type="time" required />
-          </div>
-          <div class="form-group">
-            <label>
-              <input type="checkbox" v-model="shiftFormData.crossDay" :true-value="1" :false-value="0" />
-              跨天班次
-            </label>
-          </div>
-          <div class="form-actions">
-            <button type="submit" class="btn btn-primary">确定</button>
-            <button type="button" @click="closeShiftFormDialog" class="btn btn-default">取消</button>
-          </div>
-        </form>
-      </div>
-    </div>
+    <el-dialog :title="showShiftEditDialog ? '编辑班次' : '新增班次'" width="480px" :model-value="showShiftCreateDialog || showShiftEditDialog" @update:model-value="closeShiftFormDialog">
+      <el-form label-width="80px">
+        <el-form-item label="班次编码" required>
+          <el-input v-model="shiftFormData.shiftCode" :disabled="showShiftEditDialog" placeholder="请输入班次编码" maxlength="50" />
+        </el-form-item>
+        <el-form-item label="班次名称" required>
+          <el-input v-model="shiftFormData.name" placeholder="请输入班次名称" maxlength="50" />
+        </el-form-item>
+        <el-form-item label="开始时间" required>
+          <el-input v-model="shiftFormData.startTime" type="time" />
+        </el-form-item>
+        <el-form-item label="结束时间" required>
+          <el-input v-model="shiftFormData.endTime" type="time" />
+        </el-form-item>
+        <el-form-item label="跨天班次">
+          <el-checkbox v-model="shiftFormData.crossDay" :true-value="1" :false-value="0">跨天班次</el-checkbox>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <el-button @click="closeShiftFormDialog">取消</el-button>
+        <el-button type="primary" @click="handleShiftSubmit" :loading="false">确定</el-button>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
+import { Search, Refresh, Plus } from '@element-plus/icons-vue';
 import {
   listShiftSchedules,
   createShiftSchedule,
@@ -392,212 +371,3 @@ onMounted(() => {
   loadSchedules();
 });
 </script>
-
-<style scoped>
-.shift-schedule-list {
-  padding: 20px;
-}
-
-.search-bar {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 16px;
-  flex-wrap: wrap;
-  align-items: center;
-}
-
-.search-input,
-.search-select {
-  padding: 6px 12px;
-  border: 1px solid #d9d9d9;
-  border-radius: 4px;
-  font-size: 14px;
-}
-
-.data-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 14px;
-}
-
-.data-table th,
-.data-table td {
-  padding: 10px 12px;
-  border: 1px solid #e8e8e8;
-  text-align: left;
-}
-
-.data-table th {
-  background: #fafafa;
-  font-weight: 600;
-}
-
-.data-table tr:hover {
-  background: #f5f5f5;
-}
-
-.empty-row {
-  text-align: center;
-  color: #999;
-  padding: 40px;
-}
-
-.action-cell {
-  white-space: nowrap;
-}
-
-.btn {
-  padding: 6px 14px;
-  border: 1px solid #d9d9d9;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-  background: #fff;
-  transition: all 0.2s;
-}
-
-.btn:hover {
-  opacity: 0.85;
-}
-
-.btn-primary {
-  background: #1890ff;
-  color: #fff;
-  border-color: #1890ff;
-}
-
-.btn-success {
-  background: #52c41a;
-  color: #fff;
-  border-color: #52c41a;
-}
-
-.btn-danger {
-  background: #ff4d4f;
-  color: #fff;
-  border-color: #ff4d4f;
-}
-
-.btn-warning {
-  background: #faad14;
-  color: #fff;
-  border-color: #faad14;
-}
-
-.btn-info {
-  background: #13c2c2;
-  color: #fff;
-  border-color: #13c2c2;
-}
-
-.btn-default {
-  background: #fff;
-  border-color: #d9d9d9;
-}
-
-.btn-sm {
-  padding: 3px 8px;
-  font-size: 12px;
-  margin-right: 4px;
-}
-
-.btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.status-tag {
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-size: 12px;
-}
-
-.status-enabled {
-  background: #f6ffed;
-  color: #52c41a;
-  border: 1px solid #b7eb8f;
-}
-
-.status-disabled {
-  background: #fff2e8;
-  color: #fa8c16;
-  border: 1px solid #ffd591;
-}
-
-.pagination {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 16px;
-  justify-content: flex-end;
-}
-
-.pagination-info {
-  font-size: 14px;
-  color: #666;
-  margin-right: auto;
-}
-
-.dialog-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.45);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
-
-.dialog-content {
-  background: #fff;
-  border-radius: 8px;
-  padding: 24px;
-  min-width: 480px;
-  max-height: 80vh;
-  overflow-y: auto;
-}
-
-.dialog-wide {
-  min-width: 720px;
-}
-
-.dialog-content h3 {
-  margin: 0 0 20px 0;
-}
-
-.form-group {
-  margin-bottom: 16px;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 4px;
-  font-size: 14px;
-  color: #333;
-}
-
-.form-group input[type="text"],
-.form-group input:not([type]) {
-  width: 100%;
-  padding: 6px 12px;
-  border: 1px solid #d9d9d9;
-  border-radius: 4px;
-  font-size: 14px;
-  box-sizing: border-box;
-}
-
-.form-group input:disabled {
-  background: #f5f5f5;
-  color: #999;
-}
-
-.form-actions {
-  display: flex;
-  gap: 8px;
-  justify-content: flex-end;
-  margin-top: 20px;
-}
-</style>

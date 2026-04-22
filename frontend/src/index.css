@@ -1,0 +1,110 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: var(--bg-main);
+  --color-foreground: var(--text-main);
+  --color-card: var(--bg-card);
+  --color-muted: var(--text-muted);
+  --color-border-base: var(--border-color);
+  --color-accent-blue: #409eff;
+}
+
+:root {
+  --bg-main: #f0f2f5;
+  --bg-card: #ffffff;
+  --text-main: #262626;
+  --text-muted: #8c8c8c;
+  --border-color: #f0f0f0;
+
+  --el-color-primary: #1890ff;
+  --el-component-size: 32px;
+}
+
+.dark {
+  --bg-main: #000000;
+  --bg-card: #141414;
+  --text-main: #d9d9d9;
+  --text-muted: #8c8c8c;
+  --border-color: #303030;
+
+  color-scheme: dark;
+
+  --el-bg-color: #000000;
+  --el-bg-color-overlay: #141414;
+  --el-border-color-light: #303030;
+  --el-text-color-primary: #d9d9d9;
+  --el-text-color-regular: #8c8c8c;
+  --el-fill-color-blank: #141414;
+}
+
+@layer base {
+  body {
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  }
+}
+
+.el-table {
+  --el-table-header-bg-color: #fafafa !important;
+  --el-table-border-color: #f0f0f0 !important;
+  font-size: 13px !important;
+  border-radius: 0 !important;
+}
+
+.dark .el-table {
+  --el-table-header-bg-color: #1d1d1d !important;
+  --el-table-border-color: #303030 !important;
+}
+
+.el-table__header-wrapper th {
+  background-color: #fafafa !important;
+  color: rgba(0, 0, 0, 0.85) !important;
+  font-weight: 500 !important;
+}
+
+.dark .el-table__header-wrapper th {
+  background-color: #1d1d1d !important;
+  color: rgba(255, 255, 255, 0.85) !important;
+}
+
+.el-button {
+  border-radius: 2px !important;
+  font-weight: 400 !important;
+}
+
+.el-input__wrapper, .el-select__wrapper {
+  background-color: transparent !important;
+  border-radius: 2px !important;
+  box-shadow: 0 0 0 1px #d9d9d9 inset !important;
+}
+
+.dark .el-input__wrapper, .dark .el-select__wrapper {
+  box-shadow: 0 0 0 1px #434343 inset !important;
+}
+
+.el-form-item__label {
+  font-weight: 400 !important;
+  font-size: 13px !important;
+  color: var(--text-main) !important;
+}
+
+.el-card {
+  border-radius: 2px !important;
+  box-shadow: none !important;
+}
+
+.custom-scroll::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.custom-scroll::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 3px;
+}
+.dark .custom-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+}
+.custom-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}

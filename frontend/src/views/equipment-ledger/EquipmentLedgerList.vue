@@ -1,296 +1,214 @@
 <template>
-  <div class="equipment-ledger-page">
-    <div class="page-header">
-      <h2>设备台账管理</h2>
-      <div class="header-actions">
-        <div class="table-settings-wrapper" style="position: relative;">
-          <button class="btn" @click="showTableSettings = !showTableSettings">表格设置</button>
-          <TableSettingsPanel
-            :visible="showTableSettings"
-            :columns="columns"
-            @close="showTableSettings = false"
-          />
+  <div class="h-full flex flex-col space-y-3">
+    <!-- Filter Card -->
+    <div class="bg-card p-3 border border-border-color shadow-sm rounded-sm shrink-0">
+      <el-form :inline="true" :model="query" size="default" class="flex flex-wrap gap-y-3 items-center !mb-0">
+        <el-form-item label="设备编码" class="!mb-0">
+          <el-input v-model="query.equipmentCode" placeholder="设备编码" clearable class="!w-36" @keyup.enter="search" />
+        </el-form-item>
+        <el-form-item label="设备名称" class="!mb-0">
+          <el-input v-model="query.equipmentName" placeholder="设备名称" clearable class="!w-36" @keyup.enter="search" />
+        </el-form-item>
+        <el-form-item label="设备类型" class="!mb-0">
+          <el-select v-model="query.equipmentTypeId" placeholder="全部设备类型" clearable class="!w-44">
+            <el-option v-for="t in equipmentTypes" :key="t.id" :label="`${t.typeName} (${t.typeCode})`" :value="t.id" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="设备型号" class="!mb-0">
+          <el-select v-model="query.equipmentModelId" placeholder="全部设备型号" clearable class="!w-44">
+            <el-option v-for="m in filteredModels" :key="m.id" :label="`${m.modelName} (${m.modelCode})`" :value="m.id" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="运行状态" class="!mb-0">
+          <el-select v-model="query.runningStatus" placeholder="全部运行状态" clearable class="!w-36">
+            <el-option label="运行" value="RUNNING" />
+            <el-option label="故障" value="FAULT" />
+            <el-option label="停机" value="SHUTDOWN" />
+            <el-option label="维修保养" value="MAINTENANCE" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="管理状态" class="!mb-0">
+          <el-select v-model="query.manageStatus" placeholder="全部管理状态" clearable class="!w-36">
+            <el-option label="使用中" value="IN_USE" />
+            <el-option label="闲置" value="IDLE" />
+            <el-option label="报废" value="SCRAPPED" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="工厂" class="!mb-0">
+          <el-select v-model="query.factoryId" placeholder="全部工厂" clearable class="!w-40">
+            <el-option v-for="f in factories" :key="f.id" :label="`${f.name} (${f.code})`" :value="f.id" />
+          </el-select>
+        </el-form-item>
+        <el-form-item class="!mb-0 !mr-0">
+          <el-button type="primary" :icon="Search" @click="search">查询</el-button>
+          <el-button :icon="Refresh" @click="resetQuery">重置</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
+
+    <!-- Main Content Card -->
+    <div class="flex-1 bg-card border border-border-color shadow-sm rounded-sm flex flex-col overflow-hidden">
+      <div class="px-4 py-2.5 border-b border-border-color flex justify-between items-center shrink-0">
+        <div class="flex gap-2">
+          <el-button type="primary" :icon="Plus" @click="openCreateDialog">新建设备</el-button>
+          <el-button :icon="Setting" @click="showTableSettings = !showTableSettings">表格设置</el-button>
         </div>
-        <button class="btn btn-primary" @click="openCreateDialog">新建设备</button>
+        <TableSettingsPanel
+          :visible="showTableSettings"
+          :columns="columns"
+          @close="showTableSettings = false"
+        />
       </div>
-    </div>
-
-    <!-- Search Bar -->
-    <div class="search-bar">
-      <input
-        v-model="query.equipmentCode"
-        type="text"
-        placeholder="设备编码"
-        class="input"
-        @keyup.enter="search"
-      />
-      <input
-        v-model="query.equipmentName"
-        type="text"
-        placeholder="设备名称"
-        class="input"
-        @keyup.enter="search"
-      />
-      <select v-model="query.equipmentTypeId" class="input select">
-        <option :value="undefined">全部设备类型</option>
-        <option v-for="t in equipmentTypes" :key="t.id" :value="t.id">{{ t.typeName }} ({{ t.typeCode }})</option>
-      </select>
-      <select v-model="query.equipmentModelId" class="input select">
-        <option :value="undefined">全部设备型号</option>
-        <option v-for="m in filteredModels" :key="m.id" :value="m.id">{{ m.modelName }} ({{ m.modelCode }})</option>
-      </select>
-      <select v-model="query.runningStatus" class="input select">
-        <option :value="undefined">全部运行状态</option>
-        <option value="RUNNING">运行</option>
-        <option value="FAULT">故障</option>
-        <option value="SHUTDOWN">停机</option>
-        <option value="MAINTENANCE">维修保养</option>
-      </select>
-      <select v-model="query.manageStatus" class="input select">
-        <option :value="undefined">全部管理状态</option>
-        <option value="IN_USE">使用中</option>
-        <option value="IDLE">闲置</option>
-        <option value="SCRAPPED">报废</option>
-      </select>
-      <select v-model="query.factoryId" class="input select">
-        <option :value="undefined">全部工厂</option>
-        <option v-for="f in factories" :key="f.id" :value="f.id">{{ f.name }} ({{ f.code }})</option>
-      </select>
-      <button class="btn" @click="search">查询</button>
-      <button class="btn btn-secondary" @click="resetQuery">重置</button>
-    </div>
-
-    <!-- Equipment Ledger Table -->
-    <table class="table">
-      <thead>
-        <tr>
-          <th v-if="isColumnVisible('equipmentCode')">设备编码</th>
-          <th v-if="isColumnVisible('equipmentName')">设备名称</th>
-          <th v-if="isColumnVisible('typeCode')">设备类型编码</th>
-          <th v-if="isColumnVisible('typeName')">设备类型名称</th>
-          <th v-if="isColumnVisible('modelCode')">设备型号编码</th>
-          <th v-if="isColumnVisible('modelName')">设备型号名称</th>
-          <th v-if="isColumnVisible('runningStatus')">运行状态</th>
-          <th v-if="isColumnVisible('manageStatus')">管理状态</th>
-          <th v-if="isColumnVisible('factoryName')">工厂</th>
-          <th v-if="isColumnVisible('manufacturer')">生产厂家</th>
-          <th v-if="isColumnVisible('commissioningDate')">入场时间</th>
-          <th v-if="isColumnVisible('status')">状态</th>
-          <th v-if="isColumnVisible('createdBy')">创建人</th>
-          <th v-if="isColumnVisible('createdAt')">创建时间</th>
-          <th>操作</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-if="loading">
-          <td :colspan="visibleColCount + 1" class="text-center">加载中...</td>
-        </tr>
-        <tr v-else-if="ledgers.length === 0">
-          <td :colspan="visibleColCount + 1" class="text-center">暂无数据</td>
-        </tr>
-        <tr v-for="item in ledgers" :key="item.id">
-          <td v-if="isColumnVisible('equipmentCode')">{{ item.equipmentCode }}</td>
-          <td v-if="isColumnVisible('equipmentName')">{{ item.equipmentName }}</td>
-          <td v-if="isColumnVisible('typeCode')">{{ item.typeCode }}</td>
-          <td v-if="isColumnVisible('typeName')">{{ item.typeName }}</td>
-          <td v-if="isColumnVisible('modelCode')">{{ item.modelCode }}</td>
-          <td v-if="isColumnVisible('modelName')">{{ item.modelName }}</td>
-          <td v-if="isColumnVisible('runningStatus')">
-            <span :class="['status-badge', getRunningStatusClass(item.runningStatus)]">
-              {{ getRunningStatusLabel(item.runningStatus) }}
-            </span>
-          </td>
-          <td v-if="isColumnVisible('manageStatus')">
-            <span :class="['status-badge', getManageStatusClass(item.manageStatus)]">
-              {{ getManageStatusLabel(item.manageStatus) }}
-            </span>
-          </td>
-          <td v-if="isColumnVisible('factoryName')">{{ item.factoryName }}</td>
-          <td v-if="isColumnVisible('manufacturer')">{{ item.manufacturer || '-' }}</td>
-          <td v-if="isColumnVisible('commissioningDate')">{{ item.commissioningDate || '-' }}</td>
-          <td v-if="isColumnVisible('status')">
-            <span :class="['status-badge', item.status === 1 ? 'status-enabled' : 'status-disabled']">
-              {{ item.status === 1 ? '启用' : '禁用' }}
-            </span>
-          </td>
-          <td v-if="isColumnVisible('createdBy')">{{ item.createdBy || '-' }}</td>
-          <td v-if="isColumnVisible('createdAt')">{{ formatDate(item.createdAt) }}</td>
-          <td class="actions">
-            <button class="btn btn-sm" @click="openEditDialog(item)">编辑</button>
-            <button
-              v-if="item.status === 1"
-              class="btn btn-sm btn-warning"
-              @click="toggleStatus(item)"
-            >
-              禁用
-            </button>
-            <button
-              v-else
-              class="btn btn-sm btn-success"
-              @click="toggleStatus(item)"
-            >
-              启用
-            </button>
-            <button class="btn btn-sm btn-danger" @click="confirmDelete(item)">删除</button>
-            <button class="btn btn-sm btn-info" @click="openAuditLog(item)">变更履历</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <!-- Pagination -->
-    <div class="pagination" v-if="total > 0">
-      <span class="pagination-info">
-        共 {{ total }} 条，第 {{ query.page || 1 }} / {{ totalPages }} 页
-      </span>
-      <button class="btn btn-sm" :disabled="query.page <= 1" @click="goPage(1)">首页</button>
-      <button class="btn btn-sm" :disabled="query.page <= 1" @click="goPage((query.page || 1) - 1)">上一页</button>
-      <button class="btn btn-sm" :disabled="query.page >= totalPages" @click="goPage((query.page || 1) + 1)">下一页</button>
-      <button class="btn btn-sm" :disabled="query.page >= totalPages" @click="goPage(totalPages)">末页</button>
+      <div class="flex-1 p-2.5 overflow-hidden">
+        <el-table :data="ledgers" border stripe height="100%" v-loading="loading">
+          <el-table-column v-if="isColumnVisible('equipmentCode')" prop="equipmentCode" label="设备编码" min-width="120" />
+          <el-table-column v-if="isColumnVisible('equipmentName')" prop="equipmentName" label="设备名称" min-width="120" />
+          <el-table-column v-if="isColumnVisible('typeCode')" prop="typeCode" label="设备类型编码" min-width="120" />
+          <el-table-column v-if="isColumnVisible('typeName')" prop="typeName" label="设备类型名称" min-width="120" />
+          <el-table-column v-if="isColumnVisible('modelCode')" prop="modelCode" label="设备型号编码" min-width="120" />
+          <el-table-column v-if="isColumnVisible('modelName')" prop="modelName" label="设备型号名称" min-width="120" />
+          <el-table-column v-if="isColumnVisible('runningStatus')" label="运行状态" min-width="100">
+            <template #default="{ row }">
+              <el-tag :type="runningStatusTagType(row.runningStatus)" size="small">
+                {{ getRunningStatusLabel(row.runningStatus) }}
+              </el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column v-if="isColumnVisible('manageStatus')" label="管理状态" min-width="100">
+            <template #default="{ row }">
+              <el-tag :type="manageStatusTagType(row.manageStatus)" size="small">
+                {{ getManageStatusLabel(row.manageStatus) }}
+              </el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column v-if="isColumnVisible('factoryName')" prop="factoryName" label="工厂" min-width="100" />
+          <el-table-column v-if="isColumnVisible('manufacturer')" label="生产厂家" min-width="100">
+            <template #default="{ row }">{{ row.manufacturer || '-' }}</template>
+          </el-table-column>
+          <el-table-column v-if="isColumnVisible('commissioningDate')" label="入场时间" min-width="110">
+            <template #default="{ row }">{{ row.commissioningDate || '-' }}</template>
+          </el-table-column>
+          <el-table-column v-if="isColumnVisible('status')" label="状态" min-width="80">
+            <template #default="{ row }">
+              <el-tag :type="row.status === 1 ? 'success' : 'danger'" size="small">
+                {{ row.status === 1 ? '启用' : '禁用' }}
+              </el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column v-if="isColumnVisible('createdBy')" label="创建人" min-width="100">
+            <template #default="{ row }">{{ row.createdBy || '-' }}</template>
+          </el-table-column>
+          <el-table-column v-if="isColumnVisible('createdAt')" label="创建时间" min-width="160">
+            <template #default="{ row }">{{ formatDate(row.createdAt) }}</template>
+          </el-table-column>
+          <el-table-column label="操作" min-width="260" fixed="right">
+            <template #default="{ row }">
+              <el-button size="small" @click="openEditDialog(row)">编辑</el-button>
+              <el-button
+                v-if="row.status === 1"
+                size="small"
+                type="warning"
+                @click="toggleStatus(row)"
+              >禁用</el-button>
+              <el-button
+                v-else
+                size="small"
+                type="success"
+                @click="toggleStatus(row)"
+              >启用</el-button>
+              <el-button size="small" type="danger" @click="confirmDelete(row)">删除</el-button>
+              <el-button size="small" type="info" @click="openAuditLog(row)">变更履历</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+      <div class="px-4 py-3 border-t border-border-color flex justify-end shrink-0">
+        <el-pagination
+          layout="total, sizes, prev, pager, next"
+          :total="total"
+          :page-size="query.size"
+          :current-page="query.page"
+          background
+          size="small"
+          @current-change="goPage"
+          @size-change="(size: number) => { query.size = size; search() }"
+        />
+      </div>
     </div>
 
     <!-- Create/Edit Dialog -->
-    <div v-if="dialogVisible" class="dialog-overlay" @click.self="closeDialog">
-      <div class="dialog dialog-lg">
-        <div class="dialog-header">
-          <h3>{{ isEdit ? '编辑设备台账' : '新建设备台账' }}</h3>
-          <button class="dialog-close" @click="closeDialog">&times;</button>
+    <el-dialog v-model="dialogVisible" :title="isEdit ? '编辑设备台账' : '新建设备台账'" width="680px" @close="closeDialog">
+      <el-form label-width="100px">
+        <div class="flex gap-4">
+          <el-form-item label="设备编码" required class="flex-1">
+            <el-input v-model="form.equipmentCode" :disabled="isEdit" placeholder="请输入设备编码" />
+          </el-form-item>
+          <el-form-item label="设备名称" required class="flex-1">
+            <el-input v-model="form.equipmentName" placeholder="请输入设备名称" />
+          </el-form-item>
         </div>
-        <div class="dialog-body">
-          <div class="form-row">
-            <div class="form-group">
-              <label>设备编码 <span class="required">*</span></label>
-              <input
-                v-model="form.equipmentCode"
-                type="text"
-                class="input"
-                :disabled="isEdit"
-                :class="{ 'input-disabled': isEdit }"
-                placeholder="请输入设备编码"
-              />
-            </div>
-            <div class="form-group">
-              <label>设备名称 <span class="required">*</span></label>
-              <input
-                v-model="form.equipmentName"
-                type="text"
-                class="input"
-                placeholder="请输入设备名称"
-              />
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label>设备型号 <span class="required">*</span></label>
-              <select
-                v-model="form.equipmentModelId"
-                class="input select"
-                @change="onModelChange"
-              >
-                <option :value="undefined" disabled>请选择设备型号</option>
-                <option v-for="m in formModels" :key="m.id" :value="m.id">{{ m.modelName }} ({{ m.modelCode }})</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>设备类型名称</label>
-              <input
-                :value="selectedTypeName"
-                type="text"
-                class="input"
-                disabled
-                :class="{ 'input-disabled': true }"
-                placeholder="根据型号自动带出"
-              />
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label>运行状态 <span class="required">*</span></label>
-              <select v-model="form.runningStatus" class="input select">
-                <option value="RUNNING">运行</option>
-                <option value="FAULT">故障</option>
-                <option value="SHUTDOWN">停机</option>
-                <option value="MAINTENANCE">维修保养</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>管理状态 <span class="required">*</span></label>
-              <select v-model="form.manageStatus" class="input select">
-                <option value="IN_USE">使用中</option>
-                <option value="IDLE">闲置</option>
-                <option value="SCRAPPED">报废</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label>工厂 <span class="required">*</span></label>
-              <select v-model="form.factoryId" class="input select" @change="onFactoryChange">
-                <option :value="undefined" disabled>请选择工厂</option>
-                <option v-for="f in factories" :key="f.id" :value="f.id">{{ f.name }} ({{ f.code }})</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>工厂名称</label>
-              <input
-                :value="selectedFactoryName"
-                type="text"
-                class="input"
-                disabled
-                :class="{ 'input-disabled': true }"
-                placeholder="根据工厂自动带出"
-              />
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label>生产厂家</label>
-              <input
-                v-model="form.manufacturer"
-                type="text"
-                class="input"
-                placeholder="请输入生产厂家"
-              />
-            </div>
-            <div class="form-group">
-              <label>入场时间 <span class="required">*</span></label>
-              <input
-                v-model="form.commissioningDate"
-                type="date"
-                class="input"
-              />
-            </div>
-          </div>
+        <div class="flex gap-4">
+          <el-form-item label="设备型号" required class="flex-1">
+            <el-select v-model="form.equipmentModelId" placeholder="请选择设备型号" class="!w-full" @change="onModelChange">
+              <el-option v-for="m in formModels" :key="m.id" :label="`${m.modelName} (${m.modelCode})`" :value="m.id" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="设备类型名称" class="flex-1">
+            <el-input :model-value="selectedTypeName" disabled placeholder="根据型号自动带出" />
+          </el-form-item>
         </div>
-        <div class="dialog-footer">
-          <button class="btn" @click="closeDialog">取消</button>
-          <button class="btn btn-primary" @click="submitForm" :disabled="submitting">
-            {{ submitting ? '提交中...' : '确定' }}
-          </button>
+        <div class="flex gap-4">
+          <el-form-item label="运行状态" required class="flex-1">
+            <el-select v-model="form.runningStatus" class="!w-full">
+              <el-option label="运行" value="RUNNING" />
+              <el-option label="故障" value="FAULT" />
+              <el-option label="停机" value="SHUTDOWN" />
+              <el-option label="维修保养" value="MAINTENANCE" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="管理状态" required class="flex-1">
+            <el-select v-model="form.manageStatus" class="!w-full">
+              <el-option label="使用中" value="IN_USE" />
+              <el-option label="闲置" value="IDLE" />
+              <el-option label="报废" value="SCRAPPED" />
+            </el-select>
+          </el-form-item>
         </div>
-        <div v-if="formError" class="form-error">{{ formError }}</div>
-      </div>
-    </div>
+        <div class="flex gap-4">
+          <el-form-item label="工厂" required class="flex-1">
+            <el-select v-model="form.factoryId" placeholder="请选择工厂" class="!w-full" @change="onFactoryChange">
+              <el-option v-for="f in factories" :key="f.id" :label="`${f.name} (${f.code})`" :value="f.id" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="工厂名称" class="flex-1">
+            <el-input :model-value="selectedFactoryName" disabled placeholder="根据工厂自动带出" />
+          </el-form-item>
+        </div>
+        <div class="flex gap-4">
+          <el-form-item label="生产厂家" class="flex-1">
+            <el-input v-model="form.manufacturer" placeholder="请输入生产厂家" />
+          </el-form-item>
+          <el-form-item label="入场时间" required class="flex-1">
+            <el-input v-model="form.commissioningDate" type="date" />
+          </el-form-item>
+        </div>
+      </el-form>
+      <div v-if="formError" class="text-red-500 text-sm px-4 pb-2">{{ formError }}</div>
+      <template #footer>
+        <el-button @click="closeDialog">取消</el-button>
+        <el-button type="primary" @click="submitForm" :loading="submitting">确定</el-button>
+      </template>
+    </el-dialog>
 
     <!-- Delete Confirm Dialog -->
-    <div v-if="deleteDialogVisible" class="dialog-overlay" @click.self="closeDeleteDialog">
-      <div class="dialog dialog-sm">
-        <div class="dialog-header">
-          <h3>确认删除</h3>
-          <button class="dialog-close" @click="closeDeleteDialog">&times;</button>
-        </div>
-        <div class="dialog-body">
-          <p>确定要删除设备 "{{ deleteTarget?.equipmentName }}" ({{ deleteTarget?.equipmentCode }}) 吗？</p>
-          <p class="text-muted">已被业务引用的设备不可删除。删除后不可恢复。</p>
-        </div>
-        <div class="dialog-footer">
-          <button class="btn" @click="closeDeleteDialog">取消</button>
-          <button class="btn btn-danger" @click="doDelete" :disabled="submitting">
-            {{ submitting ? '删除中...' : '删除' }}
-          </button>
-        </div>
-      </div>
-    </div>
+    <el-dialog v-model="deleteDialogVisible" title="确认删除" width="400px" @close="closeDeleteDialog">
+      <p>确定要删除设备 "{{ deleteTarget?.equipmentName }}" ({{ deleteTarget?.equipmentCode }}) 吗？</p>
+      <p class="text-gray-400 text-sm mt-2">已被业务引用的设备不可删除。删除后不可恢复。</p>
+      <template #footer>
+        <el-button @click="closeDeleteDialog">取消</el-button>
+        <el-button type="danger" @click="doDelete" :loading="submitting">删除</el-button>
+      </template>
+    </el-dialog>
 
     <!-- Audit Log Dialog -->
     <AuditLogDialog
@@ -305,6 +223,7 @@
 
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted } from 'vue';
+import { Search, Refresh, Plus, Setting } from '@element-plus/icons-vue';
 import {
   listEquipmentLedgers,
   createEquipmentLedger,
@@ -455,14 +374,14 @@ function getRunningStatusLabel(status: string): string {
   return map[status] || status;
 }
 
-function getRunningStatusClass(status: string): string {
+function runningStatusTagType(status: string): string {
   const map: Record<string, string> = {
-    RUNNING: 'status-running',
-    FAULT: 'status-fault',
-    SHUTDOWN: 'status-shutdown',
-    MAINTENANCE: 'status-maintenance',
+    RUNNING: 'success',
+    FAULT: 'danger',
+    SHUTDOWN: 'info',
+    MAINTENANCE: '',
   };
-  return map[status] || '';
+  return map[status] || 'info';
 }
 
 function getManageStatusLabel(status: string): string {
@@ -474,13 +393,13 @@ function getManageStatusLabel(status: string): string {
   return map[status] || status;
 }
 
-function getManageStatusClass(status: string): string {
+function manageStatusTagType(status: string): string {
   const map: Record<string, string> = {
-    IN_USE: 'status-in-use',
-    IDLE: 'status-idle',
-    SCRAPPED: 'status-scrapped',
+    IN_USE: 'success',
+    IDLE: 'warning',
+    SCRAPPED: 'danger',
   };
-  return map[status] || '';
+  return map[status] || 'info';
 }
 
 async function fetchDropdownData() {
@@ -687,349 +606,3 @@ onMounted(() => {
   fetchList();
 });
 </script>
-
-<style scoped>
-.equipment-ledger-page {
-  padding: 20px;
-}
-
-.page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.page-header h2 {
-  margin: 0;
-  font-size: 20px;
-  color: #333;
-}
-
-.search-bar {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 16px;
-  flex-wrap: wrap;
-}
-
-.input {
-  padding: 6px 12px;
-  border: 1px solid #d9d9d9;
-  border-radius: 4px;
-  font-size: 14px;
-  outline: none;
-  transition: border-color 0.2s;
-}
-
-.input:focus {
-  border-color: #1890ff;
-}
-
-.input-disabled {
-  background-color: #f5f5f5;
-  cursor: not-allowed;
-}
-
-.select {
-  min-width: 120px;
-}
-
-.btn {
-  padding: 6px 16px;
-  border: 1px solid #d9d9d9;
-  border-radius: 4px;
-  background: #fff;
-  cursor: pointer;
-  font-size: 14px;
-  transition: all 0.2s;
-}
-
-.btn:hover {
-  border-color: #1890ff;
-  color: #1890ff;
-}
-
-.btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.btn-primary {
-  background: #1890ff;
-  color: #fff;
-  border-color: #1890ff;
-}
-
-.btn-primary:hover {
-  background: #40a9ff;
-  color: #fff;
-}
-
-.btn-secondary {
-  background: #f0f0f0;
-  border-color: #d9d9d9;
-}
-
-.btn-sm {
-  padding: 2px 8px;
-  font-size: 12px;
-}
-
-.btn-danger {
-  color: #ff4d4f;
-  border-color: #ff4d4f;
-}
-
-.btn-danger:hover {
-  background: #ff4d4f;
-  color: #fff;
-}
-
-.btn-warning {
-  color: #faad14;
-  border-color: #faad14;
-}
-
-.btn-warning:hover {
-  background: #faad14;
-  color: #fff;
-}
-
-.btn-success {
-  color: #52c41a;
-  border-color: #52c41a;
-}
-
-.btn-success:hover {
-  background: #52c41a;
-  color: #fff;
-}
-
-.btn-info {
-  color: #1890ff;
-  border-color: #1890ff;
-}
-
-.btn-info:hover {
-  background: #1890ff;
-  color: #fff;
-}
-
-.header-actions {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
-
-.table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 16px;
-}
-
-.table th,
-.table td {
-  padding: 10px 12px;
-  border: 1px solid #f0f0f0;
-  text-align: left;
-  font-size: 14px;
-}
-
-.table th {
-  background: #fafafa;
-  font-weight: 600;
-  color: #333;
-}
-
-.table tbody tr:hover {
-  background: #f5f5f5;
-}
-
-.actions {
-  display: flex;
-  gap: 6px;
-}
-
-.status-badge {
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-size: 12px;
-}
-
-.status-enabled {
-  background: #f6ffed;
-  color: #52c41a;
-  border: 1px solid #b7eb8f;
-}
-
-.status-disabled {
-  background: #fff2f0;
-  color: #ff4d4f;
-  border: 1px solid #ffccc7;
-}
-
-/* Running status colors */
-.status-running {
-  background: #f6ffed;
-  color: #52c41a;
-  border: 1px solid #b7eb8f;
-}
-
-.status-fault {
-  background: #fff2f0;
-  color: #ff4d4f;
-  border: 1px solid #ffccc7;
-}
-
-.status-shutdown {
-  background: #f0f0f0;
-  color: #999;
-  border: 1px solid #d9d9d9;
-}
-
-.status-maintenance {
-  background: #e6f7ff;
-  color: #1890ff;
-  border: 1px solid #91d5ff;
-}
-
-/* Manage status colors */
-.status-in-use {
-  background: #f6ffed;
-  color: #52c41a;
-  border: 1px solid #b7eb8f;
-}
-
-.status-idle {
-  background: #fffbe6;
-  color: #faad14;
-  border: 1px solid #ffe58f;
-}
-
-.status-scrapped {
-  background: #fff2f0;
-  color: #ff4d4f;
-  border: 1px solid #ffccc7;
-}
-
-.pagination {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.pagination-info {
-  font-size: 14px;
-  color: #666;
-  margin-right: auto;
-}
-
-.text-center {
-  text-align: center;
-}
-
-.text-muted {
-  color: #999;
-  font-size: 13px;
-}
-
-.required {
-  color: #ff4d4f;
-}
-
-/* Dialog styles */
-.dialog-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
-
-.dialog {
-  background: #fff;
-  border-radius: 8px;
-  width: 480px;
-  max-width: 90vw;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-}
-
-.dialog-lg {
-  width: 680px;
-}
-
-.dialog-sm {
-  width: 400px;
-}
-
-.dialog-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 24px;
-  border-bottom: 1px solid #f0f0f0;
-}
-
-.dialog-header h3 {
-  margin: 0;
-  font-size: 16px;
-}
-
-.dialog-close {
-  background: none;
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
-  color: #999;
-}
-
-.dialog-body {
-  padding: 24px;
-}
-
-.dialog-footer {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  padding: 12px 24px;
-  border-top: 1px solid #f0f0f0;
-}
-
-.form-row {
-  display: flex;
-  gap: 16px;
-  margin-bottom: 0;
-}
-
-.form-row .form-group {
-  flex: 1;
-}
-
-.form-group {
-  margin-bottom: 16px;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 6px;
-  font-size: 14px;
-  color: #333;
-}
-
-.form-group .input {
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.form-error {
-  padding: 8px 24px 16px;
-  color: #ff4d4f;
-  font-size: 13px;
-}
-</style>

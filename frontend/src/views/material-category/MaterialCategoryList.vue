@@ -1,34 +1,41 @@
 <template>
-  <div class="category-page">
-    <div class="page-header">
-      <h2>物料分类管理</h2>
-      <div class="header-actions">
-        <div class="table-settings-wrapper" style="position: relative;">
-          <button class="btn" @click="showTableSettings = !showTableSettings">表格设置</button>
-          <TableSettingsPanel
-            :visible="showTableSettings"
-            :columns="columns"
-            @close="showTableSettings = false"
-          />
-        </div>
-        <button class="btn btn-primary" @click="openCreateDialog">新建分类</button>
-      </div>
+  <div class="h-full flex flex-col space-y-3">
+    <!-- Filter Card -->
+    <div class="bg-card p-3 border border-border-color shadow-sm rounded-sm shrink-0">
+      <el-form :inline="true" :model="query" size="default" class="flex flex-wrap gap-y-3 items-center !mb-0">
+        <el-form-item label="分类编码" class="!mb-0">
+          <el-input v-model="query.categoryCode" placeholder="分类编码" clearable class="!w-40" @keyup.enter="search" />
+        </el-form-item>
+        <el-form-item label="分类名称" class="!mb-0">
+          <el-input v-model="query.categoryName" placeholder="分类名称" clearable class="!w-40" @keyup.enter="search" />
+        </el-form-item>
+        <el-form-item label="状态" class="!mb-0">
+          <el-select v-model="query.status" placeholder="全部状态" clearable class="!w-32">
+            <el-option :value="1" label="启用" />
+            <el-option :value="0" label="禁用" />
+          </el-select>
+        </el-form-item>
+        <el-form-item class="!mb-0 !mr-0">
+          <el-button type="primary" :icon="Search" @click="search">查询</el-button>
+          <el-button :icon="Refresh" @click="resetQuery">重置</el-button>
+        </el-form-item>
+      </el-form>
     </div>
 
-    <div class="main-content">
+    <!-- Main Content: Tree + Table -->
+    <div class="flex-1 flex gap-4 overflow-hidden">
       <!-- Left: Tree Panel -->
-      <div class="tree-panel">
-        <div class="tree-header">
-          <h3>分类结构</h3>
+      <div class="w-64 shrink-0 bg-card border border-border-color shadow-sm rounded-sm flex flex-col overflow-hidden">
+        <div class="px-4 py-2.5 border-b border-border-color bg-gray-50 shrink-0">
+          <span class="text-sm font-semibold text-gray-700">分类结构</span>
         </div>
-        <div class="tree-body">
-          <div v-if="treeLoading" class="text-center">加载中...</div>
-          <div v-else-if="treeData.length === 0" class="text-center text-muted">暂无分类数据</div>
+        <div class="flex-1 p-2 overflow-y-auto">
+          <div v-if="treeLoading" class="text-center text-gray-400 text-sm py-4">加载中...</div>
+          <div v-else-if="treeData.length === 0" class="text-center text-gray-400 text-sm py-4">暂无分类数据</div>
           <div v-else>
             <div
               v-for="node in treeData"
               :key="node.id"
-              class="tree-node-wrapper"
             >
               <TreeNode
                 :node="node"
@@ -40,178 +47,135 @@
         </div>
       </div>
 
-      <!-- Right: Detail / List Panel -->
-      <div class="detail-panel">
-        <!-- Search Bar -->
-        <div class="search-bar">
-          <input
-            v-model="query.categoryCode"
-            type="text"
-            placeholder="分类编码"
-            class="input"
-            @keyup.enter="search"
-          />
-          <input
-            v-model="query.categoryName"
-            type="text"
-            placeholder="分类名称"
-            class="input"
-            @keyup.enter="search"
-          />
-          <select v-model="query.status" class="input select">
-            <option :value="undefined">全部状态</option>
-            <option :value="1">启用</option>
-            <option :value="0">禁用</option>
-          </select>
-          <button class="btn" @click="search">查询</button>
-          <button class="btn btn-secondary" @click="resetQuery">重置</button>
+      <!-- Right: Table Panel -->
+      <div class="flex-1 bg-card border border-border-color shadow-sm rounded-sm flex flex-col overflow-hidden">
+        <div class="px-4 py-2.5 border-b border-border-color flex justify-between items-center shrink-0">
+          <div class="flex gap-2">
+            <el-button type="primary" :icon="Plus" @click="openCreateDialog">新建分类</el-button>
+            <div class="relative">
+              <el-button :icon="Setting" @click="showTableSettings = !showTableSettings">表格设置</el-button>
+              <TableSettingsPanel
+                :visible="showTableSettings"
+                :columns="columns"
+                @close="showTableSettings = false"
+                @toggle="toggleColumn"
+                @reset="resetSettings"
+              />
+            </div>
+          </div>
         </div>
-
-        <!-- Category Table -->
-        <table class="table">
-          <thead>
-            <tr>
-              <th>分类编码</th>
-              <th>分类名称</th>
-              <th>是否质量分类</th>
-              <th>上级分类</th>
-              <th>状态</th>
-              <th>创建人</th>
-              <th>创建时间</th>
-              <th>操作</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-if="loading">
-              <td colspan="8" class="text-center">加载中...</td>
-            </tr>
-            <tr v-else-if="categories.length === 0">
-              <td colspan="8" class="text-center">暂无数据</td>
-            </tr>
-            <tr v-for="cat in categories" :key="cat.id">
-              <td>{{ cat.categoryCode }}</td>
-              <td>{{ cat.categoryName }}</td>
-              <td>
-                <span :class="['status-badge', cat.isQualityCategory ? 'status-enabled' : 'status-disabled']">
-                  {{ cat.isQualityCategory ? '是' : '否' }}
-                </span>
-              </td>
-              <td>{{ cat.parentName || '顶级分类' }}</td>
-              <td>
-                <span :class="['status-badge', cat.status === 1 ? 'status-enabled' : 'status-disabled']">
-                  {{ cat.status === 1 ? '启用' : '禁用' }}
-                </span>
-              </td>
-              <td>{{ cat.createdBy || '-' }}</td>
-              <td>{{ formatDate(cat.createdAt) }}</td>
-              <td class="actions">
-                <button class="btn btn-sm" @click="openEditDialog(cat)">编辑</button>
-                <button
-                  v-if="cat.status === 1"
-                  class="btn btn-sm btn-warning"
-                  @click="toggleStatus(cat)"
-                >
-                  禁用
-                </button>
-                <button
-                  v-else
-                  class="btn btn-sm btn-success"
-                  @click="toggleStatus(cat)"
-                >
-                  启用
-                </button>
-                <button class="btn btn-sm btn-danger" @click="confirmDelete(cat)">删除</button>
-                <button class="btn btn-sm btn-audit" @click="openAuditLog(cat)">变更履历</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-
-        <!-- Pagination -->
-        <div class="pagination" v-if="total > 0">
-          <span class="pagination-info">
-            共 {{ total }} 条，第 {{ query.page || 1 }} / {{ totalPages }} 页
-          </span>
-          <button class="btn btn-sm" :disabled="query.page <= 1" @click="goPage(1)">首页</button>
-          <button class="btn btn-sm" :disabled="query.page <= 1" @click="goPage((query.page || 1) - 1)">上一页</button>
-          <button class="btn btn-sm" :disabled="query.page >= totalPages" @click="goPage((query.page || 1) + 1)">下一页</button>
-          <button class="btn btn-sm" :disabled="query.page >= totalPages" @click="goPage(totalPages)">末页</button>
+        <div class="flex-1 p-2.5 overflow-hidden">
+          <el-table :data="categories" border stripe height="100%" v-loading="loading">
+            <el-table-column prop="categoryCode" label="分类编码" min-width="120" />
+            <el-table-column prop="categoryName" label="分类名称" min-width="120" />
+            <el-table-column prop="isQualityCategory" label="是否质量分类" min-width="110">
+              <template #default="{ row }">
+                <el-tag :type="row.isQualityCategory ? 'success' : 'info'" size="small">
+                  {{ row.isQualityCategory ? '是' : '否' }}
+                </el-tag>
+              </template>
+            </el-table-column>
+            <el-table-column prop="parentName" label="上级分类" min-width="120">
+              <template #default="{ row }">{{ row.parentName || '顶级分类' }}</template>
+            </el-table-column>
+            <el-table-column prop="status" label="状态" min-width="80">
+              <template #default="{ row }">
+                <el-tag :type="row.status === 1 ? 'success' : 'danger'" size="small">
+                  {{ row.status === 1 ? '启用' : '禁用' }}
+                </el-tag>
+              </template>
+            </el-table-column>
+            <el-table-column prop="createdBy" label="创建人" min-width="100">
+              <template #default="{ row }">{{ row.createdBy || '-' }}</template>
+            </el-table-column>
+            <el-table-column prop="createdAt" label="创建时间" min-width="160">
+              <template #default="{ row }">{{ formatDate(row.createdAt) }}</template>
+            </el-table-column>
+            <el-table-column label="操作" min-width="300" fixed="right">
+              <template #default="{ row }">
+                <div class="flex gap-1">
+                  <el-button size="small" @click="openEditDialog(row)">编辑</el-button>
+                  <el-button
+                    v-if="row.status === 1"
+                    size="small"
+                    type="warning"
+                    @click="toggleStatus(row)"
+                  >禁用</el-button>
+                  <el-button
+                    v-else
+                    size="small"
+                    type="success"
+                    @click="toggleStatus(row)"
+                  >启用</el-button>
+                  <el-button size="small" type="danger" @click="confirmDelete(row)">删除</el-button>
+                  <el-button size="small" type="info" @click="openAuditLog(row)">变更履历</el-button>
+                </div>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+        <div class="px-4 py-3 border-t border-border-color flex justify-end shrink-0">
+          <el-pagination
+            layout="total, sizes, prev, pager, next"
+            :total="total"
+            :page-size="query.size"
+            :current-page="query.page"
+            background
+            size="small"
+            @current-change="goPage"
+            @size-change="(size: number) => { query.size = size; search() }"
+          />
         </div>
       </div>
     </div>
 
     <!-- Create/Edit Dialog -->
-    <div v-if="dialogVisible" class="dialog-overlay" @click.self="closeDialog">
-      <div class="dialog">
-        <div class="dialog-header">
-          <h3>{{ isEdit ? '编辑物料分类' : '新建物料分类' }}</h3>
-          <button class="dialog-close" @click="closeDialog">&times;</button>
-        </div>
-        <div class="dialog-body">
-          <div class="form-group">
-            <label>分类编码 <span class="required">*</span></label>
-            <input
-              v-model="form.categoryCode"
-              type="text"
-              class="input"
-              :disabled="isEdit"
-              :class="{ 'input-disabled': isEdit }"
-              placeholder="请输入分类编码"
-            />
-          </div>
-          <div class="form-group">
-            <label>分类名称 <span class="required">*</span></label>
-            <input
-              v-model="form.categoryName"
-              type="text"
-              class="input"
-              placeholder="请输入分类名称"
-            />
-          </div>
-          <div class="form-group">
-            <label>是否质量分类</label>
-            <select v-model="form.isQualityCategory" class="input">
-              <option :value="false">否</option>
-              <option :value="true">是</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>上级分类</label>
-            <select v-model="form.parentId" class="input">
-              <option :value="null">无（顶级分类）</option>
-              <option v-for="c in parentCategoryOptions" :key="c.id" :value="c.id">{{ c.name }} ({{ c.code }})</option>
-            </select>
-          </div>
-        </div>
-        <div class="dialog-footer">
-          <button class="btn" @click="closeDialog">取消</button>
-          <button class="btn btn-primary" @click="submitForm" :disabled="submitting">
-            {{ submitting ? '提交中...' : '确定' }}
-          </button>
-        </div>
-        <div v-if="formError" class="form-error">{{ formError }}</div>
-      </div>
-    </div>
+    <el-dialog
+      v-model="dialogVisible"
+      :title="isEdit ? '编辑物料分类' : '新建物料分类'"
+      width="480px"
+      destroy-on-close
+    >
+      <el-form label-width="100px">
+        <el-form-item label="分类编码" required>
+          <el-input v-model="form.categoryCode" placeholder="请输入分类编码" :disabled="isEdit" />
+        </el-form-item>
+        <el-form-item label="分类名称" required>
+          <el-input v-model="form.categoryName" placeholder="请输入分类名称" />
+        </el-form-item>
+        <el-form-item label="是否质量分类">
+          <el-select v-model="form.isQualityCategory" class="!w-full">
+            <el-option :value="false" label="否" />
+            <el-option :value="true" label="是" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="上级分类">
+          <el-select v-model="form.parentId" placeholder="无（顶级分类）" clearable class="!w-full">
+            <el-option v-for="c in parentCategoryOptions" :key="c.id" :value="c.id" :label="`${c.name} (${c.code})`" />
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div v-if="formError" class="text-red-500 text-xs px-4 pb-2">{{ formError }}</div>
+      <template #footer>
+        <el-button @click="closeDialog">取消</el-button>
+        <el-button type="primary" @click="submitForm" :loading="submitting">确定</el-button>
+      </template>
+    </el-dialog>
 
     <!-- Delete Confirm Dialog -->
-    <div v-if="deleteDialogVisible" class="dialog-overlay" @click.self="closeDeleteDialog">
-      <div class="dialog dialog-sm">
-        <div class="dialog-header">
-          <h3>确认删除</h3>
-          <button class="dialog-close" @click="closeDeleteDialog">&times;</button>
-        </div>
-        <div class="dialog-body">
-          <p>确定要删除分类 "{{ deleteTarget?.categoryName }}" ({{ deleteTarget?.categoryCode }}) 吗？</p>
-          <p class="text-muted">删除后不可恢复。若该分类下存在子分类或已被引用，则无法删除。</p>
-        </div>
-        <div class="dialog-footer">
-          <button class="btn" @click="closeDeleteDialog">取消</button>
-          <button class="btn btn-danger" @click="doDelete" :disabled="submitting">
-            {{ submitting ? '删除中...' : '删除' }}
-          </button>
-        </div>
-      </div>
-    </div>
+    <el-dialog
+      v-model="deleteDialogVisible"
+      title="确认删除"
+      width="420px"
+      destroy-on-close
+    >
+      <p>确定要删除分类 "{{ deleteTarget?.categoryName }}" ({{ deleteTarget?.categoryCode }}) 吗？</p>
+      <p class="text-gray-400 text-sm mt-2">删除后不可恢复。若该分类下存在子分类或已被引用，则无法删除。</p>
+      <template #footer>
+        <el-button @click="closeDeleteDialog">取消</el-button>
+        <el-button type="danger" @click="doDelete" :loading="submitting">删除</el-button>
+      </template>
+    </el-dialog>
 
     <!-- Audit Log Dialog -->
     <AuditLogDialog
@@ -226,6 +190,7 @@
 
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted } from 'vue';
+import { Search, Refresh, Plus, Setting } from '@element-plus/icons-vue';
 import {
   listMaterialCategories,
   getMaterialCategoryTree,
@@ -489,337 +454,3 @@ onMounted(() => {
   fetchList();
 });
 </script>
-
-<style scoped>
-.category-page {
-  padding: 20px;
-}
-
-.page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.page-header h2 {
-  margin: 0;
-  font-size: 20px;
-  color: #333;
-}
-
-.main-content {
-  display: flex;
-  gap: 16px;
-}
-
-.tree-panel {
-  width: 260px;
-  min-width: 260px;
-  border: 1px solid #f0f0f0;
-  border-radius: 4px;
-  background: #fff;
-  max-height: calc(100vh - 160px);
-  overflow-y: auto;
-}
-
-.tree-header {
-  padding: 12px 16px;
-  border-bottom: 1px solid #f0f0f0;
-  background: #fafafa;
-}
-
-.tree-header h3 {
-  margin: 0;
-  font-size: 14px;
-  color: #333;
-}
-
-.tree-body {
-  padding: 8px;
-}
-
-.detail-panel {
-  flex: 1;
-  min-width: 0;
-}
-
-.search-bar {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 16px;
-  flex-wrap: wrap;
-}
-
-.input {
-  padding: 6px 12px;
-  border: 1px solid #d9d9d9;
-  border-radius: 4px;
-  font-size: 14px;
-  outline: none;
-  transition: border-color 0.2s;
-}
-
-.input:focus {
-  border-color: #1890ff;
-}
-
-.input-disabled {
-  background-color: #f5f5f5;
-  cursor: not-allowed;
-}
-
-.select {
-  min-width: 120px;
-}
-
-.btn {
-  padding: 6px 16px;
-  border: 1px solid #d9d9d9;
-  border-radius: 4px;
-  background: #fff;
-  cursor: pointer;
-  font-size: 14px;
-  transition: all 0.2s;
-}
-
-.btn:hover {
-  border-color: #1890ff;
-  color: #1890ff;
-}
-
-.btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.btn-primary {
-  background: #1890ff;
-  color: #fff;
-  border-color: #1890ff;
-}
-
-.btn-primary:hover {
-  background: #40a9ff;
-  color: #fff;
-}
-
-.btn-secondary {
-  background: #f0f0f0;
-  border-color: #d9d9d9;
-}
-
-.btn-sm {
-  padding: 2px 8px;
-  font-size: 12px;
-}
-
-.btn-danger {
-  color: #ff4d4f;
-  border-color: #ff4d4f;
-}
-
-.btn-danger:hover {
-  background: #ff4d4f;
-  color: #fff;
-}
-
-.btn-warning {
-  color: #faad14;
-  border-color: #faad14;
-}
-
-.btn-warning:hover {
-  background: #faad14;
-  color: #fff;
-}
-
-.btn-success {
-  color: #52c41a;
-  border-color: #52c41a;
-}
-
-.btn-success:hover {
-  background: #52c41a;
-  color: #fff;
-}
-
-.btn-info {
-  color: #1890ff;
-  border-color: #1890ff;
-}
-
-.btn-info:hover {
-  background: #1890ff;
-  color: #fff;
-}
-
-.btn-audit {
-  color: #722ed1;
-  border-color: #722ed1;
-}
-
-.btn-audit:hover {
-  background: #722ed1;
-  color: #fff;
-}
-
-.header-actions {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
-
-.table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 16px;
-}
-
-.table th,
-.table td {
-  padding: 10px 12px;
-  border: 1px solid #f0f0f0;
-  text-align: left;
-  font-size: 14px;
-}
-
-.table th {
-  background: #fafafa;
-  font-weight: 600;
-  color: #333;
-}
-
-.table tbody tr:hover {
-  background: #f5f5f5;
-}
-
-.actions {
-  display: flex;
-  gap: 6px;
-}
-
-.status-badge {
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-size: 12px;
-}
-
-.status-enabled {
-  background: #f6ffed;
-  color: #52c41a;
-  border: 1px solid #b7eb8f;
-}
-
-.status-disabled {
-  background: #fff2f0;
-  color: #ff4d4f;
-  border: 1px solid #ffccc7;
-}
-
-.pagination {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.pagination-info {
-  font-size: 14px;
-  color: #666;
-  margin-right: auto;
-}
-
-.text-center {
-  text-align: center;
-}
-
-.text-muted {
-  color: #999;
-  font-size: 13px;
-}
-
-.required {
-  color: #ff4d4f;
-}
-
-/* Dialog styles */
-.dialog-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
-
-.dialog {
-  background: #fff;
-  border-radius: 8px;
-  width: 480px;
-  max-width: 90vw;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-}
-
-.dialog-sm {
-  width: 400px;
-}
-
-.dialog-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 24px;
-  border-bottom: 1px solid #f0f0f0;
-}
-
-.dialog-header h3 {
-  margin: 0;
-  font-size: 16px;
-}
-
-.dialog-close {
-  background: none;
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
-  color: #999;
-}
-
-.dialog-body {
-  padding: 24px;
-}
-
-.dialog-footer {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  padding: 12px 24px;
-  border-top: 1px solid #f0f0f0;
-}
-
-.form-group {
-  margin-bottom: 16px;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 6px;
-  font-size: 14px;
-  color: #333;
-}
-
-.form-group .input {
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.form-error {
-  padding: 8px 24px 16px;
-  color: #ff4d4f;
-  font-size: 13px;
-}
-</style>
