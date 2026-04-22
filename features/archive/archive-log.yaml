@@ -719,3 +719,30 @@ archived:
       duration: "less than 30 minutes"
       commits: 1
       files_changed: 1
+
+  - id: feat-process-frontend
+    name: "工序管理前端（API + View + Route）"
+    completed: "2026-04-22"
+    tag: feat-process-frontend-20260422
+    merge_commit: "7be40fd"
+    merged_to: main
+    branch_deleted: true
+    branch_name: feature/process-frontend
+    worktree_deleted: true
+    worktree_path: ../LiteMes-process-frontend
+    keywords: [process, 工序, frontend, API, CRUD, search, status-toggle, work-center-dropdown, factory-cascading, element-plus, vue3, tailwind]
+    category: frontend
+    value_points: 3
+    related_features: [feat-frontend-overhaul, feat-frontend-ui-lib, feat-process]
+    conflicts:
+      had_conflict: false
+      conflict_files: []
+    verification:
+      status: passed
+      scenarios_total: 5
+      scenarios_passed: 5
+    stats:
+      started: "2026-04-22T22:30:00+08:00"
+      duration: "less than 1 hour"
+      commits: 1
+      files_changed: 3
