@@ -15,13 +15,6 @@ pending:
       - feat-cascading-selector
       - feat-auth-frontend
 
-  - id: feat-frontend-layout
-    name: "导航布局（侧边栏 + 面包屑 + Tab 页签）"
-    priority: 90
-    size: M
-    dependencies:
-      - feat-frontend-ui-lib
-
   - id: feat-process-frontend
     name: "工序管理前端（API + View + Route）"
     priority: 85
@@ -44,6 +37,14 @@ pending:
       - feat-frontend-layout
 
 active:
+  - id: feat-frontend-layout
+    name: "导航布局（侧边栏 + 面包屑 + Tab 页签）"
+    priority: 90
+    size: M
+    parent: feat-frontend-overhaul
+    branch: feature/feat-frontend-layout
+    worktree: ../LiteMes-feat-frontend-layout
+    started_at: "2026-04-22T21:00:00+08:00"
 
 blocked:
 
@@ -191,7 +192,7 @@ completed:
     tag: feat-user-permission-20260422
 
 meta:
-  last_updated: "2026-04-22T20:30:00+08:00"
+  last_updated: "2026-04-22T21:00:00+08:00"
   parents:
     - id: feat-frontend-overhaul
       name: "前端全面升级"
