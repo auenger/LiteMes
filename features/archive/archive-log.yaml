@@ -1,4 +1,31 @@
 archived:
+  - id: feat-e2e-permission
+    name: "数据权限 E2E 测试（权限组/用户权限）"
+    completed: "2026-04-22T10:45:00+08:00"
+    tag: feat-e2e-permission-20260422
+    merge_commit: "cd34ed2"
+    merged_to: main
+    branch_deleted: true
+    branch_name: feature/e2e-permission
+    worktree_deleted: true
+    worktree_path: ../LiteMes-e2e-permission
+    keywords: [e2e, playwright, permission-group, user-permission, 数据权限, 权限组, tab-association, checkbox]
+    category: testing
+    value_points: 2
+    related_features: [feat-e2e-master-data, feat-permission-group, feat-user-permission]
+    conflicts:
+      had_conflict: false
+      conflict_files: []
+    verification:
+      status: passed
+      scenarios_total: 10
+      scenarios_passed: 10
+    stats:
+      started: "2026-04-22T10:00:00+08:00"
+      duration: "45m"
+      commits: 1
+      files_changed: 4
+
   - id: feat-e2e-supply-chain
     name: "供应链 E2E 测试（客户/供应商）"
     completed: "2026-04-22T01:00:00+08:00"

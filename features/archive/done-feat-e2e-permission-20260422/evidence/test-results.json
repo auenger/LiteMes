@@ -1,0 +1,563 @@
+{
+  "config": {
+    "configFile": "/Users/ryan/mycode/LiteMes-e2e-permission/frontend/playwright.config.ts",
+    "rootDir": "/Users/ryan/mycode/LiteMes-e2e-permission/frontend/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 2
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/ryan/mycode/LiteMes-e2e-permission/frontend/evidence/test-artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Users/ryan/mycode/LiteMes-e2e-permission/frontend/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "html",
+        {
+          "outputFolder": "evidence/playwright-report",
+          "open": "never"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "evidence/test-results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.59.1",
+    "workers": 8,
+    "webServer": {
+      "command": "npm run dev",
+      "port": 3000,
+      "reuseExistingServer": true,
+      "timeout": 15000
+    }
+  },
+  "suites": [
+    {
+      "title": "permission/permission-group.spec.ts",
+      "file": "permission/permission-group.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "权限组管理 E2E 测试",
+          "file": "permission/permission-group.spec.ts",
+          "line": 9,
+          "column": 6,
+          "specs": [
+            {
+              "title": "权限组列表加载",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4674,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-22T17:39:11.307Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-permission/frontend/evidence/test-artifacts/permission-permission-group-权限组管理-E2E-测试-权限组列表加载-chromium/test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-permission/frontend/evidence/test-artifacts/permission-permission-group-权限组管理-E2E-测试-权限组列表加载-chromium/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b1321a8d0b39a7062c16-4e1823fe72f6eea826bc",
+              "file": "permission/permission-group.spec.ts",
+              "line": 22,
+              "column": 3
+            },
+            {
+              "title": "新建权限组",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4236,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-22T17:39:16.445Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-permission/frontend/evidence/test-artifacts/permission-permission-group-权限组管理-E2E-测试-新建权限组-chromium/test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-permission/frontend/evidence/test-artifacts/permission-permission-group-权限组管理-E2E-测试-新建权限组-chromium/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b1321a8d0b39a7062c16-d94524b587cd563a9c47",
+              "file": "permission/permission-group.spec.ts",
+              "line": 33,
+              "column": 3
+            },
+            {
+              "title": "权限组名称必填校验",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3329,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-22T17:39:20.972Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-permission/frontend/evidence/test-artifacts/permission-permission-group-权限组管理-E2E-测试-权限组名称必填校验-chromium/test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-permission/frontend/evidence/test-artifacts/permission-permission-group-权限组管理-E2E-测试-权限组名称必填校验-chromium/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b1321a8d0b39a7062c16-62785c42f89a58dcd571",
+              "file": "permission/permission-group.spec.ts",
+              "line": 53,
+              "column": 3
+            },
+            {
+              "title": "关联工厂（Tab 标签页操作）",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 28214,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-22T17:39:24.479Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-permission/frontend/evidence/test-artifacts/permission-permission-group-权限组管理-E2E-测试-关联工厂（Tab-标签页操作）-chromium/test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-permission/frontend/evidence/test-artifacts/permission-permission-group-权限组管理-E2E-测试-关联工厂（Tab-标签页操作）-chromium/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b1321a8d0b39a7062c16-b774dd407445bfc05b0e",
+              "file": "permission/permission-group.spec.ts",
+              "line": 65,
+              "column": 3
+            },
+            {
+              "title": "关联工作中心（Tab 切换）",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 27623,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-22T17:39:53.173Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-permission/frontend/evidence/test-artifacts/permission-permission-group-权限组管理-E2E-测试-关联工作中心（Tab-切换）-chromium/test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-permission/frontend/evidence/test-artifacts/permission-permission-group-权限组管理-E2E-测试-关联工作中心（Tab-切换）-chromium/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b1321a8d0b39a7062c16-662ea78c4129836e5764",
+              "file": "permission/permission-group.spec.ts",
+              "line": 114,
+              "column": 3
+            },
+            {
+              "title": "编辑权限组基本信息",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4936,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-22T17:40:21.217Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-permission/frontend/evidence/test-artifacts/permission-permission-group-权限组管理-E2E-测试-编辑权限组基本信息-chromium/test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-permission/frontend/evidence/test-artifacts/permission-permission-group-权限组管理-E2E-测试-编辑权限组基本信息-chromium/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b1321a8d0b39a7062c16-1ff8477baf17dd814d5c",
+              "file": "permission/permission-group.spec.ts",
+              "line": 160,
+              "column": 3
+            },
+            {
+              "title": "删除权限组",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4842,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-22T17:40:26.482Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-permission/frontend/evidence/test-artifacts/permission-permission-group-权限组管理-E2E-测试-删除权限组-chromium/test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-permission/frontend/evidence/test-artifacts/permission-permission-group-权限组管理-E2E-测试-删除权限组-chromium/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b1321a8d0b39a7062c16-78a852865ece89a2d427",
+              "file": "permission/permission-group.spec.ts",
+              "line": 189,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "permission/user-permission.spec.ts",
+      "file": "permission/user-permission.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "用户权限 E2E 测试",
+          "file": "permission/user-permission.spec.ts",
+          "line": 9,
+          "column": 6,
+          "specs": [
+            {
+              "title": "用户权限列表加载",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 4671,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-22T17:39:11.304Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-permission/frontend/evidence/test-artifacts/permission-user-permission-用户权限-E2E-测试-用户权限列表加载-chromium/test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-permission/frontend/evidence/test-artifacts/permission-user-permission-用户权限-E2E-测试-用户权限列表加载-chromium/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "3313375ffaf72c4c2658-f1b2de184e65e6650992",
+              "file": "permission/user-permission.spec.ts",
+              "line": 17,
+              "column": 3
+            },
+            {
+              "title": "新建用户权限（关联权限组和用户）",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 8188,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-22T17:39:16.397Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-permission/frontend/evidence/test-artifacts/permission-user-permission-用户权限-E2E-测试-新建用户权限（关联权限组和用户）-chromium/test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-permission/frontend/evidence/test-artifacts/permission-user-permission-用户权限-E2E-测试-新建用户权限（关联权限组和用户）-chromium/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "3313375ffaf72c4c2658-f677db651937cf73e953",
+              "file": "permission/user-permission.spec.ts",
+              "line": 22,
+              "column": 3
+            },
+            {
+              "title": "删除用户权限",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 10956,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-22T17:39:25.017Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-permission/frontend/evidence/test-artifacts/permission-user-permission-用户权限-E2E-测试-删除用户权限-chromium/test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-permission/frontend/evidence/test-artifacts/permission-user-permission-用户权限-E2E-测试-删除用户权限-chromium/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "3313375ffaf72c4c2658-979d67cc7ef14e19b5d2",
+              "file": "permission/user-permission.spec.ts",
+              "line": 74,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-04-22T17:39:07.829Z",
+    "duration": 84128.242,
+    "expected": 10,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}
