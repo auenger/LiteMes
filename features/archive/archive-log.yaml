@@ -773,3 +773,30 @@ archived:
       duration: "less than 30 minutes"
       commits: 1
       files_changed: 2
+
+  - id: feat-auth-frontend
+    name: "登录认证前端"
+    completed: "2026-04-22"
+    tag: feat-auth-frontend-20260422
+    merge_commit: "5942bbd"
+    merged_to: main
+    branch_deleted: true
+    branch_name: feature/auth-frontend
+    worktree_deleted: true
+    worktree_path: ../LiteMes-auth-frontend
+    keywords: [auth, login, jwt, token, route-guard, login-page, user-store, authentication, vue3, element-plus, smallrye-jwt]
+    category: fullstack
+    value_points: 3
+    related_features: [feat-frontend-overhaul, feat-frontend-layout]
+    conflicts:
+      had_conflict: false
+      conflict_files: []
+    verification:
+      status: passed
+      scenarios_total: 4
+      scenarios_passed: 4
+    stats:
+      started: "2026-04-22T23:50:00+08:00"
+      duration: "less than 1 hour"
+      commits: 1
+      files_changed: 14

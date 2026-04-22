@@ -90,3 +90,12 @@ Feature: 登录认证前端
     Then 清除 Token
     And 跳转到登录页
 ```
+
+## Merge Record
+- **Completed**: 2026-04-22
+- **Branch**: feature/auth-frontend
+- **Merge Commit**: 5942bbd
+- **Archive Tag**: feat-auth-frontend-20260422
+- **Conflicts**: none
+- **Verification**: 4/4 scenarios passed (code analysis), backend tests passed, TypeScript check passed
+- **Files Changed**: 14 (7 new, 7 modified)
