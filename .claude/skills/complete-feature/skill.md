@@ -166,7 +166,17 @@ fi
 if [ -d "features/pending-{id}/evidence" ] && [ ! -d "features/archive/done-{id}-{date}/evidence" ]; then
   cp -r features/pending-{id}/evidence features/archive/done-{id}-{date}/
 fi
+
+# Fallback: copy from worktree if feature evidence is empty or missing Playwright report
+WORKTREE_EVIDENCE="{worktree_path}/frontend/evidence"
+ARCHIVE_EVIDENCE="features/archive/done-{id}-{date}/evidence"
+if [ -d "$WORKTREE_EVIDENCE" ] && [ ! -d "$ARCHIVE_EVIDENCE/playwright-report" ]; then
+  mkdir -p "$ARCHIVE_EVIDENCE"
+  cp -r "$WORKTREE_EVIDENCE"/* "$ARCHIVE_EVIDENCE/" 2>/dev/null
+fi
 ```
+
+**IMPORTANT**: This step MUST run before `git worktree remove` in Step 7, otherwise worktree evidence will be lost.
 
 ### Step 7: Cleanup Worktree and Branch
 

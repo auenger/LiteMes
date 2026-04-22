@@ -93,6 +93,23 @@ Analyze implementation code to verify Given/When/Then expectations are met.
 - Available -> Method A: Playwright MCP
 - NOT available -> Method B: `npx playwright test`
 
+**5.2.1 Clean Old Reports**
+
+Before running any Playwright tests, clean stale evidence to ensure a fresh report:
+
+```bash
+cd {worktree_path}/frontend
+rm -rf evidence/playwright-report evidence/test-results.json evidence/test-artifacts
+```
+
+Also clean the feature directory's evidence (from previous verify runs):
+
+```bash
+rm -rf features/active-{feature-id}/evidence/playwright-report
+rm -rf features/active-{feature-id}/evidence/test-artifacts
+rm -f features/active-{feature-id}/evidence/test-results.json
+```
+
 **5.2.2 Method A: Playwright MCP (Preferred)**
 
 For each Gherkin scenario, execute steps via Playwright MCP tools:
@@ -139,6 +156,33 @@ npx playwright test --trace on --screenshot on --reporter=html,json e2e/{feature
 cp e2e/{feature-id}.spec.ts features/active-{id}/evidence/e2e-tests/
 cp test-results/*/trace.zip features/active-{id}/evidence/traces/
 ```
+
+**5.2.4 Copy Evidence from Worktree to Feature Directory**
+
+After Playwright tests complete, copy all generated evidence from the worktree to the feature directory so it survives worktree cleanup during complete-feature.
+
+```bash
+EVIDENCE_SRC="{worktree_path}/frontend/evidence"
+EVIDENCE_DST="features/active-{feature-id}/evidence"
+mkdir -p "$EVIDENCE_DST"
+
+# Copy Playwright HTML report
+if [ -d "$EVIDENCE_SRC/playwright-report" ]; then
+  cp -r "$EVIDENCE_SRC/playwright-report" "$EVIDENCE_DST/"
+fi
+
+# Copy JSON test results
+if [ -f "$EVIDENCE_SRC/test-results.json" ]; then
+  cp "$EVIDENCE_SRC/test-results.json" "$EVIDENCE_DST/"
+fi
+
+# Copy test artifacts (screenshots + traces)
+if [ -d "$EVIDENCE_SRC/test-artifacts" ]; then
+  cp -r "$EVIDENCE_SRC/test-artifacts" "$EVIDENCE_DST/"
+fi
+```
+
+**Fallback**: If evidence paths differ from the defaults above, check `playwright.config.ts` `reporter` and `outputDir` settings and adjust source paths accordingly.
 
 ### Step 6: Save Verification Report
 
