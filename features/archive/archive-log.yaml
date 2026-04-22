@@ -1,4 +1,32 @@
 archived:
+  - id: feat-e2e-production-base
+    name: "生产基础 E2E 测试（工作中心/计量单位/单位换算）"
+    completed: "2026-04-22T23:20:00+08:00"
+    tag: feat-e2e-production-base-20260422
+    merge_commit: "2d14aa7"
+    merged_to: main
+    branch_deleted: true
+    branch_name: feature/e2e-production-base
+    worktree_deleted: true
+    worktree_path: ../LiteMes-e2e-production-base
+    keywords: [e2e, playwright, work-center, uom, uom-conversion, 计量单位, 单位换算, 工作中心, crud, auth-fixture, el-select, el-input-number]
+    category: testing
+    value_points: 3
+    related_features: [feat-e2e-org-base, feat-work-center, feat-uom]
+    conflicts:
+      had_conflict: false
+      conflict_files: []
+    verification:
+      status: passed
+      scenarios_total: 13
+      scenarios_passed: 13
+    stats:
+      started: "2026-04-22T23:45:00+08:00"
+      duration: "~30 minutes"
+      commits: 2
+      files_changed: 4
+    bug_fix: "Added missing isColumnVisible function in WorkCenterList.vue"
+
   - id: feat-e2e-org-advanced
     name: "组织架构高级 E2E 测试（部门/班制班次）"
     completed: "2026-04-22T23:30:00+08:00"

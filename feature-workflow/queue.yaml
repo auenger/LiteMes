@@ -36,19 +36,19 @@ pending:
     dependencies: [feat-e2e-org-base]
 
 active:
+
+blocked:
+
+completed:
   - id: feat-e2e-production-base
     name: "生产基础 E2E 测试（工作中心/计量单位/单位换算）"
     priority: 70
     size: S
     parent: feat-e2e-master-data
     dependencies: [feat-e2e-org-base]
-    branch: feature/e2e-production-base
-    worktree: ../LiteMes-e2e-production-base
-    started_at: "2026-04-22T23:45:00+08:00"
+    completed_at: "2026-04-22T23:20:00+08:00"
+    tag: feat-e2e-production-base-20260422
 
-blocked:
-
-completed:
   - id: feat-e2e-org-advanced
     name: "组织架构高级 E2E 测试（部门/班制班次）"
     priority: 70
@@ -308,7 +308,7 @@ completed:
     tag: feat-user-permission-20260422
 
 meta:
-  last_updated: "2026-04-22T23:45:00+08:00"
+  last_updated: "2026-04-22T23:20:00+08:00"
   parents:
     - id: feat-e2e-master-data
       name: "基础数据模块 E2E 测试"
