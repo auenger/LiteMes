@@ -57,6 +57,12 @@ const routes = [
         meta: { title: '工作中心', icon: 'MapLocation', module: '生产基础' },
       },
       {
+        path: '/processes',
+        name: 'ProcessList',
+        component: () => import('../views/process/ProcessList.vue'),
+        meta: { title: '工序管理', icon: 'Operation', module: '生产基础' },
+      },
+      {
         path: '/uoms',
         name: 'UomList',
         component: () => import('../views/uom/UomList.vue'),
