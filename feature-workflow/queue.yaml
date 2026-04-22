@@ -1,12 +1,5 @@
 pending:
   # ── E2E 测试 (parent: feat-e2e-master-data) ──
-  # ── 物料管理 (parent: feat-e2e-material → feat-e2e-master-data) ──
-  - id: feat-e2e-material-info
-    name: "物料信息与免检清单 E2E 测试"
-    priority: 70
-    size: S
-    parent: feat-e2e-material
-    dependencies: [feat-e2e-material-category]
   # ── 设备管理 ──
   - id: feat-e2e-equipment
     name: "设备管理 E2E 测试（设备类型/设备型号/设备台账）"
@@ -30,6 +23,15 @@ pending:
     dependencies: [feat-e2e-org-base]
 
 active:
+  - id: feat-e2e-material-info
+    name: "物料信息与免检清单 E2E 测试"
+    priority: 70
+    size: S
+    parent: feat-e2e-material
+    dependencies: [feat-e2e-material-category]
+    branch: feature/e2e-material-info
+    worktree: ../LiteMes-e2e-material-info
+    started_at: "2026-04-22T23:50:00+08:00"
 
 blocked:
 
@@ -311,7 +313,7 @@ completed:
     tag: feat-user-permission-20260422
 
 meta:
-  last_updated: "2026-04-22T23:47:00+08:00"
+  last_updated: "2026-04-22T23:50:00+08:00"
   parents:
     - id: feat-e2e-master-data
       name: "基础数据模块 E2E 测试"
