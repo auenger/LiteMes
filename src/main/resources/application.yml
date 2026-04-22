@@ -26,6 +26,11 @@ quarkus:
     username: root
     password: password
 
+  # Jackson
+  jackson:
+    register-java-time-module: true
+    write-dates-as-timestamps: false
+
   # Hibernate Validator
   hibernate-validator:
     fail-fast: true
