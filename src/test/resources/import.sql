@@ -112,6 +112,7 @@ CREATE TABLE IF NOT EXISTS uom_conversion (
 CREATE TABLE IF NOT EXISTS `user` (
     id            BIGINT       NOT NULL AUTO_INCREMENT PRIMARY KEY,
     username      VARCHAR(50)  NOT NULL,
+    password      VARCHAR(100) NOT NULL DEFAULT '',
     realName      VARCHAR(50)  NOT NULL,
     status        TINYINT      NOT NULL DEFAULT 1,
     createdBy     VARCHAR(64)  NULL,

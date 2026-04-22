@@ -48,17 +48,20 @@
 
         <el-divider direction="vertical" class="!border-border-color" />
 
-        <el-dropdown trigger="click">
+        <el-dropdown trigger="click" @command="handleDropdownCommand">
           <div class="flex items-center space-x-2 cursor-pointer outline-none">
             <el-avatar :size="28" src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" />
-            <span class="text-sm font-medium text-slate-700 dark:text-slate-200">admin</span>
+            <span class="text-sm font-medium text-slate-700 dark:text-slate-200">{{ userStore.username || '未登录' }}</span>
             <el-icon><ArrowDown /></el-icon>
           </div>
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item>个人中心</el-dropdown-item>
               <el-dropdown-item>修改密码</el-dropdown-item>
-              <el-dropdown-item divided>退出登录</el-dropdown-item>
+              <el-dropdown-item divided command="logout">
+                <el-icon class="mr-1"><SwitchButton /></el-icon>
+                退出登录
+              </el-dropdown-item>
             </el-dropdown-menu>
           </template>
         </el-dropdown>
@@ -136,10 +139,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { computed, ref, watch, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useThemeStore } from '../stores/theme';
 import { useTabStore } from '../stores/tabs';
+import { useUserStore } from '../stores/user';
 import {
   Monitor, Cpu, Refresh, HomeFilled, Moon, Sunny, FullScreen, Bell, Setting,
   ArrowDown, Close, Expand, Fold,
@@ -148,7 +152,7 @@ import {
   FolderOpened, Box, CircleCheck,
   SetUp, Notebook,
   Van, Lock, Key,
-  InfoFilled,
+  InfoFilled, SwitchButton,
 } from '@element-plus/icons-vue';
 
 interface MenuItem {
@@ -166,8 +170,22 @@ const route = useRoute();
 const router = useRouter();
 const themeStore = useThemeStore();
 const tabStore = useTabStore();
+const userStore = useUserStore();
 
 const sidebarCollapsed = ref(false);
+
+onMounted(() => {
+  if (userStore.isAuthenticated && !userStore.userInfo) {
+    userStore.fetchUserInfo();
+  }
+});
+
+const handleDropdownCommand = (command: string) => {
+  if (command === 'logout') {
+    userStore.logout();
+    router.push('/login');
+  }
+};
 
 const toggleSidebar = () => {
   sidebarCollapsed.value = !sidebarCollapsed.value;

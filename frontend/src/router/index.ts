@@ -1,7 +1,14 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import MainLayout from '../layouts/MainLayout.vue';
+import { setupRouterGuards } from './guards';
 
 const routes = [
+  {
+    path: '/login',
+    name: 'Login',
+    component: () => import('../views/auth/Login.vue'),
+    meta: { title: '登录', public: true },
+  },
   {
     path: '/',
     component: MainLayout,
@@ -146,5 +153,7 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
 });
+
+setupRouterGuards(router);
 
 export default router;
