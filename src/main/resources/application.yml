@@ -38,20 +38,6 @@ quarkus:
   # SmallRye JWT
   smallrye-jwt:
     enabled: true
-  jwt:
-    enabled: true
-    new-cookie:
-      name: litemes-jwt
-    http:
-      only-cookie:
-        names: ""
-    secret:
-      key: "litemes-jwt-secret-key-must-be-at-least-256-bits-long-for-hmac-sha-256"
-    issuer: "https://litemes.com"
-    audiences:
-      - "litemes-api"
-    token:
-      lifespan: 86400  # 24 hours in seconds
 
   # SmallRye OpenAPI / Swagger UI
   smallrye-openapi:
@@ -101,6 +87,12 @@ quarkus:
         logic-delete-value: 1
         logic-not-delete-value: 0
         id-type: auto
+
+# SmallRye JWT Verification (MicroProfile Config)
+mp:
+  jwt:
+    verify:
+      issuer: "https://litemes.com"
 
 # Development Profile
 "%dev":

@@ -9,12 +9,19 @@ import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.jboss.logging.Logger;
 
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
 import java.util.Set;
 
 @Singleton
 public class AuthService {
 
     private static final Logger LOG = Logger.getLogger(AuthService.class);
+
+    private static final String JWT_SECRET = "litemes-jwt-secret-key-must-be-at-least-256-bits-long-for-hmac-sha-256";
+    private static final SecretKey SIGNING_KEY = new SecretKeySpec(
+            JWT_SECRET.getBytes(StandardCharsets.UTF_8), "HmacSHA256");
 
     @Inject
     UserMapper userMapper;
@@ -47,7 +54,8 @@ public class AuthService {
                 .groups(Set.of("user"))
                 .audience(Set.of("litemes-api"))
                 .expiresIn(86400)
-                .sign();
+                .jws()
+                .sign(SIGNING_KEY);
 
         LOG.infof("User logged in: %s", username);
         return token;
