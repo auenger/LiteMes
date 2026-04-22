@@ -1,4 +1,34 @@
 archived:
+  - id: feat-frontend-layout
+    name: "导航布局（侧边栏 + 面包屑 + Tab 页签）"
+    completed: "2026-04-22"
+    tag: feat-frontend-layout-20260422
+    merge_commit: "f85f451"
+    merged_to: main
+    branch_deleted: true
+    branch_name: feature/feat-frontend-layout
+    worktree_deleted: true
+    worktree_path: ../LiteMes-feat-frontend-layout
+    # --- Index metadata ---
+    keywords: [layout, sidebar, breadcrumb, tabs, dark-theme, navigation, el-menu, main-layout, vue3, frontend]
+    category: frontend
+    value_points: 4
+    related_features: [feat-frontend-overhaul, feat-frontend-ui-lib, feat-auth-frontend]
+    # --- Git & merge info ---
+    conflicts:
+      had_conflict: false
+      conflict_files: []
+    verification:
+      status: passed
+      scenarios_total: 4
+      scenarios_passed: 4
+    # --- Stats ---
+    stats:
+      started: "2026-04-22T21:00:00+08:00"
+      duration: "less than 1 hour"
+      commits: 1
+      files_changed: 8
+
   - id: feat-frontend-ui-lib
     name: "UI 组件库引入与样式重构"
     completed: "2026-04-22"
