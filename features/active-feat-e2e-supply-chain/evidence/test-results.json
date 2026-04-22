@@ -1,0 +1,563 @@
+{
+  "config": {
+    "configFile": "/Users/ryan/mycode/LiteMes-e2e-supply-chain/frontend/playwright.config.ts",
+    "rootDir": "/Users/ryan/mycode/LiteMes-e2e-supply-chain/frontend/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 2
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/ryan/mycode/LiteMes-e2e-supply-chain/frontend/evidence/test-artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Users/ryan/mycode/LiteMes-e2e-supply-chain/frontend/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "html",
+        {
+          "outputFolder": "evidence/playwright-report",
+          "open": "never"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "evidence/test-results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.59.1",
+    "workers": 8,
+    "webServer": {
+      "command": "npm run dev",
+      "port": 3000,
+      "reuseExistingServer": true,
+      "timeout": 15000
+    }
+  },
+  "suites": [
+    {
+      "title": "supply-chain/customer.spec.ts",
+      "file": "supply-chain/customer.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "客户管理 E2E 测试",
+          "file": "supply-chain/customer.spec.ts",
+          "line": 28,
+          "column": 6,
+          "specs": [
+            {
+              "title": "客户列表加载",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 12744,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-22T16:52:23.929Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-supply-chain/frontend/evidence/test-artifacts/supply-chain-customer-客户管理-E2E-测试-客户列表加载-chromium/test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-supply-chain/frontend/evidence/test-artifacts/supply-chain-customer-客户管理-E2E-测试-客户列表加载-chromium/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "e5aea287506b5449d3b0-1fd68dcd1988cf6b6354",
+              "file": "supply-chain/customer.spec.ts",
+              "line": 42,
+              "column": 3
+            },
+            {
+              "title": "新建客户成功",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 7334,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-22T16:52:37.319Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-supply-chain/frontend/evidence/test-artifacts/supply-chain-customer-客户管理-E2E-测试-新建客户成功-chromium/test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-supply-chain/frontend/evidence/test-artifacts/supply-chain-customer-客户管理-E2E-测试-新建客户成功-chromium/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "e5aea287506b5449d3b0-d7d4022a06f7bfb67e7e",
+              "file": "supply-chain/customer.spec.ts",
+              "line": 47,
+              "column": 3
+            },
+            {
+              "title": "客户编码必填校验",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4265,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-22T16:52:44.878Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-supply-chain/frontend/evidence/test-artifacts/supply-chain-customer-客户管理-E2E-测试-客户编码必填校验-chromium/test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-supply-chain/frontend/evidence/test-artifacts/supply-chain-customer-客户管理-E2E-测试-客户编码必填校验-chromium/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "e5aea287506b5449d3b0-553086abaf7ba1bf844e",
+              "file": "supply-chain/customer.spec.ts",
+              "line": 65,
+              "column": 3
+            },
+            {
+              "title": "编辑客户",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 7500,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-22T16:52:49.368Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-supply-chain/frontend/evidence/test-artifacts/supply-chain-customer-客户管理-E2E-测试-编辑客户-chromium/test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-supply-chain/frontend/evidence/test-artifacts/supply-chain-customer-客户管理-E2E-测试-编辑客户-chromium/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "e5aea287506b5449d3b0-5d7668576d217c5748dc",
+              "file": "supply-chain/customer.spec.ts",
+              "line": 77,
+              "column": 3
+            },
+            {
+              "title": "删除客户",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 5669,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-22T16:52:57.217Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-supply-chain/frontend/evidence/test-artifacts/supply-chain-customer-客户管理-E2E-测试-删除客户-chromium/test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-supply-chain/frontend/evidence/test-artifacts/supply-chain-customer-客户管理-E2E-测试-删除客户-chromium/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "e5aea287506b5449d3b0-229ca6f4e74871849b86",
+              "file": "supply-chain/customer.spec.ts",
+              "line": 110,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "supply-chain/supplier.spec.ts",
+      "file": "supply-chain/supplier.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "供应商管理 E2E 测试",
+          "file": "supply-chain/supplier.spec.ts",
+          "line": 10,
+          "column": 6,
+          "specs": [
+            {
+              "title": "供应商列表加载",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 12330,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-22T16:52:23.928Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-supply-chain/frontend/evidence/test-artifacts/supply-chain-supplier-供应商管理-E2E-测试-供应商列表加载-chromium/test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-supply-chain/frontend/evidence/test-artifacts/supply-chain-supplier-供应商管理-E2E-测试-供应商列表加载-chromium/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "22b10e5420f7c0739a96-6f69f3c77aff1130bf35",
+              "file": "supply-chain/supplier.spec.ts",
+              "line": 24,
+              "column": 3
+            },
+            {
+              "title": "新建供应商成功",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 5090,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-22T16:52:36.880Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-supply-chain/frontend/evidence/test-artifacts/supply-chain-supplier-供应商管理-E2E-测试-新建供应商成功-chromium/test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-supply-chain/frontend/evidence/test-artifacts/supply-chain-supplier-供应商管理-E2E-测试-新建供应商成功-chromium/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "22b10e5420f7c0739a96-06a03fe44d0cc98f8d4d",
+              "file": "supply-chain/supplier.spec.ts",
+              "line": 29,
+              "column": 3
+            },
+            {
+              "title": "供应商编码必填校验",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 4568,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-22T16:52:42.219Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-supply-chain/frontend/evidence/test-artifacts/supply-chain-supplier-供应商管理-E2E-测试-供应商编码必填校验-chromium/test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-supply-chain/frontend/evidence/test-artifacts/supply-chain-supplier-供应商管理-E2E-测试-供应商编码必填校验-chromium/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "22b10e5420f7c0739a96-2c7c8b2e1b5e3a126911",
+              "file": "supply-chain/supplier.spec.ts",
+              "line": 43,
+              "column": 3
+            },
+            {
+              "title": "编辑供应商",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 6369,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-22T16:52:46.968Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-supply-chain/frontend/evidence/test-artifacts/supply-chain-supplier-供应商管理-E2E-测试-编辑供应商-chromium/test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-supply-chain/frontend/evidence/test-artifacts/supply-chain-supplier-供应商管理-E2E-测试-编辑供应商-chromium/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "22b10e5420f7c0739a96-6e3eeace09078fe9b53e",
+              "file": "supply-chain/supplier.spec.ts",
+              "line": 55,
+              "column": 3
+            },
+            {
+              "title": "删除供应商",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 6291,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-22T16:52:53.640Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-supply-chain/frontend/evidence/test-artifacts/supply-chain-supplier-供应商管理-E2E-测试-删除供应商-chromium/test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/ryan/mycode/LiteMes-e2e-supply-chain/frontend/evidence/test-artifacts/supply-chain-supplier-供应商管理-E2E-测试-删除供应商-chromium/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "22b10e5420f7c0739a96-d224c72718c4a39b1a82",
+              "file": "supply-chain/supplier.spec.ts",
+              "line": 88,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-04-22T16:52:16.337Z",
+    "duration": 47130.199,
+    "expected": 10,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}
