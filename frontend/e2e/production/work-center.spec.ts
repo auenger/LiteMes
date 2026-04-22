@@ -8,6 +8,8 @@ import {
 } from '../helpers/common';
 
 test.describe('工作中心管理 E2E 测试', () => {
+  test.describe.configure({ timeout: 60000, mode: 'serial' });
+
   const TS = Date.now().toString(36);
   const WC_CODE = `E2E_PROD_WC_${TS}`;
   const WC_NAME = `E2E测试工作中心_${TS}`;
@@ -15,11 +17,14 @@ test.describe('工作中心管理 E2E 测试', () => {
   const CO_NAME = `E2E生产基础公司_${TS}`;
   const FAC_CODE = `E2E_PROD_FAC_${TS}`;
   const FAC_NAME = `E2E生产基础工厂_${TS}`;
+  let setupDone = false;
 
   async function ensureCompanyAndFactory(page: any) {
+    if (setupDone) return;
+
     // Create company
     await page.goto('/companies');
-    await page.waitForLoadState('networkidle');
+    await expect(page.locator('.el-table')).toBeVisible({ timeout: 10000 });
 
     const existingCo = page.locator('.el-table__body-wrapper .el-table__row').filter({ hasText: CO_CODE });
     if (!(await existingCo.isVisible({ timeout: 2000 }).catch(() => false))) {
@@ -33,7 +38,7 @@ test.describe('工作中心管理 E2E 测试', () => {
 
     // Create factory
     await page.goto('/factories');
-    await page.waitForLoadState('networkidle');
+    await expect(page.locator('.el-table')).toBeVisible({ timeout: 10000 });
 
     const existingFac = page.locator('.el-table__body-wrapper .el-table__row').filter({ hasText: FAC_CODE });
     if (!(await existingFac.isVisible({ timeout: 2000 }).catch(() => false))) {
@@ -41,7 +46,6 @@ test.describe('工作中心管理 E2E 测试', () => {
       const dialog = page.locator('.el-dialog:visible');
       await dialog.locator('input[placeholder="请输入工厂编码"]').fill(FAC_CODE);
       await dialog.locator('input[placeholder="请输入工厂名称"]').fill(FAC_NAME);
-      // Select company
       const select = dialog.locator('.el-select');
       await select.click();
       await page.waitForTimeout(500);
@@ -51,12 +55,13 @@ test.describe('工作中心管理 E2E 测试', () => {
       await dialog.locator('button:has-text("确定")').click();
       await assertTableContains(page, FAC_CODE);
     }
+
+    setupDone = true;
   }
 
   async function selectFactoryInDialog(page: any) {
     const dialog = page.locator('.el-dialog:visible');
     const selects = dialog.locator('.el-select');
-    // The factory select is in the work center dialog
     await selects.click();
     await page.waitForTimeout(500);
     const items = page.locator('.el-select-dropdown__item:visible');
@@ -67,7 +72,7 @@ test.describe('工作中心管理 E2E 测试', () => {
   test.beforeEach(async ({ authenticatedPage: page }) => {
     await ensureCompanyAndFactory(page);
     await page.goto('/work-centers');
-    await page.waitForLoadState('networkidle');
+    await expect(page.locator('.el-table')).toBeVisible({ timeout: 10000 });
   });
 
   test('工作中心列表加载', async ({ authenticatedPage: page }) => {
