@@ -187,6 +187,10 @@ const defaultColumns: ColumnDef[] = [
 const { columns, toggleColumn, resetSettings } = useTableSettings('work-center-list', defaultColumns);
 const showTableSettings = ref(false);
 
+function isColumnVisible(key: string): boolean {
+  return columns.value.find(c => c.key === key)?.visible !== false;
+}
+
 // Audit log dialog state
 const auditLogVisible = ref(false);
 const auditLogTableName = ref('work_center');
